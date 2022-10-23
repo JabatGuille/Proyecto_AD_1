@@ -10,6 +10,7 @@ public class Empleado {
     private String fecha_cont;
     private String nacionalidad;
     private String cargo;
+    private String estado;
 
     private HashMap<String, VisitaGuiada> visitas = new HashMap<>();
 
@@ -40,6 +41,14 @@ public class Empleado {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 
     public String getApellido() {

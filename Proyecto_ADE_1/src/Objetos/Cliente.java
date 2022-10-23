@@ -2,17 +2,18 @@ package Objetos;
 
 import java.util.ArrayList;
 
-public class Usuario {
+public class Cliente {
     private String dni;
     private String nombre;
     private String apellido;
     private int edad;
     private String profesion;
+    private String estado;
     private String contraseña;
 
     private ArrayList<VisitaGuiada> visitas = new ArrayList<>();
 
-    public Usuario(String dni, String nombre, String apellido, int edad, String profesion, String contraseña) {
+    public Cliente(String dni, String nombre, String apellido, int edad, String profesion, String contraseña) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -21,7 +22,7 @@ public class Usuario {
         this.contraseña = contraseña;
     }
 
-    public Usuario() {
+    public Cliente() {
     }
 
     public String getDni() {
@@ -31,7 +32,13 @@ public class Usuario {
     public void setDni(String dni) {
         this.dni = dni;
     }
+    public String getEstado() {
+        return estado;
+    }
 
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
     public String getNombre() {
         return nombre;
     }

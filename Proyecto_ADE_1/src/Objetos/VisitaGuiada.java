@@ -10,9 +10,10 @@ public class VisitaGuiada {
     private String curso;
     private String tematica;
     private Double coste;
+    private String estado;
     private Lugar lugar;
 
-    private ArrayList<Usuario> usuarios = new ArrayList<>();
+    private ArrayList<Cliente> clientes = new ArrayList<>();
 
     public VisitaGuiada(int n_visita, String nombre, int n_max_cli, String punto_partida, String curso, String tematica, Double coste) {
         this.n_visita = n_visita;
@@ -55,6 +56,14 @@ public class VisitaGuiada {
         return punto_partida;
     }
 
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
+    }
+
     public void setPunto_partida(String punto_partida) {
         this.punto_partida = punto_partida;
     }
@@ -83,12 +92,12 @@ public class VisitaGuiada {
         this.coste = coste;
     }
 
-    public ArrayList<Usuario> getUsuarios() {
-        return usuarios;
+    public ArrayList<Cliente> getClientes() {
+        return clientes;
     }
 
-    public void setUsuarios(Usuario usuario) {
-        this.usuarios.add(usuario);
+    public void setClientes(Cliente usuario) {
+        this.clientes.add(usuario);
     }
 
     public Lugar getLugar() {
