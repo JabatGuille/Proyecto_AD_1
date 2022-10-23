@@ -13,13 +13,12 @@ public class Cliente {
 
     private ArrayList<VisitaGuiada> visitas = new ArrayList<>();
 
-    public Cliente(String dni, String nombre, String apellido, int edad, String profesion, String contraseña) {
+    public Cliente(String dni, String nombre, String apellido, int edad, String profesion) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
         this.profesion = profesion;
-        this.contraseña = contraseña;
     }
 
     public Cliente() {

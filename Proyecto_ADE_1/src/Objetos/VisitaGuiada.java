@@ -15,14 +15,14 @@ public class VisitaGuiada {
 
     private ArrayList<Cliente> clientes = new ArrayList<>();
 
-    public VisitaGuiada(int n_visita, String nombre, int n_max_cli, String punto_partida, String curso, String tematica, Double coste) {
-        this.n_visita = n_visita;
+    public VisitaGuiada( String nombre, int n_max_cli, String punto_partida, String curso, String tematica, Double coste,Lugar lugar) {
         this.nombre = nombre;
         this.n_max_cli = n_max_cli;
         this.punto_partida = punto_partida;
         this.curso = curso;
         this.tematica = tematica;
         this.coste = coste;
+        this.lugar = lugar;
     }
 
     public VisitaGuiada() {
