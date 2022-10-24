@@ -1,6 +1,7 @@
 package Objetos;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Cliente {
     private String dni;
@@ -11,7 +12,7 @@ public class Cliente {
     private String estado;
     private String contraseña;
 
-    private ArrayList<VisitaGuiada> visitas = new ArrayList<>();
+    private HashMap<Integer, VisitaGuiada> visitas = new HashMap<>();
 
     public Cliente(String dni, String nombre, String apellido, int edad, String profesion) {
         this.dni = dni;
@@ -31,6 +32,7 @@ public class Cliente {
     public void setDni(String dni) {
         this.dni = dni;
     }
+
     public String getEstado() {
         return estado;
     }
@@ -38,6 +40,7 @@ public class Cliente {
     public void setEstado(String estado) {
         this.estado = estado;
     }
+
     public String getNombre() {
         return nombre;
     }
@@ -78,12 +81,12 @@ public class Cliente {
         this.contraseña = contraseña;
     }
 
-    public ArrayList<VisitaGuiada> getVisitas() {
+    public HashMap<Integer, VisitaGuiada> getVisitas() {
         return visitas;
     }
 
     public void setVisitas(VisitaGuiada visitas) {
-        this.visitas.add(visitas);
+        this.visitas.put(visitas.getN_visita(), visitas);
     }
 
     @Override

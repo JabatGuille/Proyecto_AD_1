@@ -12,16 +12,16 @@ public class Empleado {
     private String cargo;
     private String estado;
 
-    private HashMap<String, VisitaGuiada> visitas = new HashMap<>();
+    private HashMap<Integer, VisitaGuiada> visitas = new HashMap<>();
 
     public Empleado(String dni, String nombre, String apellido, String fecha_Nac, String fecha_cont, String nacionalidad, String cargo) {
         this.dni = dni;
-        nombre = nombre;
-        apellido = apellido;
-        fecha_Nac = fecha_Nac;
-        fecha_cont = fecha_cont;
-        nacionalidad = nacionalidad;
-        cargo = cargo;
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.fecha_Nac = fecha_Nac;
+        this.fecha_cont = fecha_cont;
+        this.nacionalidad = nacionalidad;
+        this.cargo = cargo;
     }
 
     public Empleado() {
@@ -91,12 +91,12 @@ public class Empleado {
         this.cargo = cargo;
     }
 
-    public HashMap<String, VisitaGuiada> getVisitas() {
+    public HashMap<Integer, VisitaGuiada> getVisitas() {
         return visitas;
     }
 
     public void setVisitas(VisitaGuiada visitas) {
-        this.visitas.put(visitas.getNombre(), visitas);
+        this.visitas.put(visitas.getN_visita(), visitas);
     }
 
     @Override
