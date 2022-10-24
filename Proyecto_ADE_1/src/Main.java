@@ -417,21 +417,7 @@ public class Main {
     }
 
     public static void borrar_visita_guiada(Scanner scanner) {
-
-        for (VisitaGuiada visita : visitasguiadas.values()) {
-            System.out.println("VISITA:");
-            System.out.println("Nº Visita: " + visita.getN_visita());
-            System.out.println("Nombre: " + visita.getNombre());
-            System.out.println("Nº maximo de clientes: " + visita.getN_max_cli());
-            System.out.println("Punto de partida: " + visita.getPunto_partida());
-            System.out.println("Curso: " + visita.getCurso());
-            System.out.println("Tematica: " + visita.getTematica());
-            System.out.println("Coste: " + visita.getCoste());
-            System.out.println("Horario: " + visita.getHorario());
-            System.out.println("Lugar de la visita:");
-            System.out.println("Lugar: " + visita.getLugar().getLugar());
-            System.out.println("Nacionalidad: " + visita.getLugar().getNacionalidad());
-        }
+        listar_visitas_guiadas();
         System.out.println("Escriba el Nº de visita que quiere borrar");
         try {
             int numero = scanner.nextInt();
@@ -539,16 +525,7 @@ public class Main {
     }
 
     public static void borrar_empleado(Scanner scanner) {
-        for (Empleado empleado : empleados.values()) {
-            System.out.println("EMPLEADO: ");
-            System.out.println("DNI: " + empleado.getDni());
-            System.out.println("Nombre: " + empleado.getNombre());
-            System.out.println("Apellido: " + empleado.getApellido());
-            System.out.println("Fecha nacimiento: " + empleado.getFecha_Nac());
-            System.out.println("Fecha contratación: " + empleado.getFecha_cont());
-            System.out.println("Nacionalidad: " + empleado.getNacionalidad());
-            System.out.println("Cargo: " + empleado.getCargo());
-        }
+        listar_empleados();
         System.out.println("Escriba el DNI del empleado que quiere borrar");
         String dni = scanner.next();
         if (empleados.containsKey(dni)) {
@@ -638,14 +615,7 @@ public class Main {
     }
 
     public static void borrar_cliente(Scanner scanner) {
-        for (Cliente cliente : clientes.values()) {
-            System.out.println("CLIENTE: ");
-            System.out.println("DNI: " + cliente.getDni());
-            System.out.println("Nombre: " + cliente.getNombre());
-            System.out.println("Apellido: " + cliente.getApellido());
-            System.out.println("Edad: " + cliente.getEdad());
-            System.out.println("Profesión: " + cliente.getProfesion());
-        }
+        listar_clientes();
         System.out.println("Escriba el DNI del cliente que quiere borrar");
         String dni = scanner.next();
         if (clientes.containsKey(dni)) {
@@ -656,6 +626,7 @@ public class Main {
     }
 
     public static void modificar_cliente(Scanner scanner) {
+        listar_clientes();
         boolean bucle = true;
         String cliente_dni = "";
         while (bucle) {
@@ -931,6 +902,7 @@ public class Main {
     }
 
     public static void modificar_empleado(Scanner scanner) {
+        listar_empleados();
         boolean bucle = true;
         String empleado_DNI = "";
         while (bucle) {
