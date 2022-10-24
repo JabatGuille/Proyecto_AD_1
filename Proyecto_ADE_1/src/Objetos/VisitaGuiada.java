@@ -12,7 +12,7 @@ public class VisitaGuiada {
     private Double coste;
     private String estado;
     private Lugar lugar;
-    private Empleado empleado;
+    private Empleado empleado = null;
     private String horario;
 
     public Empleado getEmpleado() {

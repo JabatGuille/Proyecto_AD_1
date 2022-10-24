@@ -106,6 +106,81 @@ public class Main {
     }
 
     public static void añadir_cliente_emple_visitaguiada(Scanner scanner) {
+        listar_visitas_guiadas();
+        System.out.println("Escriba el Numero de visita que desea añadir empleado");
+        boolean bucle = true;
+        String comprobacion = "";
+        int N_visita = 0;
+        while (bucle) {
+            try {
+                System.out.println("Escriba el Numero de visita que desea añadir empleado");
+                N_visita = scanner.nextInt();
+                if (visitasguiadas.containsKey(N_visita)) {
+                    if (visitasguiadas.get(N_visita).getEmpleado() == null) {
+                        bucle = false;
+                    } else {
+                        System.out.println("La visita ya tiene empleado");
+                        System.out.println("Esriba y si se ha equivocado, añadira clientes a la visita");
+                        comprobacion = scanner.next();
+                        if (comprobacion.equalsIgnoreCase("Y")) {
+                            bucle = false;
+                        }
+                    }
+                } else {
+                    System.out.println("El numero de visita indicado no existe");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Debe escribir un numero");
+            }
+        }
+        if (comprobacion.equalsIgnoreCase("Y")) {
+            listar_empleados();
+            System.out.println("Escriba el DNI del empleado que quiere añadir");
+            String DNI = "";
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba el DNI del empleado");
+                DNI = scanner.next();
+                Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
+                Matcher mat = pat.matcher(DNI);
+                if (mat.matches()) {
+                    if (empleados.containsKey(DNI)) {
+                        bucle = false;
+                        System.out.println("Añadiendo empleado a la visita");
+                        visitasguiadas.get(N_visita).setEmpleado(empleados.get(DNI));
+                        empleados.get(DNI).setVisitas(visitasguiadas.get(N_visita));
+                    } else {
+                        System.out.println("El DNI no existe " + DNI);
+                    }
+                } else {
+                    System.out.println("DNI: " + DNI + " incorrecto");
+                }
+            }
+        }
+        añadir_clientes(N_visita, scanner);
+    }
+
+    public static void añadir_clientes(Integer N_visita, Scanner scanner) {
+        listar_clientes();
+        System.out.println("Escriba el DNI del cliente que quiere añadir");
+        while (visitasguiadas.get(N_visita).getClientes().size() == visitasguiadas.get(N_visita).getN_max_cli()) {
+            System.out.println("Escriba el DNI del cliente");
+            String DNI = scanner.next();
+            Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
+            Matcher mat = pat.matcher(DNI);
+            if (mat.matches()) {
+                if (clientes.containsKey(DNI)) {
+                    System.out.println("Añadiendo cliente");
+                    clientes.get(DNI).setVisitas(visitasguiadas.get(N_visita));
+                    visitasguiadas.get(N_visita).setClientes(clientes.get(DNI));
+                }
+            } else {
+                System.out.println("DNI: " + DNI + " incorrecto");
+            }
+        }
+        System.out.println("Terminando de añadir clientes, numero maximo de clientes en la visita\n" +
+                "Clientes en visita: " + visitasguiadas.get(N_visita).getClientes().size() + "\n" +
+                "Clientes maximos: " + visitasguiadas.get(N_visita).getN_max_cli());
     }
 
     public static void menu_cliente(Scanner scanner) {
@@ -423,6 +498,29 @@ public class Main {
             int numero = scanner.nextInt();
             if (visitasguiadas.containsKey(numero)) {
                 visitasguiadas.get(numero).setEstado("Borrada");
+                for (Cliente cliente : clientes.values()) {
+                    for (VisitaGuiada visita : cliente.getVisitas().values()) {
+                        if (visita.getN_visita() == numero) {
+                            cliente.getVisitas().remove(numero);
+                        }
+                    }
+                }
+                for (Empleado empleado : empleados.values()) {
+                    for (VisitaGuiada visita : empleado.getVisitas().values()) {
+                        if (visita.getN_visita() == numero) {
+                            empleado.getVisitas().remove(numero);
+                        }
+                    }
+                }
+                for (Lugar lugar : lugares.values()) {
+                    for (VisitaGuiada visita : lugar.getVisitas().values()) {
+                        if (visita.getN_visita() == numero) {
+                            lugar.getVisitas().remove(numero);
+                        }
+                    }
+                }
+
+
             } else {
                 System.out.println("Ese numero no esta en la lista de visitas guiadas");
             }
