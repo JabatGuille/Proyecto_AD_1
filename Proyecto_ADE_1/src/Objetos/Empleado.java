@@ -12,7 +12,7 @@ public class Empleado {
     private String cargo;
     private String estado;
 
-    private HashMap<Integer, VisitaGuiada> visitas = new HashMap<>();
+    private HashMap<Integer, Integer> visitas_numero = new HashMap<>();
 
     public Empleado(String dni, String nombre, String apellido, String fecha_Nac, String fecha_cont, String nacionalidad, String cargo) {
         this.dni = dni;
@@ -91,12 +91,12 @@ public class Empleado {
         this.cargo = cargo;
     }
 
-    public HashMap<Integer, VisitaGuiada> getVisitas() {
-        return visitas;
+    public HashMap<Integer, Integer> getVisitas() {
+        return visitas_numero;
     }
 
-    public void setVisitas(VisitaGuiada visitas) {
-        this.visitas.put(visitas.getN_visita(), visitas);
+    public void setVisitas(Integer N_visita) {
+        this.visitas_numero.put(N_visita, N_visita);
     }
 
     @Override

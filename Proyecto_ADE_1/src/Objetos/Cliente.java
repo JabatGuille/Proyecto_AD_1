@@ -1,6 +1,5 @@
 package Objetos;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Cliente {
@@ -12,7 +11,7 @@ public class Cliente {
     private String estado;
     private String contraseña;
 
-    private HashMap<Integer, VisitaGuiada> visitas = new HashMap<>();
+    private HashMap<Integer, Integer> visitas_numero = new HashMap<>();
 
     public Cliente(String dni, String nombre, String apellido, int edad, String profesion) {
         this.dni = dni;
@@ -81,12 +80,12 @@ public class Cliente {
         this.contraseña = contraseña;
     }
 
-    public HashMap<Integer, VisitaGuiada> getVisitas() {
-        return visitas;
+    public HashMap<Integer, Integer> getVisitas() {
+        return visitas_numero;
     }
 
-    public void setVisitas(VisitaGuiada visitas) {
-        this.visitas.put(visitas.getN_visita(), visitas);
+    public void setVisitas(Integer N_visita) {
+        this.visitas_numero.put(N_visita, N_visita);
     }
 
     @Override

@@ -11,6 +11,7 @@ import Objetos.Lugar;
 import Objetos.VisitaGuiada;
 
 public class Main {
+    static String borrado = "Borrado";
     static HashMap<String, Cliente> clientes = new HashMap<>();
     static HashMap<String, Empleado> empleados = new HashMap<>();
     static HashMap<Integer, VisitaGuiada> visitasguiadas = new HashMap<>();
@@ -136,7 +137,7 @@ public class Main {
         if (comprobacion.equalsIgnoreCase("Y")) {
             listar_empleados();
             System.out.println("Escriba el DNI del empleado que quiere añadir");
-            String DNI = "";
+            String DNI;
             bucle = true;
             while (bucle) {
                 System.out.println("Escriba el DNI del empleado");
@@ -147,8 +148,8 @@ public class Main {
                     if (empleados.containsKey(DNI)) {
                         bucle = false;
                         System.out.println("Añadiendo empleado a la visita");
-                        visitasguiadas.get(N_visita).setEmpleado(empleados.get(DNI));
-                        empleados.get(DNI).setVisitas(visitasguiadas.get(N_visita));
+                        visitasguiadas.get(N_visita).setEmpleado(DNI);
+                        empleados.get(DNI).setVisitas(N_visita);
                     } else {
                         System.out.println("El DNI no existe " + DNI);
                     }
@@ -171,8 +172,8 @@ public class Main {
             if (mat.matches()) {
                 if (clientes.containsKey(DNI)) {
                     System.out.println("Añadiendo cliente");
-                    clientes.get(DNI).setVisitas(visitasguiadas.get(N_visita));
-                    visitasguiadas.get(N_visita).setClientes(clientes.get(DNI));
+                    clientes.get(DNI).setVisitas(N_visita);
+                    visitasguiadas.get(N_visita).setClientes(DNI);
                 }
             } else {
                 System.out.println("DNI: " + DNI + " incorrecto");
@@ -229,17 +230,19 @@ public class Main {
 
     private static void listar_clientes() {
         for (Cliente cliente : clientes.values()) {
-            if (!cliente.getEstado().equals("Borrado")) {
+            if (!cliente.getEstado().equals(borrado)) {
                 System.out.println("CLIENTE");
                 System.out.println("DNI: " + cliente.getDni());
                 System.out.println("Nombre: " + cliente.getNombre());
                 System.out.println("Apellido: " + cliente.getApellido());
                 System.out.println("Edad: " + cliente.getEdad());
                 System.out.println("Profesión: " + cliente.getProfesion());
-                for (VisitaGuiada visita : cliente.getVisitas().values()) {
-                    System.out.println("VISITA");
-                    System.out.println("Numero Visita: " + visita.getN_visita());
-                    System.out.println("Horario: " + visita.getHorario());
+                for (VisitaGuiada visita : visitasguiadas.values()) {
+                    if (visita.getClientes().containsKey(cliente.getDni())) {
+                        System.out.println("VISITA");
+                        System.out.println("Numero Visita: " + visita.getN_visita());
+                        System.out.println("Horario: " + visita.getHorario());
+                    }
                 }
             }
         }
@@ -291,7 +294,7 @@ public class Main {
 
     private static void listar_empleados() {
         for (Empleado empleado : empleados.values()) {
-            if (!empleado.getEstado().equals("Borrado")) {
+            if (!empleado.getEstado().equals(borrado)) {
                 System.out.println("EMPLEADO");
                 System.out.println("DNI: " + empleado.getDni());
                 System.out.println("Nombre: " + empleado.getNombre());
@@ -300,10 +303,12 @@ public class Main {
                 System.out.println("Fecha Contratación: " + empleado.getFecha_cont());
                 System.out.println("Nacionalidad: " + empleado.getNacionalidad());
                 System.out.println("Cargo: " + empleado.getCargo());
-                for (VisitaGuiada visita : empleado.getVisitas().values()) {
-                    System.out.println("VISITAS");
-                    System.out.println("Numero visita: " + visita.getN_visita());
-                    System.out.println("Horario: " + visita.getHorario());
+                for (VisitaGuiada visita : visitasguiadas.values()) {
+                    if (visita.getEmpleado().equals(empleado.getDni())) {
+                        System.out.println("VISITAS");
+                        System.out.println("Numero visita: " + visita.getN_visita());
+                        System.out.println("Horario: " + visita.getHorario());
+                    }
                 }
             }
         }
@@ -312,7 +317,7 @@ public class Main {
 
     public static void listar_visitas_guiadas() {
         for (VisitaGuiada visita : visitasguiadas.values()) {
-            if (!visita.getEstado().equals("Borrado")) {
+            if (!visita.getEstado().equals(borrado)) {
                 System.out.println("VISITA:");
                 System.out.println("Nº Visita: " + visita.getN_visita());
                 System.out.println("Nombre: " + visita.getNombre());
@@ -323,23 +328,25 @@ public class Main {
                 System.out.println("Coste: " + visita.getCoste());
                 System.out.println("Horario: " + visita.getHorario());
                 System.out.println("Lugar de la visita:");
-                System.out.println("Nº Visita: " + visita.getLugar().getLugar());
-                System.out.println("Nº Visita: " + visita.getLugar().getNacionalidad());
+                System.out.println("Nº Visita: " + lugares.get(visita.getLugar()).getLugar());
+                System.out.println("Nº Visita: " + lugares.get(visita.getLugar()).getNacionalidad());
                 System.out.println("EMPLEADO:");
-                System.out.println("DNI " + visita.getEmpleado().getDni());
-                System.out.println("Nombre " + visita.getEmpleado().getNombre());
-                System.out.println("Apellido " + visita.getEmpleado().getApellido());
-                System.out.println("Fecha Nacimiento " + visita.getEmpleado().getFecha_Nac());
-                System.out.println("Fecha Contratación " + visita.getEmpleado().getFecha_cont());
-                System.out.println("Nacionalidad " + visita.getEmpleado().getNacionalidad());
-                System.out.println("Cargo " + visita.getEmpleado().getCargo());
-                for (Cliente cliente : visita.getClientes().values()) {
-                    System.out.println("Cliente de la visita: " + visita.getN_visita());
-                    System.out.println("DNI: " + cliente.getDni());
-                    System.out.println("Nombre: " + cliente.getNombre());
-                    System.out.println("Apellido: " + cliente.getApellido());
-                    System.out.println("Edad: " + cliente.getEdad());
-                    System.out.println("Profesión: " + cliente.getProfesion());
+                System.out.println("DNI " + empleados.get(visita.getEmpleado()).getDni());
+                System.out.println("Nombre " + empleados.get(visita.getEmpleado()).getNombre());
+                System.out.println("Apellido " + empleados.get(visita.getEmpleado()).getApellido());
+                System.out.println("Fecha Nacimiento " + empleados.get(visita.getEmpleado()).getFecha_Nac());
+                System.out.println("Fecha Contratación " + empleados.get(visita.getEmpleado()).getFecha_cont());
+                System.out.println("Nacionalidad " + empleados.get(visita.getEmpleado()).getNacionalidad());
+                System.out.println("Cargo " + empleados.get(visita.getEmpleado()).getCargo());
+                for (Cliente cliente : clientes.values()) {
+                    if (cliente.getVisitas().containsKey(visita.getN_visita())) {
+                        System.out.println("Cliente de la visita: " + visita.getN_visita());
+                        System.out.println("DNI: " + cliente.getDni());
+                        System.out.println("Nombre: " + cliente.getNombre());
+                        System.out.println("Apellido: " + cliente.getApellido());
+                        System.out.println("Edad: " + cliente.getEdad());
+                        System.out.println("Profesión: " + cliente.getProfesion());
+                    }
                 }
             }
         }
@@ -456,11 +463,11 @@ public class Main {
                 "Nacionalidad: " + lugares.get(lugarid));
         System.out.println("Es correcto? y/N");
         String comprobación = scanner.next();
-        if (comprobación.toLowerCase().equals("y")) {
+        if (comprobación.equalsIgnoreCase("y")) {
             System.out.println("Modificando visita guiada");
             int visitaid = visitasguiadas.size();
-            visitasguiadas.put(visitaid, new VisitaGuiada(visitaid, nombre, n_max_cli, punto_partida, curso, tematica, coste, lugares.get(lugarid), horario));
-            lugares.get(lugarid).setVisitas(visitasguiadas.get(visitaid));
+            visitasguiadas.put(visitaid, new VisitaGuiada(visitaid, nombre, n_max_cli, punto_partida, curso, tematica, coste, lugarid, horario));
+            lugares.get(lugarid).setVisitas(visitaid);
         } else {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
@@ -499,34 +506,24 @@ public class Main {
             if (visitasguiadas.containsKey(numero)) {
                 visitasguiadas.get(numero).setEstado("Borrada");
                 for (Cliente cliente : clientes.values()) {
-                    for (VisitaGuiada visita : cliente.getVisitas().values()) {
-                        if (visita.getN_visita() == numero) {
-                            cliente.getVisitas().remove(numero);
-                        }
-                    }
+                    cliente.getVisitas().remove(numero);
                 }
                 for (Empleado empleado : empleados.values()) {
-                    for (VisitaGuiada visita : empleado.getVisitas().values()) {
-                        if (visita.getN_visita() == numero) {
-                            empleado.getVisitas().remove(numero);
-                        }
-                    }
+                    empleado.getVisitas().remove(numero);
                 }
                 for (Lugar lugar : lugares.values()) {
-                    for (VisitaGuiada visita : lugar.getVisitas().values()) {
-                        if (visita.getN_visita() == numero) {
-                            lugar.getVisitas().remove(numero);
-                        }
-                    }
+                    lugar.getVisitas().remove(numero);
                 }
 
 
             } else {
                 System.out.println("Ese numero no esta en la lista de visitas guiadas");
             }
-        } catch (NumberFormatException e) {
+        } catch (
+                NumberFormatException e) {
             System.out.println("Debes escribir un numero");
         }
+
     }
 
     public static void nuevo_empleado(Scanner scanner) {
@@ -535,7 +532,7 @@ public class Main {
         String nombre = "";
         String apellido = "";
         String fecha_nac = "";
-        String fecha_cont = "";
+        String fecha_cont ;
         String nacionalidad = "";
         String cargo = "";
         while (bucle) {
@@ -614,7 +611,7 @@ public class Main {
         );
         System.out.println("Es correcto? y/N");
         String comprobación = scanner.next();
-        if (comprobación.toLowerCase().equals("y")) {
+        if (comprobación.equalsIgnoreCase("y")) {
             System.out.println("Creando empleado");
             empleados.put(DNI, new Empleado(DNI, nombre, apellido, fecha_nac, fecha_cont, nacionalidad, cargo));
         } else {
@@ -627,7 +624,7 @@ public class Main {
         System.out.println("Escriba el DNI del empleado que quiere borrar");
         String dni = scanner.next();
         if (empleados.containsKey(dni)) {
-            empleados.get(dni).setEstado("Borrado");
+            empleados.get(dni).setEstado(borrado);
         } else {
             System.out.println("El DNI escrito no esta en la lista");
         }
@@ -703,8 +700,8 @@ public class Main {
                 "Profesión: " + profesion + "\n"
         );
         System.out.println("Es correcto? y/N");
-        String comprobación = scanner.next();
-        if (comprobación.toLowerCase().equals("y")) {
+        String comprobacion = scanner.next();
+        if (comprobacion.equalsIgnoreCase("y")) {
             System.out.println("Creando usuario");
             clientes.put(DNI, new Cliente(DNI, nombre, apellido, edad, profesion));
         } else {
@@ -717,7 +714,7 @@ public class Main {
         System.out.println("Escriba el DNI del cliente que quiere borrar");
         String dni = scanner.next();
         if (clientes.containsKey(dni)) {
-            clientes.get(dni).setEstado("Borrado");
+            clientes.get(dni).setEstado(borrado);
         } else {
             System.out.println("El DNI escrito no esta en la lista");
         }
@@ -734,7 +731,7 @@ public class Main {
             Matcher mat = pat.matcher(cliente_dni);
             if (mat.matches()) {
                 if (clientes.containsKey(cliente_dni)) {
-                    if (!clientes.get(cliente_dni).getEstado().equals("Borrado")) {
+                    if (!clientes.get(cliente_dni).getEstado().equals(borrado)) {
                         bucle = false;
                     } else {
                         System.out.println("El cliente no existe");
@@ -824,13 +821,9 @@ public class Main {
             clientes.get(cliente_dni).setEdad(edad);
             clientes.get(cliente_dni).setProfesion(profesion);
             Cliente cliente = clientes.get(cliente_dni);
-            for (VisitaGuiada visi : clientes.get(cliente_dni).getVisitas().values()) {
-                visi.getClientes().remove(cliente_dni);
-                visi.setClientes(cliente);
-            }
             for (VisitaGuiada visi : visitasguiadas.values()) {
                 visi.getClientes().remove(cliente_dni);
-                visi.setClientes(cliente);
+                visi.setClientes(cliente.getDni());
             }
             clientes.remove(cliente_dni);
             clientes.put(cliente.getDni(), cliente);
@@ -848,7 +841,7 @@ public class Main {
             try {
                 N_visita = scanner.nextInt();
                 if (visitasguiadas.containsKey(N_visita)) {
-                    if (!visitasguiadas.get(N_visita).getEstado().equals("Borrado")) {
+                    if (!visitasguiadas.get(N_visita).getEstado().equals(borrado)) {
                         bucle = false;
                     } else {
                         System.out.println("La visita no existe");
@@ -949,12 +942,14 @@ public class Main {
                 System.out.println("El formato escrito no es correcto, el formato es 24h");
             }
         }
-        System.out.println("Escriba Y si quiere modificar el lugar, le lleva al menu de crear lugares");
+        System.out.println("Escriba Y si quiere modificar el lugar, le lleva al menu indicado");
         if (scanner.next().equalsIgnoreCase("Y") || lugares.size() == 0) {
             if (lugares.size() == 0) {
                 System.out.println("No existen lugares para poder añadir, llevando al menu de crear lugares");
+                lugarid = crear_lugar(scanner);
+            } else {
+                lugarid = añadir_lugar(scanner);
             }
-            lugarid = crear_lugar(scanner);
         }
         System.out.println("Datos de la nueva visita guiada: \n" +
                 "Nombre: " + nombre + "\n" +
@@ -972,7 +967,7 @@ public class Main {
         String comprobacion = scanner.next();
         if (comprobacion.equalsIgnoreCase("y")) {
             System.out.println("Modificando visita guiada");
-            lugares.get(visitasguiadas.get(N_visita).getLugar().getId()).borrar_visita(N_visita);
+            lugares.get(visitasguiadas.get(N_visita).getLugar()).borrar_visita(N_visita);
             VisitaGuiada visita = visitasguiadas.get(N_visita);
             visita.setNombre(nombre);
             visita.setN_max_cli(n_max_cli);
@@ -981,19 +976,9 @@ public class Main {
             visita.setTematica(tematica);
             visita.setCoste(coste);
             visita.setHorario(horario);
-            visita.setLugar(lugares.get(lugarid));
+            visita.setLugar(lugarid);
             visitasguiadas.put(N_visita, visita);
-            lugares.get(lugarid).setVisitas(visitasguiadas.get(N_visita));
-            for (Empleado empleado : empleados.values()) {
-                if (empleado.getVisitas().containsKey(N_visita)) {
-                    empleado.setVisitas(visita);
-                }
-            }
-            for (Cliente cliente : clientes.values()) {
-                if (cliente.getVisitas().containsKey(visita.getN_visita())) {
-                    cliente.setVisitas(visita);
-                }
-            }
+            lugares.get(lugarid).setVisitas(N_visita);
         } else {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
@@ -1018,7 +1003,7 @@ public class Main {
         String nombre = "";
         String apellido = "";
         String fecha_nac = "";
-        String fecha_cont = "";
+        String fecha_cont;
         String nacionalidad = "";
         String cargo = "";
         bucle = true;
@@ -1108,14 +1093,13 @@ public class Main {
             empleado.setFecha_cont(fecha_cont);
             empleado.setNacionalidad(nacionalidad);
             empleado.setCargo(cargo);
-            for (VisitaGuiada visita : empleados.get(empleado_DNI).getVisitas().values()) {
-                visita.setEmpleado(empleado);
+            for (VisitaGuiada visita : visitasguiadas.values()) {
+                if (visita.getEmpleado().equals(empleado_DNI)) {
+                    visita.setEmpleado(DNI);
+                }
             }
             empleados.remove(empleado_DNI);
             empleados.put(empleado.getDni(), empleado);
-            for (VisitaGuiada visitas : visitasguiadas.values()) {
-                visitas.setEmpleado(empleado);
-            }
         } else {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
@@ -1125,5 +1109,29 @@ public class Main {
     }
 
     public static void visualizar_datos_agencia() {
+    }
+
+    public static Integer añadir_lugar(Scanner scanner) {
+        boolean bucle = true;
+        int id = 0;
+        for (Lugar lugar : lugares.values()) {
+            System.out.println("ID: " + lugar.getId());
+            System.out.println("Lugar: " + lugar.getLugar());
+            System.out.println("Nacionalidad: " + lugar.getNacionalidad());
+        }
+        while (bucle) {
+            System.out.println("Escriba el id del lugar que quiere añadir");
+            try {
+                id = scanner.nextInt();
+            } catch (NumberFormatException e) {
+                System.out.println("Debe escribir un numero");
+            }
+            if (lugares.containsKey(id)) {
+                bucle = false;
+            } else {
+                System.out.println("El id escrito no esta en la lista");
+            }
+        }
+        return id;
     }
 }

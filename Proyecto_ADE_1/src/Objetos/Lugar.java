@@ -6,7 +6,7 @@ public class Lugar {
     private int id;
     private String lugar;
     private String nacionalidad;
-    private HashMap<Integer,VisitaGuiada> visitas = new HashMap<>();
+    private HashMap<Integer, Integer> visitas_numero = new HashMap<>();
 
     public Lugar(int id, String lugar, String nacionalidad) {
         this.id = id;
@@ -41,17 +41,18 @@ public class Lugar {
         this.nacionalidad = nacionalidad;
     }
 
-    public HashMap<Integer,VisitaGuiada> getVisitas() {
-        return visitas;
+    public HashMap<Integer, Integer> getVisitas() {
+        return visitas_numero;
     }
 
-    public void setVisitas(VisitaGuiada visita) {
-        this.visitas.put(visita.getN_visita(),visita);
+    public void setVisitas(Integer N_visita) {
+        this.visitas_numero.put(N_visita, N_visita);
     }
 
-    public void borrar_visita(int id){
-        visitas.remove(id);
+    public void borrar_visita(int id) {
+        visitas_numero.remove(id);
     }
+
     @Override
     public String toString() {
         return "Lugar{" +

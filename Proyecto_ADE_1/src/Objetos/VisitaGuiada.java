@@ -11,21 +11,21 @@ public class VisitaGuiada {
     private String tematica;
     private Double coste;
     private String estado;
-    private Lugar lugar;
-    private Empleado empleado = null;
+    private int lugar_id;
+    private String empleado_dni;
     private String horario;
+    private HashMap<String, String> clientes_dni = new HashMap<>();
 
-    public Empleado getEmpleado() {
-        return empleado;
+    public String getEmpleado() {
+        return empleado_dni;
     }
 
-    public void setEmpleado(Empleado empleado) {
-        this.empleado = empleado;
+    public void setEmpleado(String empleado_dni) {
+        this.empleado_dni = empleado_dni;
     }
 
-    private HashMap<String, Cliente> clientes = new HashMap<>();
 
-    public VisitaGuiada(int n_visita, String nombre, int n_max_cli, String punto_partida, String curso, String tematica, Double coste, Lugar lugar, String horario) {
+    public VisitaGuiada(int n_visita, String nombre, int n_max_cli, String punto_partida, String curso, String tematica, Double coste, int lugar_id, String horario) {
         this.n_visita = n_visita;
         this.nombre = nombre;
         this.n_max_cli = n_max_cli;
@@ -33,7 +33,7 @@ public class VisitaGuiada {
         this.curso = curso;
         this.tematica = tematica;
         this.coste = coste;
-        this.lugar = lugar;
+        this.lugar_id = lugar_id;
         this.horario = horario;
     }
 
@@ -104,20 +104,20 @@ public class VisitaGuiada {
         this.coste = coste;
     }
 
-    public HashMap<String, Cliente> getClientes() {
-        return clientes;
+    public HashMap<String, String> getClientes() {
+        return clientes_dni;
     }
 
-    public void setClientes(Cliente usuario) {
-        this.clientes.put(usuario.getDni(), usuario);
+    public void setClientes(String usuario_dni) {
+        this.clientes_dni.put(usuario_dni, usuario_dni);
     }
 
-    public Lugar getLugar() {
-        return lugar;
+    public int getLugar() {
+        return lugar_id;
     }
 
-    public void setLugar(Lugar lugar) {
-        this.lugar = lugar;
+    public void setLugar(int lugar_id) {
+        this.lugar_id = lugar_id;
     }
 
     @Override
@@ -134,7 +134,7 @@ public class VisitaGuiada {
     }
 
     public void borrar_cliente(String DNI) {
-        clientes.remove(DNI);
+        clientes_dni.remove(DNI);
     }
 
     public String getHorario() {
