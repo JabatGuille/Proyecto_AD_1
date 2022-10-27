@@ -5,22 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="09f89609-7619-412f-abe0-981dfc63f17d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/Conexiones/XML.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Ficheros_DAT/cliente.dat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Ficheros_DAT/empleado.dat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Ficheros_DAT/lugar.dat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Ficheros_DAT/visitaGuiada.dat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Ficheros_XML/cliente.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Ficheros_XML/empleado.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Ficheros_XML/lugar.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Ficheros_XML/visitaGuiada.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Conexiones/Conexion.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Conexiones/DAT.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Objetos/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Objetos/Cliente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Objetos/Empleado.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Objetos/Empleado.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Conexiones/DAT.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Conexiones/DAT.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ficheros_DAT/lugar.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ficheros_DAT/lugar.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Objetos/Lugar.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Objetos/Lugar.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Objetos/VisitaGuiada.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Objetos/VisitaGuiada.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,7 +44,20 @@
     &quot;last_opened_file_path&quot;: &quot;C:/Users/Guillermo/Desktop/ProyetoADE/Proyecto_ADE_1&quot;
   }
 }</component>
-  <component name="RunManager" selected="Application.Main">
+  <component name="RunManager" selected="Application.DAT">
+    <configuration name="DAT" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Conexiones.DAT" />
+      <module name="Proyecto_ADE_1" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="Conexiones.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="Login" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Controladores.Login" />
       <module name="Proyecto_ADE_1" />
@@ -92,6 +93,7 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.DAT" />
         <item itemvalue="Application.Main" />
         <item itemvalue="Application.Vistas.Login" />
         <item itemvalue="Application.Login" />
