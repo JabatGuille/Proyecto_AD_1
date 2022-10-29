@@ -5,6 +5,8 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import Conexiones.DAT;
+import Conexiones.XML;
 import Objetos.Cliente;
 import Objetos.Empleado;
 import Objetos.Lugar;
@@ -16,11 +18,34 @@ public class Main {
     static HashMap<String, Empleado> empleados = new HashMap<>();
     static HashMap<Integer, VisitaGuiada> visitasguiadas = new HashMap<>();
     static HashMap<Integer, Lugar> lugares = new HashMap<>();
+    static String opcion;
 
     public static void main(String[] args) {
         boolean bucle = true;
         String menu;
         Scanner scanner = new Scanner(System.in);
+        while (bucle) {
+            System.out.println("Escribe dat si quieres el programa usando ficheros .dat\nEscribre XML si quieres el programa usando ficheros XML");
+            opcion = scanner.next();
+            if (opcion.equalsIgnoreCase("dat")) {
+                opcion = "dat";
+                clientes = DAT.recuperar_clientes();
+                empleados = DAT.recuperar_empleados();
+                visitasguiadas = DAT.recuperar_visitas_guiadas();
+                lugares = DAT.recuperar_lugar();
+                bucle = false;
+            } else if (opcion.equalsIgnoreCase("XML")) {
+                opcion = "XML";
+                clientes = XML.recuperar_clientes();
+                empleados = XML.recuperar_empleados();
+                visitasguiadas = XML.recuperar_visitas_guiadas();
+                lugares = XML.recuperar_lugar();
+                bucle = false;
+            } else {
+                System.out.println("Opcion no posible");
+            }
+        }
+        bucle = true;
         while (bucle) {
             System.out.println("Escriba un numero para la opcion del menu:\n" +
                     "1: Sección Visitas guiadas.\n" +
@@ -117,16 +142,14 @@ public class Main {
                 System.out.println("Escriba el Numero de visita que desea añadir empleado");
                 N_visita = scanner.nextInt();
                 if (visitasguiadas.containsKey(N_visita)) {
-                    if (visitasguiadas.get(N_visita).getEmpleado() == null) {
-                        bucle = false;
-                    } else {
+                    if (visitasguiadas.get(N_visita).getEmpleado() != null) {
                         System.out.println("La visita ya tiene empleado");
-                        System.out.println("Esriba y si se ha equivocado, añadira clientes a la visita");
+                        System.out.println("Escriba Y si se ha equivocado de empleado, escribir cualquier otra cosa añadira clientes a la visita");
                         comprobacion = scanner.next();
-                        if (comprobacion.equalsIgnoreCase("Y")) {
-                            bucle = false;
-                        }
+                    } else {
+                        comprobacion = "Y";
                     }
+                    bucle = false;
                 } else {
                     System.out.println("El numero de visita indicado no existe");
                 }
@@ -145,11 +168,18 @@ public class Main {
                 Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
                 Matcher mat = pat.matcher(DNI);
                 if (mat.matches()) {
-                    if (empleados.containsKey(DNI)) {
+                    if (!empleados.containsKey(DNI)) {
                         bucle = false;
                         System.out.println("Añadiendo empleado a la visita");
                         visitasguiadas.get(N_visita).setEmpleado(DNI);
                         empleados.get(DNI).setVisitas(N_visita);
+                        if (opcion.equals("dat")) {
+                            DAT.guardar_visitas_guiadas(visitasguiadas);
+                            DAT.guardar_clientes(clientes);
+                        } else {
+                            XML.guardar_visitas_guiadas(visitasguiadas);
+                            XML.guardar_empleados(empleados);
+                        }
                     } else {
                         System.out.println("El DNI no existe " + DNI);
                     }
@@ -174,6 +204,13 @@ public class Main {
                     System.out.println("Añadiendo cliente");
                     clientes.get(DNI).setVisitas(N_visita);
                     visitasguiadas.get(N_visita).setClientes(DNI);
+                    if (opcion.equals("dat")) {
+                        DAT.guardar_visitas_guiadas(visitasguiadas);
+                        DAT.guardar_clientes(clientes);
+                    } else {
+                        XML.guardar_visitas_guiadas(visitasguiadas);
+                        XML.guardar_clientes(clientes);
+                    }
                 }
             } else {
                 System.out.println("DNI: " + DNI + " incorrecto");
@@ -468,6 +505,13 @@ public class Main {
             int visitaid = visitasguiadas.size();
             visitasguiadas.put(visitaid, new VisitaGuiada(visitaid, nombre, n_max_cli, punto_partida, curso, tematica, coste, lugarid, horario));
             lugares.get(lugarid).setVisitas(visitaid);
+            if (opcion.equals("dat")) {
+                DAT.guardar_visitas_guiadas(visitasguiadas);
+                DAT.guardar_lugar(lugares);
+            } else {
+                XML.guardar_visitas_guiadas(visitasguiadas);
+                XML.guardar_lugar(lugares);
+            }
         } else {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
@@ -486,7 +530,13 @@ public class Main {
                     if (!nacionalidad.equals("")) {
                         id = lugares.size();
                         lugares.put(id, new Lugar(id, nlugar, nacionalidad));
+                        if (opcion.equals("dat")) {
+                            DAT.guardar_lugar(lugares);
+                        } else {
+                            XML.guardar_lugar(lugares);
+                        }
                         bucle = false;
+
                     } else {
                         System.out.println("Nacionalidad no puede estar vacio");
                     }
@@ -514,7 +564,17 @@ public class Main {
                 for (Lugar lugar : lugares.values()) {
                     lugar.getVisitas().remove(numero);
                 }
-
+                if (opcion.equals("dat")) {
+                    DAT.guardar_visitas_guiadas(visitasguiadas);
+                    DAT.guardar_lugar(lugares);
+                    DAT.guardar_clientes(clientes);
+                    DAT.guardar_empleados(empleados);
+                } else {
+                    XML.guardar_visitas_guiadas(visitasguiadas);
+                    XML.guardar_lugar(lugares);
+                    XML.guardar_clientes(clientes);
+                    XML.guardar_empleados(empleados);
+                }
 
             } else {
                 System.out.println("Ese numero no esta en la lista de visitas guiadas");
@@ -532,7 +592,7 @@ public class Main {
         String nombre = "";
         String apellido = "";
         String fecha_nac = "";
-        String fecha_cont ;
+        String fecha_cont;
         String nacionalidad = "";
         String cargo = "";
         while (bucle) {
@@ -614,6 +674,11 @@ public class Main {
         if (comprobación.equalsIgnoreCase("y")) {
             System.out.println("Creando empleado");
             empleados.put(DNI, new Empleado(DNI, nombre, apellido, fecha_nac, fecha_cont, nacionalidad, cargo));
+            if (opcion.equals("dat")) {
+                DAT.guardar_empleados(empleados);
+            } else {
+                XML.guardar_empleados(empleados);
+            }
         } else {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
@@ -625,6 +690,18 @@ public class Main {
         String dni = scanner.next();
         if (empleados.containsKey(dni)) {
             empleados.get(dni).setEstado(borrado);
+            for (VisitaGuiada v : visitasguiadas.values()) {
+                if (v.getEmpleado().equals(dni)) {
+                    v.setEmpleado(null);
+                }
+            }
+            if (opcion.equals("dat")) {
+                DAT.guardar_visitas_guiadas(visitasguiadas);
+                DAT.guardar_empleados(empleados);
+            } else {
+                XML.guardar_visitas_guiadas(visitasguiadas);
+                XML.guardar_empleados(empleados);
+            }
         } else {
             System.out.println("El DNI escrito no esta en la lista");
         }
@@ -704,6 +781,11 @@ public class Main {
         if (comprobacion.equalsIgnoreCase("y")) {
             System.out.println("Creando usuario");
             clientes.put(DNI, new Cliente(DNI, nombre, apellido, edad, profesion));
+            if (opcion.equals("dat")) {
+                DAT.guardar_clientes(clientes);
+            } else {
+                XML.guardar_clientes(clientes);
+            }
         } else {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
@@ -715,6 +797,16 @@ public class Main {
         String dni = scanner.next();
         if (clientes.containsKey(dni)) {
             clientes.get(dni).setEstado(borrado);
+            for (VisitaGuiada v : visitasguiadas.values()) {
+                v.getClientes().remove(dni);
+            }
+            if (opcion.equals("dat")) {
+                DAT.guardar_visitas_guiadas(visitasguiadas);
+                DAT.guardar_clientes(clientes);
+            } else {
+                XML.guardar_visitas_guiadas(visitasguiadas);
+                XML.guardar_clientes(clientes);
+            }
         } else {
             System.out.println("El DNI escrito no esta en la lista");
         }
@@ -827,6 +919,13 @@ public class Main {
             }
             clientes.remove(cliente_dni);
             clientes.put(cliente.getDni(), cliente);
+            if (opcion.equals("dat")) {
+                DAT.guardar_visitas_guiadas(visitasguiadas);
+                DAT.guardar_clientes(clientes);
+            } else {
+                XML.guardar_visitas_guiadas(visitasguiadas);
+                XML.guardar_clientes(clientes);
+            }
         } else {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
@@ -979,6 +1078,13 @@ public class Main {
             visita.setLugar(lugarid);
             visitasguiadas.put(N_visita, visita);
             lugares.get(lugarid).setVisitas(N_visita);
+            if (opcion.equals("dat")) {
+                DAT.guardar_visitas_guiadas(visitasguiadas);
+                DAT.guardar_lugar(lugares);
+            } else {
+                XML.guardar_visitas_guiadas(visitasguiadas);
+                XML.guardar_lugar(lugares);
+            }
         } else {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
@@ -1100,6 +1206,13 @@ public class Main {
             }
             empleados.remove(empleado_DNI);
             empleados.put(empleado.getDni(), empleado);
+            if (opcion.equals("dat")) {
+                DAT.guardar_visitas_guiadas(visitasguiadas);
+                DAT.guardar_empleados(empleados);
+            } else {
+                XML.guardar_visitas_guiadas(visitasguiadas);
+                XML.guardar_empleados(empleados);
+            }
         } else {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
