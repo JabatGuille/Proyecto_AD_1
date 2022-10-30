@@ -13,11 +13,11 @@ import Objetos.Lugar;
 import Objetos.VisitaGuiada;
 
 public class Main {
-    static String borrado = "Borrado";
-    static HashMap<String, Cliente> clientes = new HashMap<>();
-    static HashMap<String, Empleado> empleados = new HashMap<>();
-    static HashMap<Integer, VisitaGuiada> visitasguiadas = new HashMap<>();
-    static HashMap<Integer, Lugar> lugares = new HashMap<>();
+    public static String borrado = "Borrado";
+   public static HashMap<String, Cliente> clientes;
+    public static HashMap<String, Empleado> empleados;
+    public static HashMap<Integer, VisitaGuiada> visitasguiadas;
+    public static HashMap<Integer, Lugar> lugares;
     static String opcion;
 
     public static void main(String[] args) {
@@ -41,6 +41,9 @@ public class Main {
                 visitasguiadas = XML.recuperar_visitas_guiadas();
                 lugares = XML.recuperar_lugar();
                 bucle = false;
+                listar_clientes();
+                listar_empleados();
+                listar_visitas_guiadas();
             } else {
                 System.out.println("Opcion no posible");
             }
@@ -503,7 +506,7 @@ public class Main {
         if (comprobación.equalsIgnoreCase("y")) {
             System.out.println("Modificando visita guiada");
             int visitaid = visitasguiadas.size();
-            visitasguiadas.put(visitaid, new VisitaGuiada(visitaid, nombre, n_max_cli, punto_partida, curso, tematica, coste, lugarid, horario));
+            visitasguiadas.put(visitaid, new VisitaGuiada(visitaid, nombre, n_max_cli, punto_partida, curso, tematica, coste, lugarid, horario,""));
             lugares.get(lugarid).setVisitas(visitaid);
             if (opcion.equals("dat")) {
                 DAT.guardar_visitas_guiadas(visitasguiadas);
@@ -673,7 +676,7 @@ public class Main {
         String comprobación = scanner.next();
         if (comprobación.equalsIgnoreCase("y")) {
             System.out.println("Creando empleado");
-            empleados.put(DNI, new Empleado(DNI, nombre, apellido, fecha_nac, fecha_cont, nacionalidad, cargo));
+            empleados.put(DNI, new Empleado(DNI, nombre, apellido, fecha_nac, fecha_cont, nacionalidad, cargo,""));
             if (opcion.equals("dat")) {
                 DAT.guardar_empleados(empleados);
             } else {
@@ -780,7 +783,7 @@ public class Main {
         String comprobacion = scanner.next();
         if (comprobacion.equalsIgnoreCase("y")) {
             System.out.println("Creando usuario");
-            clientes.put(DNI, new Cliente(DNI, nombre, apellido, edad, profesion));
+            clientes.put(DNI, new Cliente(DNI, nombre, apellido, edad, profesion,""));
             if (opcion.equals("dat")) {
                 DAT.guardar_clientes(clientes);
             } else {

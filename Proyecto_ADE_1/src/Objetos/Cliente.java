@@ -13,12 +13,13 @@ public class Cliente {
 
     private HashMap<Integer, Integer> visitas_numero = new HashMap<>();
 
-    public Cliente(String dni, String nombre, String apellido, int edad, String profesion) {
+    public Cliente(String dni, String nombre, String apellido, int edad, String profesion, String estado) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
         this.edad = edad;
         this.profesion = profesion;
+        this.estado = estado;
     }
 
     public Cliente() {

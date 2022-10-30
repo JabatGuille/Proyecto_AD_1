@@ -14,7 +14,7 @@ public class Empleado {
 
     private HashMap<Integer, Integer> visitas_numero = new HashMap<>();
 
-    public Empleado(String dni, String nombre, String apellido, String fecha_Nac, String fecha_cont, String nacionalidad, String cargo) {
+    public Empleado(String dni, String nombre, String apellido, String fecha_Nac, String fecha_cont, String nacionalidad, String cargo,String estado) {
         this.dni = dni;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -22,6 +22,7 @@ public class Empleado {
         this.fecha_cont = fecha_cont;
         this.nacionalidad = nacionalidad;
         this.cargo = cargo;
+        this.estado = estado;
     }
 
     public Empleado() {

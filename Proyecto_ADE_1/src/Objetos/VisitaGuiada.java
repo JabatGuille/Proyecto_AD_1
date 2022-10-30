@@ -25,7 +25,7 @@ public class VisitaGuiada {
     }
 
 
-    public VisitaGuiada(int n_visita, String nombre, int n_max_cli, String punto_partida, String curso, String tematica, Double coste, int lugar_id, String horario) {
+    public VisitaGuiada(int n_visita, String nombre, int n_max_cli, String punto_partida, String curso, String tematica, Double coste, int lugar_id, String horario,String estado) {
         this.n_visita = n_visita;
         this.nombre = nombre;
         this.n_max_cli = n_max_cli;
@@ -35,6 +35,7 @@ public class VisitaGuiada {
         this.coste = coste;
         this.lugar_id = lugar_id;
         this.horario = horario;
+        this.estado = estado;
     }
 
     public VisitaGuiada() {
