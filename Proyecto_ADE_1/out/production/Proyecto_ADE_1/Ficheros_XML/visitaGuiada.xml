@@ -7,8 +7,9 @@
     <curso>Curso</curso>
     <tematica>Tematica</tematica>
     <coste>12.0</coste>
+    <estado></estado>
     <lugar__id>0</lugar__id>
-    <empleado__dni>DNI</empleado__dni>
+    <empleado__dni>DNI0</empleado__dni>
     <horario>12</horario>
     <clientes__dni>
       <entry>
@@ -25,8 +26,9 @@
     <curso>Curso</curso>
     <tematica>Tematica</tematica>
     <coste>12.0</coste>
+    <estado></estado>
     <lugar__id>1</lugar__id>
-    <empleado__dni>DNI</empleado__dni>
+    <empleado__dni>DNI1</empleado__dni>
     <horario>12</horario>
     <clientes__dni>
       <entry>
@@ -43,8 +45,9 @@
     <curso>Curso</curso>
     <tematica>Tematica</tematica>
     <coste>12.0</coste>
+    <estado></estado>
     <lugar__id>2</lugar__id>
-    <empleado__dni>DNI</empleado__dni>
+    <empleado__dni>DNI2</empleado__dni>
     <horario>12</horario>
     <clientes__dni>
       <entry>
@@ -61,8 +64,9 @@
     <curso>Curso</curso>
     <tematica>Tematica</tematica>
     <coste>12.0</coste>
+    <estado></estado>
     <lugar__id>3</lugar__id>
-    <empleado__dni>DNI</empleado__dni>
+    <empleado__dni>DNI3</empleado__dni>
     <horario>12</horario>
     <clientes__dni>
       <entry>
@@ -79,8 +83,9 @@
     <curso>Curso</curso>
     <tematica>Tematica</tematica>
     <coste>12.0</coste>
+    <estado></estado>
     <lugar__id>4</lugar__id>
-    <empleado__dni>DNI</empleado__dni>
+    <empleado__dni>DNI4</empleado__dni>
     <horario>12</horario>
     <clientes__dni>
       <entry>

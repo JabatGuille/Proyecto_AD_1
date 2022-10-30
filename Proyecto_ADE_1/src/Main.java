@@ -14,7 +14,7 @@ import Objetos.VisitaGuiada;
 
 public class Main {
     public static String borrado = "Borrado";
-   public static HashMap<String, Cliente> clientes;
+    public static HashMap<String, Cliente> clientes;
     public static HashMap<String, Empleado> empleados;
     public static HashMap<Integer, VisitaGuiada> visitasguiadas;
     public static HashMap<Integer, Lugar> lugares;
@@ -71,6 +71,15 @@ public class Main {
                 }
                 case "4": {
                     System.out.println("Saliendo de la aplicación");
+                    DAT.guardar_visitas_guiadas(visitasguiadas);
+                    DAT.guardar_clientes(clientes);
+                    DAT.guardar_lugar(lugares);
+                    DAT.guardar_empleados(empleados);
+
+                    XML.guardar_visitas_guiadas(visitasguiadas);
+                    XML.guardar_clientes(clientes);
+                    XML.guardar_empleados(empleados);
+                    XML.guardar_lugar(lugares);
                     bucle = false;
                     break;
                 }
@@ -91,7 +100,7 @@ public class Main {
                     "2: Nueva visita guiada.\n" +
                     "3: Modificar visita guiada.\n" +
                     "4: Borrar visita guiada.\n" +
-                    "5: Añadir clientes y empleado a la visita guiada" +
+                    "5: Añadir clientes y empleado a la visita guiada\n" +
                     "6: Salir");
             String menu = scanner.next();
             switch (menu) {
@@ -506,7 +515,7 @@ public class Main {
         if (comprobación.equalsIgnoreCase("y")) {
             System.out.println("Modificando visita guiada");
             int visitaid = visitasguiadas.size();
-            visitasguiadas.put(visitaid, new VisitaGuiada(visitaid, nombre, n_max_cli, punto_partida, curso, tematica, coste, lugarid, horario,""));
+            visitasguiadas.put(visitaid, new VisitaGuiada(visitaid, nombre, n_max_cli, punto_partida, curso, tematica, coste, lugarid, horario, ""));
             lugares.get(lugarid).setVisitas(visitaid);
             if (opcion.equals("dat")) {
                 DAT.guardar_visitas_guiadas(visitasguiadas);
@@ -676,7 +685,7 @@ public class Main {
         String comprobación = scanner.next();
         if (comprobación.equalsIgnoreCase("y")) {
             System.out.println("Creando empleado");
-            empleados.put(DNI, new Empleado(DNI, nombre, apellido, fecha_nac, fecha_cont, nacionalidad, cargo,""));
+            empleados.put(DNI, new Empleado(DNI, nombre, apellido, fecha_nac, fecha_cont, nacionalidad, cargo, ""));
             if (opcion.equals("dat")) {
                 DAT.guardar_empleados(empleados);
             } else {
@@ -783,7 +792,7 @@ public class Main {
         String comprobacion = scanner.next();
         if (comprobacion.equalsIgnoreCase("y")) {
             System.out.println("Creando usuario");
-            clientes.put(DNI, new Cliente(DNI, nombre, apellido, edad, profesion,""));
+            clientes.put(DNI, new Cliente(DNI, nombre, apellido, edad, profesion, ""));
             if (opcion.equals("dat")) {
                 DAT.guardar_clientes(clientes);
             } else {

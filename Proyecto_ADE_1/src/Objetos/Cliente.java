@@ -1,8 +1,9 @@
 package Objetos;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class Cliente {
+public class Cliente implements Serializable {
     private String dni;
     private String nombre;
     private String apellido;

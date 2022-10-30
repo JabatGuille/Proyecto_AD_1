@@ -1,8 +1,9 @@
 package Objetos;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public class VisitaGuiada {
+public class VisitaGuiada implements Serializable {
     private int n_visita;
     private String nombre;
     private int n_max_cli;
