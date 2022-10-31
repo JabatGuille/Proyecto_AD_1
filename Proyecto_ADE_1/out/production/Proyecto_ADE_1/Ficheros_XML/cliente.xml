@@ -1,19 +1,5 @@
 <Clientes>
   <Cliente>
-    <dni>DNI0</dni>
-    <nombre>Nombre</nombre>
-    <apellido>Apellido</apellido>
-    <edad>12</edad>
-    <profesion>Profesion</profesion>
-    <estado></estado>
-    <visitas__numero>
-      <entry>
-        <int>0</int>
-        <int>0</int>
-      </entry>
-    </visitas__numero>
-  </Cliente>
-  <Cliente>
     <dni>DNI1</dni>
     <nombre>Nombre</nombre>
     <apellido>Apellido</apellido>
@@ -68,5 +54,32 @@
         <int>4</int>
       </entry>
     </visitas__numero>
+  </Cliente>
+  <Cliente>
+    <dni>33333333E</dni>
+    <nombre>Nombre</nombre>
+    <apellido>Apellido</apellido>
+    <edad>12</edad>
+    <profesion>Profesion</profesion>
+    <estado>Borrado</estado>
+    <visitas__numero>
+      <entry>
+        <int>0</int>
+        <int>0</int>
+      </entry>
+      <entry>
+        <int>1</int>
+        <int>1</int>
+      </entry>
+    </visitas__numero>
+  </Cliente>
+  <Cliente>
+    <dni>22222222E</dni>
+    <nombre>Clientadro</nombre>
+    <apellido>Apellidos</apellido>
+    <edad>141</edad>
+    <profesion>Profesion</profesion>
+    <estado></estado>
+    <visitas__numero/>
   </Cliente>
 </Clientes>

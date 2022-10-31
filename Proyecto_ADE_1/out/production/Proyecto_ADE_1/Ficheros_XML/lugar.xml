@@ -19,6 +19,14 @@
         <int>1</int>
         <int>1</int>
       </entry>
+      <entry>
+        <int>5</int>
+        <int>5</int>
+      </entry>
+      <entry>
+        <int>7</int>
+        <int>7</int>
+      </entry>
     </visitas__numero>
   </Lugar>
   <Lugar>
@@ -51,6 +59,17 @@
       <entry>
         <int>4</int>
         <int>4</int>
+      </entry>
+    </visitas__numero>
+  </Lugar>
+  <Lugar>
+    <id>5</id>
+    <lugar>Lugar</lugar>
+    <nacionalidad>Nacionalidad</nacionalidad>
+    <visitas__numero>
+      <entry>
+        <int>6</int>
+        <int>6</int>
       </entry>
     </visitas__numero>
   </Lugar>

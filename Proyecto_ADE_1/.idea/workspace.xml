@@ -6,11 +6,15 @@
   <component name="ChangeListManager">
     <list default="true" id="09f89609-7619-412f-abe0-981dfc63f17d" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/Proyecto_ADE_1/Ficheros_XML/visitaGuiada.xml" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/Proyecto_ADE_1/Ficheros_XML/visitaGuiada.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ficheros_DAT/cliente.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ficheros_DAT/cliente.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ficheros_DAT/empleado.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ficheros_DAT/empleado.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ficheros_DAT/lugar.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ficheros_DAT/lugar.dat" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Ficheros_DAT/visitaGuiada.dat" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ficheros_DAT/visitaGuiada.dat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ficheros_XML/cliente.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ficheros_XML/cliente.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ficheros_XML/empleado.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ficheros_XML/empleado.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ficheros_XML/lugar.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ficheros_XML/lugar.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ficheros_XML/visitaGuiada.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/Ficheros_XML/visitaGuiada.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Objetos/Cliente.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Objetos/Cliente.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Objetos/Empleado.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Objetos/Empleado.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Objetos/VisitaGuiada.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Objetos/VisitaGuiada.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -151,8 +155,8 @@
         </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Main.java</url>
-          <line>381</line>
-          <option name="timeStamp" value="17" />
+          <line>506</line>
+          <option name="timeStamp" value="27" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>

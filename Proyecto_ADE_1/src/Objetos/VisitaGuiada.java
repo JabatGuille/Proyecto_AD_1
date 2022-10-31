@@ -37,6 +37,7 @@ public class VisitaGuiada implements Serializable {
         this.lugar_id = lugar_id;
         this.horario = horario;
         this.estado = estado;
+        this.empleado_dni = "";
     }
 
     public VisitaGuiada() {

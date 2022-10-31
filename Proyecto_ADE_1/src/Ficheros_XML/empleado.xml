@@ -1,21 +1,5 @@
 <Empleados>
   <Empleado>
-    <dni>DNI0</dni>
-    <nombre>Nombre</nombre>
-    <apellido>Apellido</apellido>
-    <fecha__Nac>fecha_NAC</fecha__Nac>
-    <fecha__cont>fecha_cont</fecha__cont>
-    <nacionalidad>Nacionalidad</nacionalidad>
-    <cargo>Cargo</cargo>
-    <estado></estado>
-    <visitas__numero>
-      <entry>
-        <int>0</int>
-        <int>0</int>
-      </entry>
-    </visitas__numero>
-  </Empleado>
-  <Empleado>
     <dni>DNI1</dni>
     <nombre>Nombre</nombre>
     <apellido>Apellido</apellido>
@@ -78,5 +62,32 @@
         <int>4</int>
       </entry>
     </visitas__numero>
+  </Empleado>
+  <Empleado>
+    <dni>33333333E</dni>
+    <nombre>Nombre</nombre>
+    <apellido>Apellido</apellido>
+    <fecha__Nac>fecha_NAC</fecha__Nac>
+    <fecha__cont>fecha_cont</fecha__cont>
+    <nacionalidad>Nacionalidad</nacionalidad>
+    <cargo>Cargo</cargo>
+    <estado>Borrado</estado>
+    <visitas__numero>
+      <entry>
+        <int>0</int>
+        <int>0</int>
+      </entry>
+    </visitas__numero>
+  </Empleado>
+  <Empleado>
+    <dni>55555555E</dni>
+    <nombre>EmpleadoMdofi</nombre>
+    <apellido>Apdwad</apellido>
+    <fecha__Nac>10-12-1999</fecha__Nac>
+    <fecha__cont>31-10-2022</fecha__cont>
+    <nacionalidad>NAcionalida</nacionalidad>
+    <cargo>Cargo</cargo>
+    <estado></estado>
+    <visitas__numero/>
   </Empleado>
 </Empleados>
