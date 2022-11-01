@@ -71,15 +71,17 @@ public class Main {
                 }
                 case "4": {
                     System.out.println("Saliendo de la aplicación");
-                    DAT.guardar_visitas_guiadas(visitasguiadas);
-                    DAT.guardar_clientes(clientes);
-                    DAT.guardar_lugar(lugares);
-                    DAT.guardar_empleados(empleados);
-
-                    XML.guardar_visitas_guiadas(visitasguiadas);
-                    XML.guardar_clientes(clientes);
-                    XML.guardar_empleados(empleados);
-                    XML.guardar_lugar(lugares);
+                    if (opcion.equalsIgnoreCase("dat")) {
+                        DAT.guardar_visitas_guiadas(visitasguiadas);
+                        DAT.guardar_clientes(clientes);
+                        DAT.guardar_lugar(lugares);
+                        DAT.guardar_empleados(empleados);
+                    } else {
+                        XML.guardar_visitas_guiadas(visitasguiadas);
+                        XML.guardar_clientes(clientes);
+                        XML.guardar_empleados(empleados);
+                        XML.guardar_lugar(lugares);
+                    }
                     bucle = false;
                     break;
                 }
