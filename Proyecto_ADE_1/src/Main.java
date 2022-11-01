@@ -577,7 +577,6 @@ public class Main {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
     }
-
     public static int seleccionar_lugar(Scanner scanner) {
         scanner = new Scanner(System.in);
         boolean bucle = true;
@@ -1192,7 +1191,7 @@ public class Main {
                     System.out.println("No existen lugares para poder añadir, llevando al menu de crear lugares");
                     lugarid = crear_lugar(scanner);
                 } else {
-                    lugarid = añadir_lugar(scanner);
+                    lugarid = seleccionar_lugar(scanner);
                 }
             }
             System.out.println("Datos de la nueva visita guiada: \n" +
@@ -1379,31 +1378,5 @@ public class Main {
         }
     }
 
-    public static Integer añadir_lugar(Scanner scanner) {
-        boolean bucle = true;
-        int id = 0;
-        if (lugares.size() == 0) {
-            id = crear_lugar(scanner);
-        }
-        for (Lugar lugar : lugares.values()) {
-            System.out.println("ID: " + lugar.getId());
-            System.out.println("Lugar: " + lugar.getLugar());
-            System.out.println("Nacionalidad: " + lugar.getNacionalidad());
-        }
-        while (bucle) {
-            System.out.println("Escriba el id del lugar que quiere añadir");
-            try {
-                scanner = new Scanner(System.in);
-                id = scanner.nextInt();
-            } catch (NumberFormatException | InputMismatchException e) {
-                System.out.println("Debe escribir un numero");
-            }
-            if (lugares.containsKey(id)) {
-                bucle = false;
-            } else {
-                System.out.println("El id escrito no esta en la lista");
-            }
-        }
-        return id;
-    }
+
 }
