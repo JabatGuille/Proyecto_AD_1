@@ -1,168 +1,20 @@
 <VisitasGuiadas>
   <VisitaGuiada>
     <n__visita>0</n__visita>
-    <nombre>Nombre</nombre>
+    <nombre>VIsita GUiada</nombre>
     <n__max__cli>12</n__max__cli>
-    <punto__partida>Punto partida</punto__partida>
+    <punto__partida>Punto paritda</punto__partida>
     <curso>Curso</curso>
-    <tematica>Tematica</tematica>
-    <coste>12.0</coste>
-    <estado></estado>
-    <lugar__id>0</lugar__id>
-    <horario>12:12</horario>
-    <clientes__dni>
-      <entry>
-        <string>22222222E</string>
-        <string>22222222E</string>
-      </entry>
-    </clientes__dni>
-  </VisitaGuiada>
-  <VisitaGuiada>
-    <n__visita>1</n__visita>
-    <nombre>Nombre</nombre>
-    <n__max__cli>12</n__max__cli>
-    <punto__partida>Punto partida</punto__partida>
-    <curso>Curso</curso>
-    <tematica>Tematica</tematica>
-    <coste>12.0</coste>
-    <estado></estado>
-    <lugar__id>1</lugar__id>
-    <empleado__dni>DNI1</empleado__dni>
-    <horario>12:12</horario>
-    <clientes__dni>
-      <entry>
-        <string>DNI1</string>
-        <string>DNI1</string>
-      </entry>
-      <entry>
-        <string>22222222E</string>
-        <string>22222222E</string>
-      </entry>
-    </clientes__dni>
-  </VisitaGuiada>
-  <VisitaGuiada>
-    <n__visita>2</n__visita>
-    <nombre>Nombre</nombre>
-    <n__max__cli>12</n__max__cli>
-    <punto__partida>Punto partida</punto__partida>
-    <curso>Curso</curso>
-    <tematica>Tematica</tematica>
-    <coste>12.0</coste>
-    <estado></estado>
-    <lugar__id>2</lugar__id>
-    <empleado__dni>DNI2</empleado__dni>
-    <horario>12:12</horario>
-    <clientes__dni>
-      <entry>
-        <string>DNI2</string>
-        <string>DNI2</string>
-      </entry>
-      <entry>
-        <string>22222222E</string>
-        <string>22222222E</string>
-      </entry>
-    </clientes__dni>
-  </VisitaGuiada>
-  <VisitaGuiada>
-    <n__visita>3</n__visita>
-    <nombre>Nombre</nombre>
-    <n__max__cli>12</n__max__cli>
-    <punto__partida>Punto partida</punto__partida>
-    <curso>Curso</curso>
-    <tematica>Tematica</tematica>
-    <coste>12.0</coste>
-    <estado></estado>
-    <lugar__id>3</lugar__id>
-    <empleado__dni>DNI3</empleado__dni>
-    <horario>12:12</horario>
-    <clientes__dni>
-      <entry>
-        <string>DNI3</string>
-        <string>DNI3</string>
-      </entry>
-      <entry>
-        <string>22222222E</string>
-        <string>22222222E</string>
-      </entry>
-    </clientes__dni>
-  </VisitaGuiada>
-  <VisitaGuiada>
-    <n__visita>4</n__visita>
-    <nombre>Nombre</nombre>
-    <n__max__cli>12</n__max__cli>
-    <punto__partida>Punto partida</punto__partida>
-    <curso>Curso</curso>
-    <tematica>Tematica</tematica>
-    <coste>12.0</coste>
-    <estado></estado>
-    <lugar__id>4</lugar__id>
-    <empleado__dni>DNI4</empleado__dni>
-    <horario>12:12</horario>
-    <clientes__dni>
-      <entry>
-        <string>DNI4</string>
-        <string>DNI4</string>
-      </entry>
-      <entry>
-        <string>22222222E</string>
-        <string>22222222E</string>
-      </entry>
-    </clientes__dni>
-  </VisitaGuiada>
-  <VisitaGuiada>
-    <n__visita>5</n__visita>
-    <nombre>VisitaGuadasq12</nombre>
-    <n__max__cli>200</n__max__cli>
-    <punto__partida>PDWAD</punto__partida>
-    <curso>Dwawr</curso>
-    <tematica>DWAF</tematica>
+    <tematica>Temtaica</tematica>
     <coste>200.0</coste>
     <estado></estado>
-    <lugar__id>1</lugar__id>
-    <empleado__dni>DNI4</empleado__dni>
-    <horario>00:12</horario>
-    <clientes__dni>
-      <entry>
-        <string>22222222E</string>
-        <string>22222222E</string>
-      </entry>
-    </clientes__dni>
-  </VisitaGuiada>
-  <VisitaGuiada>
-    <n__visita>6</n__visita>
-    <nombre>Visita guiada</nombre>
-    <n__max__cli>12</n__max__cli>
-    <punto__partida>Punto partida</punto__partida>
-    <curso>CUrso</curso>
-    <tematica>Tematia</tematica>
-    <coste>1.0</coste>
-    <estado></estado>
-    <lugar__id>5</lugar__id>
-    <empleado__dni></empleado__dni>
+    <lugar__id>0</lugar__id>
+    <empleado__dni>22222222E</empleado__dni>
     <horario>12:20</horario>
     <clientes__dni>
       <entry>
-        <string>22222222E</string>
-        <string>22222222E</string>
-      </entry>
-    </clientes__dni>
-  </VisitaGuiada>
-  <VisitaGuiada>
-    <n__visita>7</n__visita>
-    <nombre>Visita Guiada</nombre>
-    <n__max__cli>12</n__max__cli>
-    <punto__partida>Punto partido</punto__partida>
-    <curso>Curso</curso>
-    <tematica>Tematica</tematica>
-    <coste>12.0</coste>
-    <estado></estado>
-    <lugar__id>1</lugar__id>
-    <empleado__dni></empleado__dni>
-    <horario>12:21</horario>
-    <clientes__dni>
-      <entry>
-        <string>22222222E</string>
-        <string>22222222E</string>
+        <string>11111111E</string>
+        <string>11111111E</string>
       </entry>
     </clientes__dni>
   </VisitaGuiada>

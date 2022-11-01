@@ -1,85 +1,16 @@
 <Clientes>
   <Cliente>
-    <dni>DNI1</dni>
-    <nombre>Nombre</nombre>
-    <apellido>Apellido</apellido>
-    <edad>12</edad>
+    <dni>11111111E</dni>
+    <nombre>CLienteNombre</nombre>
+    <apellido>ClienteApellido</apellido>
+    <edad>30</edad>
     <profesion>Profesion</profesion>
     <estado></estado>
-    <visitas__numero>
-      <entry>
-        <int>1</int>
-        <int>1</int>
-      </entry>
-    </visitas__numero>
-  </Cliente>
-  <Cliente>
-    <dni>DNI2</dni>
-    <nombre>Nombre</nombre>
-    <apellido>Apellido</apellido>
-    <edad>12</edad>
-    <profesion>Profesion</profesion>
-    <estado></estado>
-    <visitas__numero>
-      <entry>
-        <int>2</int>
-        <int>2</int>
-      </entry>
-    </visitas__numero>
-  </Cliente>
-  <Cliente>
-    <dni>DNI3</dni>
-    <nombre>Nombre</nombre>
-    <apellido>Apellido</apellido>
-    <edad>12</edad>
-    <profesion>Profesion</profesion>
-    <estado></estado>
-    <visitas__numero>
-      <entry>
-        <int>3</int>
-        <int>3</int>
-      </entry>
-    </visitas__numero>
-  </Cliente>
-  <Cliente>
-    <dni>DNI4</dni>
-    <nombre>Nombre</nombre>
-    <apellido>Apellido</apellido>
-    <edad>12</edad>
-    <profesion>Profesion</profesion>
-    <estado></estado>
-    <visitas__numero>
-      <entry>
-        <int>4</int>
-        <int>4</int>
-      </entry>
-    </visitas__numero>
-  </Cliente>
-  <Cliente>
-    <dni>33333333E</dni>
-    <nombre>Nombre</nombre>
-    <apellido>Apellido</apellido>
-    <edad>12</edad>
-    <profesion>Profesion</profesion>
-    <estado>Borrado</estado>
     <visitas__numero>
       <entry>
         <int>0</int>
         <int>0</int>
       </entry>
-      <entry>
-        <int>1</int>
-        <int>1</int>
-      </entry>
     </visitas__numero>
-  </Cliente>
-  <Cliente>
-    <dni>22222222E</dni>
-    <nombre>Clientadro</nombre>
-    <apellido>Apellidos</apellido>
-    <edad>141</edad>
-    <profesion>Profesion</profesion>
-    <estado></estado>
-    <visitas__numero/>
   </Cliente>
 </Clientes>

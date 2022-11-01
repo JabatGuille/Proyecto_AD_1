@@ -1,93 +1,18 @@
 <Empleados>
   <Empleado>
-    <dni>DNI1</dni>
-    <nombre>Nombre</nombre>
-    <apellido>Apellido</apellido>
-    <fecha__Nac>fecha_NAC</fecha__Nac>
-    <fecha__cont>fecha_cont</fecha__cont>
+    <dni>22222222E</dni>
+    <nombre>EmpleadoNombre</nombre>
+    <apellido>RmpleadoApelldio</apellido>
+    <fecha__Nac>10-12-2000</fecha__Nac>
+    <fecha__cont>01-11-2022</fecha__cont>
     <nacionalidad>Nacionalidad</nacionalidad>
     <cargo>Cargo</cargo>
     <estado></estado>
-    <visitas__numero>
-      <entry>
-        <int>1</int>
-        <int>1</int>
-      </entry>
-    </visitas__numero>
-  </Empleado>
-  <Empleado>
-    <dni>DNI2</dni>
-    <nombre>Nombre</nombre>
-    <apellido>Apellido</apellido>
-    <fecha__Nac>fecha_NAC</fecha__Nac>
-    <fecha__cont>fecha_cont</fecha__cont>
-    <nacionalidad>Nacionalidad</nacionalidad>
-    <cargo>Cargo</cargo>
-    <estado></estado>
-    <visitas__numero>
-      <entry>
-        <int>2</int>
-        <int>2</int>
-      </entry>
-    </visitas__numero>
-  </Empleado>
-  <Empleado>
-    <dni>DNI3</dni>
-    <nombre>Nombre</nombre>
-    <apellido>Apellido</apellido>
-    <fecha__Nac>fecha_NAC</fecha__Nac>
-    <fecha__cont>fecha_cont</fecha__cont>
-    <nacionalidad>Nacionalidad</nacionalidad>
-    <cargo>Cargo</cargo>
-    <estado></estado>
-    <visitas__numero>
-      <entry>
-        <int>3</int>
-        <int>3</int>
-      </entry>
-    </visitas__numero>
-  </Empleado>
-  <Empleado>
-    <dni>DNI4</dni>
-    <nombre>Nombre</nombre>
-    <apellido>Apellido</apellido>
-    <fecha__Nac>fecha_NAC</fecha__Nac>
-    <fecha__cont>fecha_cont</fecha__cont>
-    <nacionalidad>Nacionalidad</nacionalidad>
-    <cargo>Cargo</cargo>
-    <estado></estado>
-    <visitas__numero>
-      <entry>
-        <int>4</int>
-        <int>4</int>
-      </entry>
-    </visitas__numero>
-  </Empleado>
-  <Empleado>
-    <dni>33333333E</dni>
-    <nombre>Nombre</nombre>
-    <apellido>Apellido</apellido>
-    <fecha__Nac>fecha_NAC</fecha__Nac>
-    <fecha__cont>fecha_cont</fecha__cont>
-    <nacionalidad>Nacionalidad</nacionalidad>
-    <cargo>Cargo</cargo>
-    <estado>Borrado</estado>
     <visitas__numero>
       <entry>
         <int>0</int>
         <int>0</int>
       </entry>
     </visitas__numero>
-  </Empleado>
-  <Empleado>
-    <dni>55555555E</dni>
-    <nombre>EmpleadoMdofi</nombre>
-    <apellido>Apdwad</apellido>
-    <fecha__Nac>10-12-1999</fecha__Nac>
-    <fecha__cont>31-10-2022</fecha__cont>
-    <nacionalidad>NAcionalida</nacionalidad>
-    <cargo>Cargo</cargo>
-    <estado></estado>
-    <visitas__numero/>
   </Empleado>
 </Empleados>

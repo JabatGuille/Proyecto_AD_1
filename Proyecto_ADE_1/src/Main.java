@@ -146,98 +146,106 @@ public class Main {
 
     public static void añadir_cliente_emple_visitaguiada(Scanner scanner) {
         listar_visitas_guiadas();
-        boolean bucle = true;
-        String comprobacion = "";
-        int N_visita = 0;
-        while (bucle) {
-            try {
-                System.out.println("Escriba el Numero de visita que desea añadir empleado");
-                scanner = new Scanner(System.in);
-                N_visita = scanner.nextInt();
-                if (visitasguiadas.containsKey(N_visita)) {
-                    if (!visitasguiadas.get(N_visita).getEmpleado().equals("")) {
-                        System.out.println("La visita ya tiene empleado");
-                        System.out.println("Escriba Y si se ha equivocado de empleado, escribir cualquier otra cosa añadira clientes a la visita");
-                        scanner = new Scanner(System.in);
-                        comprobacion = scanner.nextLine();
-                    } else {
-                        comprobacion = "Y";
-                    }
-                    bucle = false;
-                } else {
-                    System.out.println("El numero de visita indicado no existe");
-                }
-            } catch (NumberFormatException | InputMismatchException e) {
-                System.out.println("Debe escribir un numero");
-            }
-        }
-        if (comprobacion.equalsIgnoreCase("Y")) {
-            listar_empleados();
-            System.out.println("Escriba el DNI del empleado que quiere añadir");
-            String DNI;
-            bucle = true;
+        if (visitasguiadas.size() != 0) {
+            boolean bucle = true;
+            String comprobacion = "";
+            int N_visita = 0;
             while (bucle) {
-                System.out.println("Escriba el DNI del empleado");
-                scanner = new Scanner(System.in);
-                DNI = scanner.nextLine();
-                Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
-                Matcher mat = pat.matcher(DNI);
-                if (mat.matches()) {
-                    if (!empleados.containsKey(DNI)) {
-                        bucle = false;
-                        System.out.println("Añadiendo empleado a la visita");
-                        visitasguiadas.get(N_visita).setEmpleado(DNI);
-                        empleados.get(DNI).setVisitas(N_visita);
-                        if (opcion.equals("dat")) {
-                            DAT.guardar_visitas_guiadas(visitasguiadas);
-                            DAT.guardar_clientes(clientes);
+                try {
+                    System.out.println("Escriba el Numero de visita que desea añadir empleado");
+                    scanner = new Scanner(System.in);
+                    N_visita = scanner.nextInt();
+                    if (visitasguiadas.containsKey(N_visita)) {
+                        if (!visitasguiadas.get(N_visita).getEmpleado().equals("")) {
+                            System.out.println("La visita ya tiene empleado");
+                            System.out.println("Escriba Y si se ha equivocado de empleado, escribir cualquier otra cosa añadira clientes a la visita");
+                            scanner = new Scanner(System.in);
+                            comprobacion = scanner.nextLine();
                         } else {
-                            XML.guardar_visitas_guiadas(visitasguiadas);
-                            XML.guardar_empleados(empleados);
+                            comprobacion = "Y";
+                        }
+                        bucle = false;
+                    } else {
+                        System.out.println("El numero de visita indicado no existe");
+                    }
+                } catch (NumberFormatException | InputMismatchException e) {
+                    System.out.println("Debe escribir un numero");
+                }
+            }
+            if (comprobacion.equalsIgnoreCase("Y")) {
+                listar_empleados();
+                System.out.println("Escriba el DNI del empleado que quiere añadir");
+                String DNI;
+                bucle = true;
+                while (bucle) {
+                    System.out.println("Escriba el DNI del empleado");
+                    scanner = new Scanner(System.in);
+                    DNI = scanner.nextLine();
+                    Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
+                    Matcher mat = pat.matcher(DNI);
+                    if (mat.matches()) {
+                        if (empleados.containsKey(DNI)) {
+                            bucle = false;
+                            System.out.println("Añadiendo empleado a la visita");
+                            visitasguiadas.get(N_visita).setEmpleado(DNI);
+                            empleados.get(DNI).setVisitas(N_visita);
+                            if (opcion.equals("dat")) {
+                                DAT.guardar_visitas_guiadas(visitasguiadas);
+                                DAT.guardar_clientes(clientes);
+                            } else {
+                                XML.guardar_visitas_guiadas(visitasguiadas);
+                                XML.guardar_empleados(empleados);
+                            }
+                        } else {
+                            System.out.println("El DNI no existe " + DNI);
                         }
                     } else {
-                        System.out.println("El DNI no existe " + DNI);
+                        System.out.println("DNI: " + DNI + " incorrecto");
                     }
-                } else {
-                    System.out.println("DNI: " + DNI + " incorrecto");
                 }
             }
+            añadir_clientes(N_visita, scanner);
+        } else {
+            System.out.println("No existen visitas donde añadir empledo y clientes");
         }
-        añadir_clientes(N_visita, scanner);
     }
 
     public static void añadir_clientes(Integer N_visita, Scanner scanner) {
         listar_clientes();
-        while (visitasguiadas.get(N_visita).getClientes().size() != visitasguiadas.get(N_visita).getN_max_cli()) {
-            System.out.println("Escriba el DNI del cliente, escribe salir si quieres salir");
-            scanner = new Scanner(System.in);
-            String DNI = scanner.nextLine();
-            Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
-            Matcher mat = pat.matcher(DNI);
-            if (!DNI.equalsIgnoreCase("salir")) {
-                if (mat.matches()) {
-                    if (clientes.containsKey(DNI)) {
-                        System.out.println("Añadiendo cliente");
-                        clientes.get(DNI).setVisitas(N_visita);
-                        visitasguiadas.get(N_visita).setClientes(DNI);
-                        if (opcion.equals("dat")) {
-                            DAT.guardar_visitas_guiadas(visitasguiadas);
-                            DAT.guardar_clientes(clientes);
-                        } else {
-                            XML.guardar_visitas_guiadas(visitasguiadas);
-                            XML.guardar_clientes(clientes);
+        if (clientes.size() != 0) {
+            while (visitasguiadas.get(N_visita).getClientes().size() != visitasguiadas.get(N_visita).getN_max_cli()) {
+                System.out.println("Escriba el DNI del cliente, escribe salir si quieres salir");
+                scanner = new Scanner(System.in);
+                String DNI = scanner.nextLine();
+                Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
+                Matcher mat = pat.matcher(DNI);
+                if (!DNI.equalsIgnoreCase("salir")) {
+                    if (mat.matches()) {
+                        if (clientes.containsKey(DNI)) {
+                            System.out.println("Añadiendo cliente");
+                            clientes.get(DNI).setVisitas(N_visita);
+                            visitasguiadas.get(N_visita).setClientes(DNI);
+                            if (opcion.equals("dat")) {
+                                DAT.guardar_visitas_guiadas(visitasguiadas);
+                                DAT.guardar_clientes(clientes);
+                            } else {
+                                XML.guardar_visitas_guiadas(visitasguiadas);
+                                XML.guardar_clientes(clientes);
+                            }
                         }
+                    } else {
+                        System.out.println("DNI: " + DNI + " incorrecto");
                     }
+                    System.out.println("Terminando de añadir clientes, numero maximo de clientes en la visita\n" +
+                            "Clientes en visita: " + visitasguiadas.get(N_visita).getClientes().size() + "\n" +
+                            "Clientes maximos: " + visitasguiadas.get(N_visita).getN_max_cli());
                 } else {
-                    System.out.println("DNI: " + DNI + " incorrecto");
+                    System.out.println("Saliendo");
+                    break;
                 }
-                System.out.println("Terminando de añadir clientes, numero maximo de clientes en la visita\n" +
-                        "Clientes en visita: " + visitasguiadas.get(N_visita).getClientes().size() + "\n" +
-                        "Clientes maximos: " + visitasguiadas.get(N_visita).getN_max_cli());
-            } else {
-                System.out.println("Saliendo");
-                break;
             }
+        } else {
+            System.out.println("No existen clientes para poder añadir");
         }
     }
 
@@ -287,22 +295,26 @@ public class Main {
     }
 
     private static void listar_clientes() {
-        for (Cliente cliente : clientes.values()) {
-            if (!cliente.getEstado().equals(borrado)) {
-                System.out.println("CLIENTE");
-                System.out.println("DNI: " + cliente.getDni());
-                System.out.println("Nombre: " + cliente.getNombre());
-                System.out.println("Apellido: " + cliente.getApellido());
-                System.out.println("Edad: " + cliente.getEdad());
-                System.out.println("Profesión: " + cliente.getProfesion());
-                for (VisitaGuiada visita : visitasguiadas.values()) {
-                    if (visita.getClientes().containsKey(cliente.getDni())) {
-                        System.out.println("VISITA");
-                        System.out.println("Numero Visita: " + visita.getN_visita());
-                        System.out.println("Horario: " + visita.getHorario());
+        if (clientes.size() != 0) {
+            for (Cliente cliente : clientes.values()) {
+                if (!cliente.getEstado().equals(borrado)) {
+                    System.out.println("CLIENTE");
+                    System.out.println("DNI: " + cliente.getDni());
+                    System.out.println("Nombre: " + cliente.getNombre());
+                    System.out.println("Apellido: " + cliente.getApellido());
+                    System.out.println("Edad: " + cliente.getEdad());
+                    System.out.println("Profesión: " + cliente.getProfesion());
+                    for (VisitaGuiada visita : visitasguiadas.values()) {
+                        if (visita.getClientes().containsKey(cliente.getDni())) {
+                            System.out.println("VISITA");
+                            System.out.println("Numero Visita: " + visita.getN_visita());
+                            System.out.println("Horario: " + visita.getHorario());
+                        }
                     }
                 }
             }
+        } else {
+            System.out.println("No existen clientes para mostrar");
         }
     }
 
@@ -352,68 +364,76 @@ public class Main {
     }
 
     private static void listar_empleados() {
-        for (Empleado empleado : empleados.values()) {
-            if (!empleado.getEstado().equals(borrado)) {
-                System.out.println("EMPLEADO");
-                System.out.println("DNI: " + empleado.getDni());
-                System.out.println("Nombre: " + empleado.getNombre());
-                System.out.println("Apellido: " + empleado.getApellido());
-                System.out.println("Fecha Nacimiento: " + empleado.getFecha_Nac());
-                System.out.println("Fecha Contratación: " + empleado.getFecha_cont());
-                System.out.println("Nacionalidad: " + empleado.getNacionalidad());
-                System.out.println("Cargo: " + empleado.getCargo());
-                for (VisitaGuiada visita : visitasguiadas.values()) {
-                    if (visita.getEmpleado().equals(empleado.getDni())) {
-                        System.out.println("VISITAS");
-                        System.out.println("Numero visita: " + visita.getN_visita());
-                        System.out.println("Horario: " + visita.getHorario());
+        if (empleados.size() != 0) {
+            for (Empleado empleado : empleados.values()) {
+                if (!empleado.getEstado().equals(borrado)) {
+                    System.out.println("EMPLEADO");
+                    System.out.println("DNI: " + empleado.getDni());
+                    System.out.println("Nombre: " + empleado.getNombre());
+                    System.out.println("Apellido: " + empleado.getApellido());
+                    System.out.println("Fecha Nacimiento: " + empleado.getFecha_Nac());
+                    System.out.println("Fecha Contratación: " + empleado.getFecha_cont());
+                    System.out.println("Nacionalidad: " + empleado.getNacionalidad());
+                    System.out.println("Cargo: " + empleado.getCargo());
+                    for (VisitaGuiada visita : visitasguiadas.values()) {
+                        if (visita.getEmpleado().equals(empleado.getDni())) {
+                            System.out.println("VISITAS");
+                            System.out.println("Numero visita: " + visita.getN_visita());
+                            System.out.println("Horario: " + visita.getHorario());
+                        }
                     }
                 }
             }
+        } else {
+            System.out.println("No existen empleados para mostrar");
         }
     }
 
 
     public static void listar_visitas_guiadas() {
-        for (VisitaGuiada visita : visitasguiadas.values()) {
-            if (!visita.getEstado().equals(borrado)) {
-                System.out.println("VISITA:");
-                System.out.println("Nº Visita: " + visita.getN_visita());
-                System.out.println("Nombre: " + visita.getNombre());
-                System.out.println("Nº maximo de clientes: " + visita.getN_max_cli());
-                System.out.println("Punto de partida: " + visita.getPunto_partida());
-                System.out.println("Curso: " + visita.getCurso());
-                System.out.println("Tematica: " + visita.getTematica());
-                System.out.println("Coste: " + visita.getCoste());
-                System.out.println("Horario: " + visita.getHorario());
-                System.out.println("Lugar de la visita:");
-                System.out.println("Nº Visita: " + lugares.get(visita.getLugar()).getLugar());
-                System.out.println("Nº Visita: " + lugares.get(visita.getLugar()).getNacionalidad());
-                System.out.println("EMPLEADO:");
-                if (!visita.getEmpleado().equals("")) {
-                    System.out.println("DNI " + empleados.get(visita.getEmpleado()).getDni());
-                    System.out.println("Nombre " + empleados.get(visita.getEmpleado()).getNombre());
-                    System.out.println("Apellido " + empleados.get(visita.getEmpleado()).getApellido());
-                    System.out.println("Fecha Nacimiento " + empleados.get(visita.getEmpleado()).getFecha_Nac());
-                    System.out.println("Fecha Contratación " + empleados.get(visita.getEmpleado()).getFecha_cont());
-                    System.out.println("Nacionalidad " + empleados.get(visita.getEmpleado()).getNacionalidad());
-                    System.out.println("Cargo " + empleados.get(visita.getEmpleado()).getCargo());
-                } else {
-                    System.out.println("Esta visita no tiene empleado");
-                }
-                for (Cliente cliente : clientes.values()) {
-                    if (cliente.getVisitas().containsKey(visita.getN_visita())) {
+        if (visitasguiadas.size() != 0) {
+            for (VisitaGuiada visita : visitasguiadas.values()) {
+                if (!visita.getEstado().equals(borrado)) {
+                    System.out.println("VISITA:");
+                    System.out.println("Nº Visita: " + visita.getN_visita());
+                    System.out.println("Nombre: " + visita.getNombre());
+                    System.out.println("Nº maximo de clientes: " + visita.getN_max_cli());
+                    System.out.println("Punto de partida: " + visita.getPunto_partida());
+                    System.out.println("Curso: " + visita.getCurso());
+                    System.out.println("Tematica: " + visita.getTematica());
+                    System.out.println("Coste: " + visita.getCoste());
+                    System.out.println("Horario: " + visita.getHorario());
+                    System.out.println("Lugar de la visita:");
+                    System.out.println("Nº Visita: " + lugares.get(visita.getLugar()).getLugar());
+                    System.out.println("Nº Visita: " + lugares.get(visita.getLugar()).getNacionalidad());
+                    System.out.println("EMPLEADO:");
+                    if (!visita.getEmpleado().equals("")) {
+                        System.out.println("DNI " + empleados.get(visita.getEmpleado()).getDni());
+                        System.out.println("Nombre " + empleados.get(visita.getEmpleado()).getNombre());
+                        System.out.println("Apellido " + empleados.get(visita.getEmpleado()).getApellido());
+                        System.out.println("Fecha Nacimiento " + empleados.get(visita.getEmpleado()).getFecha_Nac());
+                        System.out.println("Fecha Contratación " + empleados.get(visita.getEmpleado()).getFecha_cont());
+                        System.out.println("Nacionalidad " + empleados.get(visita.getEmpleado()).getNacionalidad());
+                        System.out.println("Cargo " + empleados.get(visita.getEmpleado()).getCargo());
+                    } else {
+                        System.out.println("Esta visita no tiene empleado");
+                    }
+                    for (Cliente cliente : clientes.values()) {
                         if (cliente.getVisitas().containsKey(visita.getN_visita())) {
-                            System.out.println("Cliente de la visita: " + visita.getN_visita());
-                            System.out.println("DNI: " + cliente.getDni());
-                            System.out.println("Nombre: " + cliente.getNombre());
-                            System.out.println("Apellido: " + cliente.getApellido());
-                            System.out.println("Edad: " + cliente.getEdad());
-                            System.out.println("Profesión: " + cliente.getProfesion());
+                            if (cliente.getVisitas().containsKey(visita.getN_visita())) {
+                                System.out.println("Cliente de la visita: " + visita.getN_visita());
+                                System.out.println("DNI: " + cliente.getDni());
+                                System.out.println("Nombre: " + cliente.getNombre());
+                                System.out.println("Apellido: " + cliente.getApellido());
+                                System.out.println("Edad: " + cliente.getEdad());
+                                System.out.println("Profesión: " + cliente.getProfesion());
+                            }
                         }
                     }
                 }
             }
+        } else {
+            System.out.println("No existen visitas que mostrar");
         }
     }
 
@@ -624,40 +644,43 @@ public class Main {
 
     public static void borrar_visita_guiada(Scanner scanner) {
         listar_visitas_guiadas();
-        System.out.println("Escriba el Nº de visita que quiere borrar");
-        try {
-            scanner = new Scanner(System.in);
-            int numero = scanner.nextInt();
-            if (visitasguiadas.containsKey(numero)) {
-                visitasguiadas.get(numero).setEstado("Borrada");
-                for (Cliente cliente : clientes.values()) {
-                    cliente.getVisitas().remove(numero);
-                }
-                for (Empleado empleado : empleados.values()) {
-                    empleado.getVisitas().remove(numero);
-                }
-                for (Lugar lugar : lugares.values()) {
-                    lugar.getVisitas().remove(numero);
-                }
-                if (opcion.equals("dat")) {
-                    DAT.guardar_visitas_guiadas(visitasguiadas);
-                    DAT.guardar_lugar(lugares);
-                    DAT.guardar_clientes(clientes);
-                    DAT.guardar_empleados(empleados);
+        if (visitasguiadas.size() != 0) {
+            System.out.println("Escriba el Nº de visita que quiere borrar");
+            try {
+                scanner = new Scanner(System.in);
+                int numero = scanner.nextInt();
+                if (visitasguiadas.containsKey(numero)) {
+                    visitasguiadas.get(numero).setEstado("Borrada");
+                    for (Cliente cliente : clientes.values()) {
+                        cliente.getVisitas().remove(numero);
+                    }
+                    for (Empleado empleado : empleados.values()) {
+                        empleado.getVisitas().remove(numero);
+                    }
+                    for (Lugar lugar : lugares.values()) {
+                        lugar.getVisitas().remove(numero);
+                    }
+                    if (opcion.equals("dat")) {
+                        DAT.guardar_visitas_guiadas(visitasguiadas);
+                        DAT.guardar_lugar(lugares);
+                        DAT.guardar_clientes(clientes);
+                        DAT.guardar_empleados(empleados);
+                    } else {
+                        XML.guardar_visitas_guiadas(visitasguiadas);
+                        XML.guardar_lugar(lugares);
+                        XML.guardar_clientes(clientes);
+                        XML.guardar_empleados(empleados);
+                    }
+                    System.out.println("Borrando visita");
                 } else {
-                    XML.guardar_visitas_guiadas(visitasguiadas);
-                    XML.guardar_lugar(lugares);
-                    XML.guardar_clientes(clientes);
-                    XML.guardar_empleados(empleados);
+                    System.out.println("Ese numero no esta en la lista de visitas guiadas");
                 }
-                System.out.println("Borrando visita");
-            } else {
-                System.out.println("Ese numero no esta en la lista de visitas guiadas");
+            } catch (NumberFormatException | InputMismatchException e) {
+                System.out.println("Debes escribir un numero");
             }
-        } catch (NumberFormatException | InputMismatchException e) {
-            System.out.println("Debes escribir un numero");
+        } else {
+            System.out.println("No existen visitas que poder borrar");
         }
-
     }
 
     public static void nuevo_empleado(Scanner scanner) {
@@ -767,26 +790,30 @@ public class Main {
 
     public static void borrar_empleado(Scanner scanner) {
         listar_empleados();
-        System.out.println("Escriba el DNI del empleado que quiere borrar");
-        scanner = new Scanner(System.in);
-        String dni = scanner.nextLine();
-        if (empleados.containsKey(dni)) {
-            empleados.get(dni).setEstado(borrado);
-            for (VisitaGuiada v : visitasguiadas.values()) {
-                if (v.getEmpleado().equals(dni)) {
-                    v.setEmpleado(null);
+        if (empleados.size() != 0) {
+            System.out.println("Escriba el DNI del empleado que quiere borrar");
+            scanner = new Scanner(System.in);
+            String dni = scanner.nextLine();
+            if (empleados.containsKey(dni)) {
+                empleados.get(dni).setEstado(borrado);
+                for (VisitaGuiada v : visitasguiadas.values()) {
+                    if (v.getEmpleado().equals(dni)) {
+                        v.setEmpleado(null);
+                    }
                 }
-            }
-            if (opcion.equals("dat")) {
-                DAT.guardar_visitas_guiadas(visitasguiadas);
-                DAT.guardar_empleados(empleados);
+                if (opcion.equals("dat")) {
+                    DAT.guardar_visitas_guiadas(visitasguiadas);
+                    DAT.guardar_empleados(empleados);
+                } else {
+                    XML.guardar_visitas_guiadas(visitasguiadas);
+                    XML.guardar_empleados(empleados);
+                }
+                System.out.println("Borrando empleado");
             } else {
-                XML.guardar_visitas_guiadas(visitasguiadas);
-                XML.guardar_empleados(empleados);
+                System.out.println("El DNI escrito no esta en la lista");
             }
-            System.out.println("Borrando empleado");
         } else {
-            System.out.println("El DNI escrito no esta en la lista");
+            System.out.println("No existen empleados que borrar");
         }
     }
 
@@ -882,466 +909,480 @@ public class Main {
 
     public static void borrar_cliente(Scanner scanner) {
         listar_clientes();
-        System.out.println("Escriba el DNI del cliente que quiere borrar");
-        scanner = new Scanner(System.in);
-        String dni = scanner.nextLine();
-        if (clientes.containsKey(dni)) {
-            clientes.get(dni).setEstado(borrado);
-            for (VisitaGuiada v : visitasguiadas.values()) {
-                v.getClientes().remove(dni);
-            }
-            if (opcion.equals("dat")) {
-                DAT.guardar_visitas_guiadas(visitasguiadas);
-                DAT.guardar_clientes(clientes);
+        if (clientes.size() != 0) {
+            System.out.println("Escriba el DNI del cliente que quiere borrar");
+            scanner = new Scanner(System.in);
+            String dni = scanner.nextLine();
+            if (clientes.containsKey(dni)) {
+                clientes.get(dni).setEstado(borrado);
+                for (VisitaGuiada v : visitasguiadas.values()) {
+                    v.getClientes().remove(dni);
+                }
+                if (opcion.equals("dat")) {
+                    DAT.guardar_visitas_guiadas(visitasguiadas);
+                    DAT.guardar_clientes(clientes);
+                } else {
+                    XML.guardar_visitas_guiadas(visitasguiadas);
+                    XML.guardar_clientes(clientes);
+                }
+                System.out.println("Borrando usuario");
             } else {
-                XML.guardar_visitas_guiadas(visitasguiadas);
-                XML.guardar_clientes(clientes);
+                System.out.println("El DNI escrito no esta en la lista");
             }
-            System.out.println("Borrando usuario");
         } else {
-            System.out.println("El DNI escrito no esta en la lista");
+            System.out.println("No existen clientes que borrar");
         }
+
     }
 
     public static void modificar_cliente(Scanner scanner) {
         listar_clientes();
-        boolean bucle = true;
-        String cliente_dni = "";
-        while (bucle) {
-            System.out.println("Escriba el DNI del cliente que quiere modificar");
-            scanner = new Scanner(System.in);
-            cliente_dni = scanner.nextLine();
-            Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
-            Matcher mat = pat.matcher(cliente_dni);
-            if (mat.matches()) {
-                if (clientes.containsKey(cliente_dni)) {
-                    if (!clientes.get(cliente_dni).getEstado().equals(borrado)) {
-                        bucle = false;
+        if (clientes.size() != 0) {
+            boolean bucle = true;
+            String cliente_dni = "";
+            while (bucle) {
+                System.out.println("Escriba el DNI del cliente que quiere modificar");
+                scanner = new Scanner(System.in);
+                cliente_dni = scanner.nextLine();
+                Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
+                Matcher mat = pat.matcher(cliente_dni);
+                if (mat.matches()) {
+                    if (clientes.containsKey(cliente_dni)) {
+                        if (!clientes.get(cliente_dni).getEstado().equals(borrado)) {
+                            bucle = false;
+                        } else {
+                            System.out.println("El cliente no existe");
+                        }
                     } else {
-                        System.out.println("El cliente no existe");
+                        System.out.println("El cliente no existe ");
                     }
                 } else {
-                    System.out.println("El cliente no existe ");
+                    System.out.println("DNI: " + cliente_dni + " incorrecto");
                 }
-            } else {
-                System.out.println("DNI: " + cliente_dni + " incorrecto");
             }
-        }
-        bucle = true;
-        String DNI = "";
-        String nombre = "";
-        String apellido = "";
-        int edad = 0;
-        String profesion = "";
-        while (bucle) {
-            System.out.println("Escriba el nuevo DNI del cliente, si no quiere cambiarlo escriba el mismo");
-            scanner = new Scanner(System.in);
-            DNI = scanner.nextLine();
-            Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
-            Matcher mat = pat.matcher(DNI);
-            if (mat.matches()) {
-                bucle = false;
-            } else {
-                System.out.println("DNI: " + DNI + " incorrecto");
-            }
-        }
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba el nuevo Nombre del cliente, si no quiere cambiarlo escriba el mismo");
-            scanner = new Scanner(System.in);
-            nombre = scanner.nextLine();
-            if (!nombre.equals("")) {
-                bucle = false;
-            } else {
-                System.out.println("Nombre no puede ser vacio");
-            }
-        }
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba el nuevo Apellido del cliente, si no quiere cambiarlo escriba el mismo");
-            scanner = new Scanner(System.in);
-            apellido = scanner.nextLine();
-            if (!apellido.equals("")) {
-                bucle = false;
-            } else {
-                System.out.println("Apellido no puede ser vacio");
-            }
-        }
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba la nueva edad del cliente, si no quiere cambiarlo escriba el mismo");
-            scanner = new Scanner(System.in);
-            try {
-                edad = scanner.nextInt();
-                if (edad > 0) {
+            bucle = true;
+            String DNI = "";
+            String nombre = "";
+            String apellido = "";
+            int edad = 0;
+            String profesion = "";
+            while (bucle) {
+                System.out.println("Escriba el nuevo DNI del cliente, si no quiere cambiarlo escriba el mismo");
+                scanner = new Scanner(System.in);
+                DNI = scanner.nextLine();
+                Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
+                Matcher mat = pat.matcher(DNI);
+                if (mat.matches()) {
                     bucle = false;
                 } else {
-                    System.out.println("Edad no puede ser menor de 0");
+                    System.out.println("DNI: " + DNI + " incorrecto");
                 }
-            } catch (NumberFormatException | InputMismatchException e) {
-                System.out.println("Debes escribir un numero");
             }
-        }
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba la nueva profesión del cliente, si no quiere cambiarlo escriba el mismo");
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba el nuevo Nombre del cliente, si no quiere cambiarlo escriba el mismo");
+                scanner = new Scanner(System.in);
+                nombre = scanner.nextLine();
+                if (!nombre.equals("")) {
+                    bucle = false;
+                } else {
+                    System.out.println("Nombre no puede ser vacio");
+                }
+            }
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba el nuevo Apellido del cliente, si no quiere cambiarlo escriba el mismo");
+                scanner = new Scanner(System.in);
+                apellido = scanner.nextLine();
+                if (!apellido.equals("")) {
+                    bucle = false;
+                } else {
+                    System.out.println("Apellido no puede ser vacio");
+                }
+            }
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba la nueva edad del cliente, si no quiere cambiarlo escriba el mismo");
+                scanner = new Scanner(System.in);
+                try {
+                    edad = scanner.nextInt();
+                    if (edad > 0) {
+                        bucle = false;
+                    } else {
+                        System.out.println("Edad no puede ser menor de 0");
+                    }
+                } catch (NumberFormatException | InputMismatchException e) {
+                    System.out.println("Debes escribir un numero");
+                }
+            }
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba la nueva profesión del cliente, si no quiere cambiarlo escriba el mismo");
+                scanner = new Scanner(System.in);
+                profesion = scanner.nextLine();
+                if (!profesion.equals("")) {
+                    bucle = false;
+                } else {
+                    System.out.println("Profesion no puede ser vacio");
+                }
+            }
+            System.out.println("Datos del cliente nuevo: \n" +
+                    "DNI: " + DNI + "\n" +
+                    "Nombre: " + nombre + "\n" +
+                    "Apellido: " + apellido + "\n" +
+                    "Edad: " + edad + "\n" +
+                    "Profesión: " + profesion + "\n"
+            );
+            System.out.println("Es correcto? y/N");
             scanner = new Scanner(System.in);
-            profesion = scanner.nextLine();
-            if (!profesion.equals("")) {
-                bucle = false;
+            String comprobacion = scanner.nextLine();
+            if (comprobacion.equalsIgnoreCase("y")) {
+                System.out.println("Modificando usuario");
+                clientes.get(cliente_dni).setDni(DNI);
+                clientes.get(cliente_dni).setNombre(nombre);
+                clientes.get(cliente_dni).setApellido(apellido);
+                clientes.get(cliente_dni).setEdad(edad);
+                clientes.get(cliente_dni).setProfesion(profesion);
+                Cliente cliente = clientes.get(cliente_dni);
+                for (VisitaGuiada visi : visitasguiadas.values()) {
+                    visi.getClientes().remove(cliente_dni);
+                    visi.setClientes(cliente.getDni());
+                }
+                clientes.remove(cliente_dni);
+                clientes.put(cliente.getDni(), cliente);
+                if (opcion.equals("dat")) {
+                    DAT.guardar_visitas_guiadas(visitasguiadas);
+                    DAT.guardar_clientes(clientes);
+                } else {
+                    XML.guardar_visitas_guiadas(visitasguiadas);
+                    XML.guardar_clientes(clientes);
+                }
             } else {
-                System.out.println("Profesion no puede ser vacio");
-            }
-        }
-        System.out.println("Datos del cliente nuevo: \n" +
-                "DNI: " + DNI + "\n" +
-                "Nombre: " + nombre + "\n" +
-                "Apellido: " + apellido + "\n" +
-                "Edad: " + edad + "\n" +
-                "Profesión: " + profesion + "\n"
-        );
-        System.out.println("Es correcto? y/N");
-        scanner = new Scanner(System.in);
-        String comprobacion = scanner.nextLine();
-        if (comprobacion.equalsIgnoreCase("y")) {
-            System.out.println("Modificando usuario");
-            clientes.get(cliente_dni).setDni(DNI);
-            clientes.get(cliente_dni).setNombre(nombre);
-            clientes.get(cliente_dni).setApellido(apellido);
-            clientes.get(cliente_dni).setEdad(edad);
-            clientes.get(cliente_dni).setProfesion(profesion);
-            Cliente cliente = clientes.get(cliente_dni);
-            for (VisitaGuiada visi : visitasguiadas.values()) {
-                visi.getClientes().remove(cliente_dni);
-                visi.setClientes(cliente.getDni());
-            }
-            clientes.remove(cliente_dni);
-            clientes.put(cliente.getDni(), cliente);
-            if (opcion.equals("dat")) {
-                DAT.guardar_visitas_guiadas(visitasguiadas);
-                DAT.guardar_clientes(clientes);
-            } else {
-                XML.guardar_visitas_guiadas(visitasguiadas);
-                XML.guardar_clientes(clientes);
+                System.out.println("Cancelando operación, redirigiendo al menu");
             }
         } else {
-            System.out.println("Cancelando operación, redirigiendo al menu");
+            System.out.println("No existen clientes que modificar");
         }
     }
 
     public static void modificar_visita_guiada(Scanner scanner) {
         listar_visitas_guiadas();
-        System.out.println("Escriba el Numero de visita que desea modificar");
-        boolean bucle = true;
-        int N_visita = 0;
-        scanner = new Scanner(System.in);
-        while (bucle) {
-            try {
-                N_visita = scanner.nextInt();
-                if (visitasguiadas.containsKey(N_visita)) {
-                    if (!visitasguiadas.get(N_visita).getEstado().equals(borrado)) {
+        if (visitasguiadas.size() != 0) {
+            System.out.println("Escriba el Numero de visita que desea modificar");
+            boolean bucle = true;
+            int N_visita = 0;
+            scanner = new Scanner(System.in);
+            while (bucle) {
+                try {
+                    N_visita = scanner.nextInt();
+                    if (visitasguiadas.containsKey(N_visita)) {
+                        if (!visitasguiadas.get(N_visita).getEstado().equals(borrado)) {
+                            bucle = false;
+                        } else {
+                            System.out.println("La visita no existe");
+                        }
+                    } else {
+                        System.out.println("El numero de visita indicado no existe");
+                    }
+                } catch (NumberFormatException | InputMismatchException e) {
+                    System.out.println("Debe escribir un numero");
+                }
+            }
+            scanner = new Scanner(System.in);
+            bucle = true;
+            String nombre = "";
+            int n_max_cli = 0;
+            String punto_partida = "";
+            String curso = "";
+            String tematica = "";
+            double coste = 0.0;
+            int lugarid = 0;
+            String horario = "";
+            while (bucle) {
+                System.out.println("Escriba el Nombre de la visita, si no lo quiere modificar escriba el mismo nombre");
+                nombre = scanner.nextLine();
+                if (!nombre.equals("")) {
+                    bucle = false;
+                } else {
+                    System.out.println("Nombre no puede ser vacio");
+                }
+            }
+            scanner = new Scanner(System.in);
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba el numero maximo de clientes, si no lo quiere modificar escriba el mismo nombre");
+                try {
+                    n_max_cli = scanner.nextInt();
+                    if (n_max_cli > 0) {
                         bucle = false;
                     } else {
-                        System.out.println("La visita no existe");
+                        System.out.println("El numero maximo de clientes debe ser mayor de 0, si no lo quiere modificar escriba el mismo nombre");
                     }
-                } else {
-                    System.out.println("El numero de visita indicado no existe");
+                } catch (NumberFormatException | InputMismatchException e) {
+                    System.out.println("Debes escribir un numero");
                 }
-            } catch (NumberFormatException | InputMismatchException e) {
-                System.out.println("Debe escribir un numero");
             }
-        }
-        scanner = new Scanner(System.in);
-        bucle = true;
-        String nombre = "";
-        int n_max_cli = 0;
-        String punto_partida = "";
-        String curso = "";
-        String tematica = "";
-        double coste = 0.0;
-        int lugarid = 0;
-        String horario = "";
-        while (bucle) {
-            System.out.println("Escriba el Nombre de la visita, si no lo quiere modificar escriba el mismo nombre");
-            nombre = scanner.nextLine();
-            if (!nombre.equals("")) {
-                bucle = false;
-            } else {
-                System.out.println("Nombre no puede ser vacio");
-            }
-        }
-        scanner = new Scanner(System.in);
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba el numero maximo de clientes, si no lo quiere modificar escriba el mismo nombre");
-            try {
-                n_max_cli = scanner.nextInt();
-                if (n_max_cli > 0) {
+            scanner = new Scanner(System.in);
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba el punto de partida, si no lo quiere modificar escriba el mismo nombre");
+                punto_partida = scanner.nextLine();
+                if (!punto_partida.equals("")) {
                     bucle = false;
                 } else {
-                    System.out.println("El numero maximo de clientes debe ser mayor de 0, si no lo quiere modificar escriba el mismo nombre");
+                    System.out.println("El punto de partida no puede estar vacio");
                 }
-            } catch (NumberFormatException | InputMismatchException e) {
-                System.out.println("Debes escribir un numero");
             }
-        }
-        scanner = new Scanner(System.in);
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba el punto de partida, si no lo quiere modificar escriba el mismo nombre");
-            punto_partida = scanner.nextLine();
-            if (!punto_partida.equals("")) {
-                bucle = false;
-            } else {
-                System.out.println("El punto de partida no puede estar vacio");
-            }
-        }
-        scanner = new Scanner(System.in);
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba el curso, si no lo quiere modificar escriba el mismo nombre");
-            curso = scanner.nextLine();
-            if (!curso.equals("")) {
-                bucle = false;
-            } else {
-                System.out.println("Curso no puede ser vacio");
-            }
-        }
-        scanner = new Scanner(System.in);
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba la tematica, si no lo quiere modificar escriba el mismo nombre");
-            tematica = scanner.nextLine();
-            if (!tematica.equals("")) {
-                bucle = false;
-            } else {
-                System.out.println("Tematica no puede ser vacio");
-            }
-        }
-        scanner = new Scanner(System.in);
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba el coste, si no lo quiere modificar escriba el mismo nombre");
-            try {
-                coste = scanner.nextDouble();
-                if (coste > 0) {
+            scanner = new Scanner(System.in);
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba el curso, si no lo quiere modificar escriba el mismo nombre");
+                curso = scanner.nextLine();
+                if (!curso.equals("")) {
                     bucle = false;
                 } else {
-                    System.out.println("El coste debe ser mayor de 0");
+                    System.out.println("Curso no puede ser vacio");
                 }
-            } catch (NumberFormatException | InputMismatchException e) {
-                System.out.println("Debes escribir un numero");
             }
-        }
-        scanner = new Scanner(System.in);
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba el horario, si no lo quiere modificar escriba el mismo nombre");
-            horario = scanner.nextLine();
-            Pattern pat = Pattern.compile("^([01]?[0-9]|2[0-3]):[0-5][0-9]$");
-            Matcher mat = pat.matcher(horario);
-            if (mat.matches()) {
-                bucle = false;
-            } else {
-                System.out.println("El formato escrito no es correcto, el formato es 24h");
+            scanner = new Scanner(System.in);
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba la tematica, si no lo quiere modificar escriba el mismo nombre");
+                tematica = scanner.nextLine();
+                if (!tematica.equals("")) {
+                    bucle = false;
+                } else {
+                    System.out.println("Tematica no puede ser vacio");
+                }
             }
-        }
-        scanner = new Scanner(System.in);
-        System.out.println("Escriba Y si quiere modificar el lugar, le lleva al menu indicado");
-        if (scanner.nextLine().equalsIgnoreCase("Y") || lugares.size() == 0) {
-            if (lugares.size() == 0) {
-                System.out.println("No existen lugares para poder añadir, llevando al menu de crear lugares");
-                lugarid = crear_lugar(scanner);
-            } else {
-                lugarid = añadir_lugar(scanner);
+            scanner = new Scanner(System.in);
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba el coste, si no lo quiere modificar escriba el mismo nombre");
+                try {
+                    coste = scanner.nextDouble();
+                    if (coste > 0) {
+                        bucle = false;
+                    } else {
+                        System.out.println("El coste debe ser mayor de 0");
+                    }
+                } catch (NumberFormatException | InputMismatchException e) {
+                    System.out.println("Debes escribir un numero");
+                }
             }
-        }
-        System.out.println("Datos de la nueva visita guiada: \n" +
-                "Nombre: " + nombre + "\n" +
-                "Numero maximo de clientes: " + n_max_cli + "\n" +
-                "Punto de partida: " + punto_partida + "\n" +
-                "Curso: " + curso + "\n" +
-                "Tematica: " + tematica + "\n" +
-                "Coste: " + coste + "\n" +
-                "Horario: " + horario
-        );
-        System.out.println("Lugar\n" +
-                "Lugar: " + lugares.get(lugarid).getLugar() + "\n" +
-                "Nacionalidad: " + lugares.get(lugarid).getNacionalidad());
-        System.out.println("Es correcto? y/N");
-        scanner = new Scanner(System.in);
-        String comprobacion = scanner.nextLine();
-        if (comprobacion.equalsIgnoreCase("y")) {
-            System.out.println("Modificando visita guiada");
-            lugares.get(visitasguiadas.get(N_visita).getLugar()).borrar_visita(N_visita);
-            VisitaGuiada visita = visitasguiadas.get(N_visita);
-            visita.setNombre(nombre);
-            visita.setN_max_cli(n_max_cli);
-            visita.setPunto_partida(punto_partida);
-            visita.setCurso(curso);
-            visita.setTematica(tematica);
-            visita.setCoste(coste);
-            visita.setHorario(horario);
-            visita.setLugar(lugarid);
-            visitasguiadas.put(N_visita, visita);
-            lugares.get(lugarid).setVisitas(N_visita);
-            if (opcion.equals("dat")) {
-                DAT.guardar_visitas_guiadas(visitasguiadas);
-                DAT.guardar_lugar(lugares);
+            scanner = new Scanner(System.in);
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba el horario, si no lo quiere modificar escriba el mismo nombre");
+                horario = scanner.nextLine();
+                Pattern pat = Pattern.compile("^([01]?[0-9]|2[0-3]):[0-5][0-9]$");
+                Matcher mat = pat.matcher(horario);
+                if (mat.matches()) {
+                    bucle = false;
+                } else {
+                    System.out.println("El formato escrito no es correcto, el formato es 24h");
+                }
+            }
+            scanner = new Scanner(System.in);
+            System.out.println("Escriba Y si quiere modificar el lugar, le lleva al menu indicado");
+            if (scanner.nextLine().equalsIgnoreCase("Y") || lugares.size() == 0) {
+                if (lugares.size() == 0) {
+                    System.out.println("No existen lugares para poder añadir, llevando al menu de crear lugares");
+                    lugarid = crear_lugar(scanner);
+                } else {
+                    lugarid = añadir_lugar(scanner);
+                }
+            }
+            System.out.println("Datos de la nueva visita guiada: \n" +
+                    "Nombre: " + nombre + "\n" +
+                    "Numero maximo de clientes: " + n_max_cli + "\n" +
+                    "Punto de partida: " + punto_partida + "\n" +
+                    "Curso: " + curso + "\n" +
+                    "Tematica: " + tematica + "\n" +
+                    "Coste: " + coste + "\n" +
+                    "Horario: " + horario
+            );
+            System.out.println("Lugar\n" +
+                    "Lugar: " + lugares.get(lugarid).getLugar() + "\n" +
+                    "Nacionalidad: " + lugares.get(lugarid).getNacionalidad());
+            System.out.println("Es correcto? y/N");
+            scanner = new Scanner(System.in);
+            String comprobacion = scanner.nextLine();
+            if (comprobacion.equalsIgnoreCase("y")) {
+                System.out.println("Modificando visita guiada");
+                lugares.get(visitasguiadas.get(N_visita).getLugar()).borrar_visita(N_visita);
+                VisitaGuiada visita = visitasguiadas.get(N_visita);
+                visita.setNombre(nombre);
+                visita.setN_max_cli(n_max_cli);
+                visita.setPunto_partida(punto_partida);
+                visita.setCurso(curso);
+                visita.setTematica(tematica);
+                visita.setCoste(coste);
+                visita.setHorario(horario);
+                visita.setLugar(lugarid);
+                visitasguiadas.put(N_visita, visita);
+                lugares.get(lugarid).setVisitas(N_visita);
+                if (opcion.equals("dat")) {
+                    DAT.guardar_visitas_guiadas(visitasguiadas);
+                    DAT.guardar_lugar(lugares);
+                } else {
+                    XML.guardar_visitas_guiadas(visitasguiadas);
+                    XML.guardar_lugar(lugares);
+                }
             } else {
-                XML.guardar_visitas_guiadas(visitasguiadas);
-                XML.guardar_lugar(lugares);
+                System.out.println("Cancelando operación, redirigiendo al menu");
             }
         } else {
-            System.out.println("Cancelando operación, redirigiendo al menu");
+            System.out.println("No existen visitas que modificar");
         }
     }
 
     public static void modificar_empleado(Scanner scanner) {
         listar_empleados();
-        boolean bucle = true;
-        String empleado_DNI = "";
-        while (bucle) {
-            scanner = new Scanner(System.in);
-            System.out.println("Escriba el DNI del empleado que quiere modificar");
-            empleado_DNI = scanner.nextLine();
-            Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
-            Matcher mat = pat.matcher(empleado_DNI);
-            if (mat.matches()) {
-                bucle = false;
-            } else {
-                System.out.println("DNI: " + empleado_DNI + " incorrecto");
-            }
-        }
-        String DNI = "";
-        String nombre = "";
-        String apellido = "";
-        String fecha_nac = "";
-        String fecha_cont;
-        String nacionalidad = "";
-        String cargo = "";
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba el nuevo DNI del empleado, si no quiere cambiarlo escriba el mismo");
-            scanner = new Scanner(System.in);
-            DNI = scanner.nextLine();
-            Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
-            Matcher mat = pat.matcher(DNI);
-            if (mat.matches()) {
-                bucle = false;
-            } else {
-                System.out.println("DNI: " + DNI + " incorrecto");
-            }
-        }
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba el nuevo Nombre del empleado, si no quiere cambiarlo escriba el mismo");
-            scanner = new Scanner(System.in);
-            nombre = scanner.nextLine();
-            if (!nombre.equals("")) {
-                bucle = false;
-            } else {
-                System.out.println("Nombre no puede ser vacio");
-            }
-        }
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba el nuevo Apellido del empleado, si no quiere cambiarlo escriba el mismo");
-            scanner = new Scanner(System.in);
-            apellido = scanner.nextLine();
-            if (!apellido.equals("")) {
-                bucle = false;
-            } else {
-                System.out.println("Apellido no puede ser vacio");
-            }
-        }
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba la nueva fecha de nacimiento del empleado, si no quiere cambiarlo escriba el mismo");
-            scanner = new Scanner(System.in);
-            fecha_nac = scanner.nextLine();
-            Pattern pat = Pattern.compile("^([0-2][0-9]||3[0-1])-(0[0-9]||1[0-2])-([0-9][0-9])?[0-9][0-9]$");
-            Matcher mat = pat.matcher(fecha_nac);
-            if (mat.matches()) {
-                bucle = false;
-            } else {
-                System.out.println("Formato de fecha no permitido, formato permitido: dd-mm-yyyy");
-            }
-        }
-        fecha_cont = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba la nueva nacionalidad del empleado, si no quiere cambiarlo escriba el mismo");
-            scanner = new Scanner(System.in);
-            nacionalidad = scanner.nextLine();
-            if (!nacionalidad.equals("")) {
-                bucle = false;
-            } else {
-                System.out.println("Nacionalidad no puede ser vacio");
-            }
-        }
-        bucle = true;
-        while (bucle) {
-            System.out.println("Escriba el nuevo cargo del empleado, si no quiere cambiarlo escriba el mismo");
-            scanner = new Scanner(System.in);
-            cargo = scanner.nextLine();
-            if (!cargo.equals("")) {
-                bucle = false;
-            } else {
-                System.out.println("Cargo no puede ser vacio");
-            }
-        }
-        System.out.println("Datos del empeleado modificado: \n" +
-                "DNI: " + DNI + "\n" +
-                "Nombre: " + nombre + "\n" +
-                "Apellido: " + apellido + "\n" +
-                "Fecha nacimiento: " + fecha_nac + "\n" +
-                "Fecha contratación: " + fecha_cont + "\n" +
-                "Nacionalidad: " + nacionalidad + "\n" +
-                "Cargo: " + cargo + "\n"
-
-        );
-        System.out.println("Es correcto? y/N");
-        scanner = new Scanner(System.in);
-        String comprobacion = scanner.nextLine();
-        if (comprobacion.equalsIgnoreCase("y")) {
-            System.out.println("Modificando empleado");
-            Empleado empleado = empleados.get(empleado_DNI);
-            empleado.setDni(DNI);
-            empleado.setNombre(nombre);
-            empleado.setApellido(apellido);
-            empleado.setFecha_Nac(fecha_nac);
-            empleado.setFecha_cont(fecha_cont);
-            empleado.setNacionalidad(nacionalidad);
-            empleado.setCargo(cargo);
-            for (VisitaGuiada visita : visitasguiadas.values()) {
-                if (visita.getEmpleado().equals(empleado_DNI)) {
-                    visita.setEmpleado(DNI);
+        if (empleados.size() != 0) {
+            boolean bucle = true;
+            String empleado_DNI = "";
+            while (bucle) {
+                scanner = new Scanner(System.in);
+                System.out.println("Escriba el DNI del empleado que quiere modificar");
+                empleado_DNI = scanner.nextLine();
+                Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
+                Matcher mat = pat.matcher(empleado_DNI);
+                if (mat.matches()) {
+                    bucle = false;
+                } else {
+                    System.out.println("DNI: " + empleado_DNI + " incorrecto");
                 }
             }
-            empleados.remove(empleado_DNI);
-            empleados.put(empleado.getDni(), empleado);
-            if (opcion.equals("dat")) {
-                DAT.guardar_visitas_guiadas(visitasguiadas);
-                DAT.guardar_empleados(empleados);
+            String DNI = "";
+            String nombre = "";
+            String apellido = "";
+            String fecha_nac = "";
+            String fecha_cont;
+            String nacionalidad = "";
+            String cargo = "";
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba el nuevo DNI del empleado, si no quiere cambiarlo escriba el mismo");
+                scanner = new Scanner(System.in);
+                DNI = scanner.nextLine();
+                Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
+                Matcher mat = pat.matcher(DNI);
+                if (mat.matches()) {
+                    bucle = false;
+                } else {
+                    System.out.println("DNI: " + DNI + " incorrecto");
+                }
+            }
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba el nuevo Nombre del empleado, si no quiere cambiarlo escriba el mismo");
+                scanner = new Scanner(System.in);
+                nombre = scanner.nextLine();
+                if (!nombre.equals("")) {
+                    bucle = false;
+                } else {
+                    System.out.println("Nombre no puede ser vacio");
+                }
+            }
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba el nuevo Apellido del empleado, si no quiere cambiarlo escriba el mismo");
+                scanner = new Scanner(System.in);
+                apellido = scanner.nextLine();
+                if (!apellido.equals("")) {
+                    bucle = false;
+                } else {
+                    System.out.println("Apellido no puede ser vacio");
+                }
+            }
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba la nueva fecha de nacimiento del empleado, si no quiere cambiarlo escriba el mismo");
+                scanner = new Scanner(System.in);
+                fecha_nac = scanner.nextLine();
+                Pattern pat = Pattern.compile("^([0-2][0-9]||3[0-1])-(0[0-9]||1[0-2])-([0-9][0-9])?[0-9][0-9]$");
+                Matcher mat = pat.matcher(fecha_nac);
+                if (mat.matches()) {
+                    bucle = false;
+                } else {
+                    System.out.println("Formato de fecha no permitido, formato permitido: dd-mm-yyyy");
+                }
+            }
+            fecha_cont = LocalDate.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy"));
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba la nueva nacionalidad del empleado, si no quiere cambiarlo escriba el mismo");
+                scanner = new Scanner(System.in);
+                nacionalidad = scanner.nextLine();
+                if (!nacionalidad.equals("")) {
+                    bucle = false;
+                } else {
+                    System.out.println("Nacionalidad no puede ser vacio");
+                }
+            }
+            bucle = true;
+            while (bucle) {
+                System.out.println("Escriba el nuevo cargo del empleado, si no quiere cambiarlo escriba el mismo");
+                scanner = new Scanner(System.in);
+                cargo = scanner.nextLine();
+                if (!cargo.equals("")) {
+                    bucle = false;
+                } else {
+                    System.out.println("Cargo no puede ser vacio");
+                }
+            }
+            System.out.println("Datos del empeleado modificado: \n" +
+                    "DNI: " + DNI + "\n" +
+                    "Nombre: " + nombre + "\n" +
+                    "Apellido: " + apellido + "\n" +
+                    "Fecha nacimiento: " + fecha_nac + "\n" +
+                    "Fecha contratación: " + fecha_cont + "\n" +
+                    "Nacionalidad: " + nacionalidad + "\n" +
+                    "Cargo: " + cargo + "\n"
+
+            );
+            System.out.println("Es correcto? y/N");
+            scanner = new Scanner(System.in);
+            String comprobacion = scanner.nextLine();
+            if (comprobacion.equalsIgnoreCase("y")) {
+                System.out.println("Modificando empleado");
+                Empleado empleado = empleados.get(empleado_DNI);
+                empleado.setDni(DNI);
+                empleado.setNombre(nombre);
+                empleado.setApellido(apellido);
+                empleado.setFecha_Nac(fecha_nac);
+                empleado.setFecha_cont(fecha_cont);
+                empleado.setNacionalidad(nacionalidad);
+                empleado.setCargo(cargo);
+                for (VisitaGuiada visita : visitasguiadas.values()) {
+                    if (visita.getEmpleado().equals(empleado_DNI)) {
+                        visita.setEmpleado(DNI);
+                    }
+                }
+                empleados.remove(empleado_DNI);
+                empleados.put(empleado.getDni(), empleado);
+                if (opcion.equals("dat")) {
+                    DAT.guardar_visitas_guiadas(visitasguiadas);
+                    DAT.guardar_empleados(empleados);
+                } else {
+                    XML.guardar_visitas_guiadas(visitasguiadas);
+                    XML.guardar_empleados(empleados);
+                }
             } else {
-                XML.guardar_visitas_guiadas(visitasguiadas);
-                XML.guardar_empleados(empleados);
+                System.out.println("Cancelando operación, redirigiendo al menu");
             }
         } else {
-            System.out.println("Cancelando operación, redirigiendo al menu");
+            System.out.println("No existen empleados que modificar");
         }
-    }
-
-    public static void mostar_metadatos() {
-    }
-
-    public static void visualizar_datos_agencia() {
     }
 
     public static Integer añadir_lugar(Scanner scanner) {
         boolean bucle = true;
         int id = 0;
+        if (lugares.size() == 0) {
+            id = crear_lugar(scanner);
+        }
         for (Lugar lugar : lugares.values()) {
             System.out.println("ID: " + lugar.getId());
             System.out.println("Lugar: " + lugar.getLugar());

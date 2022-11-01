@@ -19,13 +19,17 @@ public class XML {
             xstream.alias("Clientes", ListaClientes.class);
             xstream.alias("Cliente", Cliente.class);
             xstream.addImplicitCollection(ListaClientes.class, "lista");
-            ListaClientes listadoTodas = (ListaClientes) xstream.fromXML(new FileInputStream("src/Ficheros_XML/cliente.xml"));
-            List<Cliente> listaPersonas;
-            listaPersonas = listadoTodas.getClientes();
-            for (Cliente p : listaPersonas) {
-                clientes.put(p.getDni(), p);
+            FileInputStream fichero = new FileInputStream("src/Ficheros_XML/cliente.xml");
+            BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/cliente.xml"));
+            if (br.readLine() != null) {
+                ListaClientes listadoTodas = (ListaClientes) xstream.fromXML(fichero);
+                List<Cliente> listaPersonas;
+                listaPersonas = listadoTodas.getClientes();
+                for (Cliente p : listaPersonas) {
+                    clientes.put(p.getDni(), p);
+                }
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return clientes;
@@ -39,13 +43,17 @@ public class XML {
             xstream.alias("VisitasGuiadas", ListaVisitaGuiada.class);
             xstream.alias("VisitaGuiada", VisitaGuiada.class);
             xstream.addImplicitCollection(ListaVisitaGuiada.class, "lista");
-            ListaVisitaGuiada listadoTodas = (ListaVisitaGuiada) xstream.fromXML(new FileInputStream("src/Ficheros_XML/visitaGuiada.xml"));
-            List<VisitaGuiada> listaPersonas;
-            listaPersonas = listadoTodas.getVisitaGuiadas();
-            for (VisitaGuiada p : listaPersonas) {
-                visitaguiadas.put(p.getN_visita(), p);
+            FileInputStream fichero = new FileInputStream("src/Ficheros_XML/visitaGuiada.xml");
+            BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/visitaGuiada.xml"));
+            if (br.readLine() != null) {
+                ListaVisitaGuiada listadoTodas = (ListaVisitaGuiada) xstream.fromXML(fichero);
+                List<VisitaGuiada> listaPersonas;
+                listaPersonas = listadoTodas.getVisitaGuiadas();
+                for (VisitaGuiada p : listaPersonas) {
+                    visitaguiadas.put(p.getN_visita(), p);
+                }
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return visitaguiadas;
@@ -59,13 +67,17 @@ public class XML {
             xstream.alias("Empleados", ListaEmpleados.class);
             xstream.alias("Empleado", Empleado.class);
             xstream.addImplicitCollection(ListaEmpleados.class, "lista");
-            ListaEmpleados listadoTodas = (ListaEmpleados) xstream.fromXML(new FileInputStream("src/Ficheros_XML/empleado.xml"));
-            List<Empleado> listaPersonas;
-            listaPersonas = listadoTodas.getEmpleados();
-            for (Empleado p : listaPersonas) {
-                empleados.put(p.getDni(), p);
+            FileInputStream fichero = new FileInputStream("src/Ficheros_XML/empleado.xml");
+            BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/empleado.xml"));
+            if (br.readLine() != null) {
+                ListaEmpleados listadoTodas = (ListaEmpleados) xstream.fromXML(fichero);
+                List<Empleado> listaPersonas;
+                listaPersonas = listadoTodas.getEmpleados();
+                for (Empleado p : listaPersonas) {
+                    empleados.put(p.getDni(), p);
+                }
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return empleados;
@@ -79,13 +91,17 @@ public class XML {
             xstream.alias("Lugares", ListaLugares.class);
             xstream.alias("Lugar", Lugar.class);
             xstream.addImplicitCollection(ListaLugares.class, "lista");
-            ListaLugares listadoTodas = (ListaLugares) xstream.fromXML(new FileInputStream("src/Ficheros_XML/lugar.xml"));
-            List<Lugar> listaPersonas;
-            listaPersonas = listadoTodas.getLugares();
-            for (Lugar p : listaPersonas) {
-                lugares.put(p.getId(), p);
+            FileInputStream fichero = new FileInputStream("src/Ficheros_XML/lugar.xml");
+            BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/lugar.xml"));
+            if (br.readLine() != null) {
+                ListaLugares listadoTodas = (ListaLugares) xstream.fromXML(fichero);
+                List<Lugar> listaPersonas;
+                listaPersonas = listadoTodas.getLugares();
+                for (Lugar p : listaPersonas) {
+                    lugares.put(p.getId(), p);
+                }
             }
-        } catch (FileNotFoundException e) {
+        } catch (IOException e) {
             throw new RuntimeException(e);
         }
         return lugares;
