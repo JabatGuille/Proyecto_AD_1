@@ -1,3 +1,9 @@
+import Conexiones.XML;
+import Objetos.Cliente;
+import Objetos.Empleado;
+import Objetos.Lugar;
+import Objetos.VisitaGuiada;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -5,13 +11,6 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import Conexiones.DAT;
-import Conexiones.XML;
-import Objetos.Cliente;
-import Objetos.Empleado;
-import Objetos.Lugar;
-import Objetos.VisitaGuiada;
 
 public class Main {
     public static String borrado = "Borrado";
@@ -25,29 +24,11 @@ public class Main {
         boolean bucle = true;
         String menu;
         Scanner scanner = new Scanner(System.in);
-        while (bucle) {
-            scanner = new Scanner(System.in);
-            System.out.println("Escribe dat si quieres el programa usando ficheros .dat\nEscribre XML si quieres el programa usando ficheros XML");
-            opcion = scanner.nextLine();
-            if (opcion.equalsIgnoreCase("dat")) {
-                opcion = "dat";
-                clientes = DAT.recuperar_clientes();
-                empleados = DAT.recuperar_empleados();
-                visitasguiadas = DAT.recuperar_visitas_guiadas();
-                lugares = DAT.recuperar_lugar();
-                bucle = false;
-            } else if (opcion.equalsIgnoreCase("XML")) {
-                opcion = "XML";
-                clientes = XML.recuperar_clientes();
-                empleados = XML.recuperar_empleados();
-                visitasguiadas = XML.recuperar_visitas_guiadas();
-                lugares = XML.recuperar_lugar();
-                bucle = false;
-            } else {
-                System.out.println("Opcion no posible");
-            }
-        }
-        bucle = true;
+        scanner = new Scanner(System.in);
+        clientes = XML.recuperar_clientes();
+        empleados = XML.recuperar_empleados();
+        visitasguiadas = XML.recuperar_visitas_guiadas();
+        lugares = XML.recuperar_lugar();
         while (bucle) {
             scanner = new Scanner(System.in);
             System.out.println("Escriba un numero para la opcion del menu:\n" +
@@ -71,17 +52,10 @@ public class Main {
                 }
                 case "4": {
                     System.out.println("Saliendo de la aplicación");
-                    if (opcion.equalsIgnoreCase("dat")) {
-                        DAT.guardar_visitas_guiadas(visitasguiadas);
-                        DAT.guardar_clientes(clientes);
-                        DAT.guardar_lugar(lugares);
-                        DAT.guardar_empleados(empleados);
-                    } else {
-                        XML.guardar_visitas_guiadas(visitasguiadas);
-                        XML.guardar_clientes(clientes);
-                        XML.guardar_empleados(empleados);
-                        XML.guardar_lugar(lugares);
-                    }
+                    XML.guardar_visitas_guiadas(visitasguiadas);
+                    XML.guardar_clientes(clientes);
+                    XML.guardar_empleados(empleados);
+                    XML.guardar_lugar(lugares);
                     bucle = false;
                     break;
                 }
@@ -191,13 +165,8 @@ public class Main {
                             System.out.println("Añadiendo empleado a la visita");
                             visitasguiadas.get(N_visita).setEmpleado(DNI);
                             empleados.get(DNI).setVisitas(N_visita);
-                            if (opcion.equals("dat")) {
-                                DAT.guardar_visitas_guiadas(visitasguiadas);
-                                DAT.guardar_clientes(clientes);
-                            } else {
-                                XML.guardar_visitas_guiadas(visitasguiadas);
-                                XML.guardar_empleados(empleados);
-                            }
+                            XML.guardar_visitas_guiadas(visitasguiadas);
+                            XML.guardar_empleados(empleados);
                         } else {
                             System.out.println("El DNI no existe " + DNI);
                         }
@@ -227,13 +196,8 @@ public class Main {
                             System.out.println("Añadiendo cliente");
                             clientes.get(DNI).setVisitas(N_visita);
                             visitasguiadas.get(N_visita).setClientes(DNI);
-                            if (opcion.equals("dat")) {
-                                DAT.guardar_visitas_guiadas(visitasguiadas);
-                                DAT.guardar_clientes(clientes);
-                            } else {
-                                XML.guardar_visitas_guiadas(visitasguiadas);
-                                XML.guardar_clientes(clientes);
-                            }
+                            XML.guardar_visitas_guiadas(visitasguiadas);
+                            XML.guardar_clientes(clientes);
                         }
                     } else {
                         System.out.println("DNI: " + DNI + " incorrecto");
@@ -566,17 +530,13 @@ public class Main {
             int visitaid = visitasguiadas.size();
             visitasguiadas.put(visitaid, new VisitaGuiada(visitaid, nombre, n_max_cli, punto_partida, curso, tematica, coste, lugarid, horario, ""));
             lugares.get(lugarid).setVisitas(visitaid);
-            if (opcion.equals("dat")) {
-                DAT.guardar_visitas_guiadas(visitasguiadas);
-                DAT.guardar_lugar(lugares);
-            } else {
-                XML.guardar_visitas_guiadas(visitasguiadas);
-                XML.guardar_lugar(lugares);
-            }
+            XML.guardar_visitas_guiadas(visitasguiadas);
+            XML.guardar_lugar(lugares);
         } else {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
     }
+
     public static int seleccionar_lugar(Scanner scanner) {
         scanner = new Scanner(System.in);
         boolean bucle = true;
@@ -634,11 +594,7 @@ public class Main {
         }
         id = lugares.size();
         lugares.put(id, new Lugar(id, nlugar, nacionalidad));
-        if (opcion.equals("dat")) {
-            DAT.guardar_lugar(lugares);
-        } else {
-            XML.guardar_lugar(lugares);
-        }
+        XML.guardar_lugar(lugares);
         bucle = false;
         return id;
     }
@@ -661,17 +617,10 @@ public class Main {
                     for (Lugar lugar : lugares.values()) {
                         lugar.getVisitas().remove(numero);
                     }
-                    if (opcion.equals("dat")) {
-                        DAT.guardar_visitas_guiadas(visitasguiadas);
-                        DAT.guardar_lugar(lugares);
-                        DAT.guardar_clientes(clientes);
-                        DAT.guardar_empleados(empleados);
-                    } else {
-                        XML.guardar_visitas_guiadas(visitasguiadas);
-                        XML.guardar_lugar(lugares);
-                        XML.guardar_clientes(clientes);
-                        XML.guardar_empleados(empleados);
-                    }
+                    XML.guardar_visitas_guiadas(visitasguiadas);
+                    XML.guardar_lugar(lugares);
+                    XML.guardar_clientes(clientes);
+                    XML.guardar_empleados(empleados);
                     System.out.println("Borrando visita");
                 } else {
                     System.out.println("Ese numero no esta en la lista de visitas guiadas");
@@ -779,11 +728,7 @@ public class Main {
         if (comprobación.equalsIgnoreCase("y")) {
             System.out.println("Creando empleado");
             empleados.put(DNI, new Empleado(DNI, nombre, apellido, fecha_nac, fecha_cont, nacionalidad, cargo, ""));
-            if (opcion.equals("dat")) {
-                DAT.guardar_empleados(empleados);
-            } else {
-                XML.guardar_empleados(empleados);
-            }
+            XML.guardar_empleados(empleados);
         } else {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
@@ -802,13 +747,8 @@ public class Main {
                         v.setEmpleado(null);
                     }
                 }
-                if (opcion.equals("dat")) {
-                    DAT.guardar_visitas_guiadas(visitasguiadas);
-                    DAT.guardar_empleados(empleados);
-                } else {
-                    XML.guardar_visitas_guiadas(visitasguiadas);
-                    XML.guardar_empleados(empleados);
-                }
+                XML.guardar_visitas_guiadas(visitasguiadas);
+                XML.guardar_empleados(empleados);
                 System.out.println("Borrando empleado");
             } else {
                 System.out.println("El DNI escrito no esta en la lista");
@@ -898,11 +838,7 @@ public class Main {
         if (comprobacion.equalsIgnoreCase("y")) {
             System.out.println("Creando usuario");
             clientes.put(DNI, new Cliente(DNI, nombre, apellido, edad, profesion, ""));
-            if (opcion.equals("dat")) {
-                DAT.guardar_clientes(clientes);
-            } else {
-                XML.guardar_clientes(clientes);
-            }
+            XML.guardar_clientes(clientes);
         } else {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
@@ -919,13 +855,8 @@ public class Main {
                 for (VisitaGuiada v : visitasguiadas.values()) {
                     v.getClientes().remove(dni);
                 }
-                if (opcion.equals("dat")) {
-                    DAT.guardar_visitas_guiadas(visitasguiadas);
-                    DAT.guardar_clientes(clientes);
-                } else {
-                    XML.guardar_visitas_guiadas(visitasguiadas);
-                    XML.guardar_clientes(clientes);
-                }
+                XML.guardar_visitas_guiadas(visitasguiadas);
+                XML.guardar_clientes(clientes);
                 System.out.println("Borrando usuario");
             } else {
                 System.out.println("El DNI escrito no esta en la lista");
@@ -1051,13 +982,8 @@ public class Main {
                 }
                 clientes.remove(cliente_dni);
                 clientes.put(cliente.getDni(), cliente);
-                if (opcion.equals("dat")) {
-                    DAT.guardar_visitas_guiadas(visitasguiadas);
-                    DAT.guardar_clientes(clientes);
-                } else {
-                    XML.guardar_visitas_guiadas(visitasguiadas);
-                    XML.guardar_clientes(clientes);
-                }
+                XML.guardar_visitas_guiadas(visitasguiadas);
+                XML.guardar_clientes(clientes);
             } else {
                 System.out.println("Cancelando operación, redirigiendo al menu");
             }
@@ -1223,13 +1149,8 @@ public class Main {
                 visita.setLugar(lugarid);
                 visitasguiadas.put(N_visita, visita);
                 lugares.get(lugarid).setVisitas(N_visita);
-                if (opcion.equals("dat")) {
-                    DAT.guardar_visitas_guiadas(visitasguiadas);
-                    DAT.guardar_lugar(lugares);
-                } else {
                     XML.guardar_visitas_guiadas(visitasguiadas);
                     XML.guardar_lugar(lugares);
-                }
             } else {
                 System.out.println("Cancelando operación, redirigiendo al menu");
             }
@@ -1363,13 +1284,8 @@ public class Main {
                 }
                 empleados.remove(empleado_DNI);
                 empleados.put(empleado.getDni(), empleado);
-                if (opcion.equals("dat")) {
-                    DAT.guardar_visitas_guiadas(visitasguiadas);
-                    DAT.guardar_empleados(empleados);
-                } else {
                     XML.guardar_visitas_guiadas(visitasguiadas);
                     XML.guardar_empleados(empleados);
-                }
             } else {
                 System.out.println("Cancelando operación, redirigiendo al menu");
             }

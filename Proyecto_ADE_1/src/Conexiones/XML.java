@@ -29,8 +29,10 @@ public class XML {
                     clientes.put(p.getDni(), p);
                 }
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error en el fichero");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error en la lectura");
         }
         return clientes;
     }
@@ -53,8 +55,10 @@ public class XML {
                     visitaguiadas.put(p.getN_visita(), p);
                 }
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error en el fichero");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error en la lectura");
         }
         return visitaguiadas;
     }
@@ -77,8 +81,10 @@ public class XML {
                     empleados.put(p.getDni(), p);
                 }
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error en el fichero");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error en la lectura");
         }
         return empleados;
     }
@@ -101,8 +107,10 @@ public class XML {
                     lugares.put(p.getId(), p);
                 }
             }
+        } catch (FileNotFoundException e) {
+            System.out.println("Error en el fichero");
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error en la lectura");
         }
         return lugares;
     }
@@ -116,8 +124,8 @@ public class XML {
             ListaClientes listaper = new ListaClientes();
             listaper.lista = new ArrayList<>(clientes.values());
             xstream.toXML(listaper, new FileOutputStream("src/Ficheros_XML/cliente.xml"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (FileNotFoundException e) {
+            System.out.println("Error en el fichero");
         }
     }
 
@@ -130,8 +138,8 @@ public class XML {
             ListaVisitaGuiada listaper = new ListaVisitaGuiada();
             listaper.lista = new ArrayList<>(visitaguiadas.values());
             xstream.toXML(listaper, new FileOutputStream("src/Ficheros_XML/visitaGuiada.xml"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (FileNotFoundException e) {
+            System.out.println("Error en el fichero");
         }
 
     }
@@ -145,8 +153,8 @@ public class XML {
             ListaEmpleados listaper = new ListaEmpleados();
             listaper.lista = new ArrayList<>(empleados.values());
             xstream.toXML(listaper, new FileOutputStream("src/Ficheros_XML/empleado.xml"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (FileNotFoundException e) {
+            System.out.println("Error en el fichero");
         }
     }
 
@@ -159,45 +167,9 @@ public class XML {
             ListaLugares listaper = new ListaLugares();
             listaper.lista = new ArrayList<>(lugares.values());
             xstream.toXML(listaper, new FileOutputStream("src/Ficheros_XML/lugar.xml"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+        } catch (FileNotFoundException e) {
+            System.out.println("Error en el fichero");
         }
     }
-
-   /* public static void main(String[] args) {
-        HashMap<String, Cliente> clientes = new HashMap<>();
-        HashMap<String, Empleado> empleados = new HashMap<>();
-        HashMap<Integer, VisitaGuiada> visitasguiadas = new HashMap<>();
-        HashMap<Integer, Lugar> lugares = new HashMap<>();
-        for (int i = 0; i < 5; i++) {
-            Cliente cliente = new Cliente("DNI" + i, "Nombre", "Apellido", 12, "Profesion","");
-            cliente.setVisitas(i);
-            clientes.put(cliente.getDni(), cliente);
-        }
-        for (int i = 0; i < 5; i++) {
-            Empleado empleado = new Empleado("DNI" + i, "Nombre", "Apellido", "fecha_NAC", "fecha_cont", "Nacionalidad", "Cargo","");
-            empleado.setVisitas(i);
-            empleados.put(empleado.getDni(), empleado);
-        }
-        for (int i = 0; i < 5; i++) {
-            VisitaGuiada visitaGuiada = new VisitaGuiada(i, "Nombre", 12, "Punto partida", "Curso", "Tematica", 12.0, i, "12","");
-            visitaGuiada.setEmpleado("DNI"+i);
-            visitaGuiada.setLugar(i);
-            visitaGuiada.setClientes("DNI" + i);
-            visitasguiadas.put(visitaGuiada.getN_visita(), visitaGuiada);
-
-        }
-        for (int i = 0; i < 5; i++) {
-            Lugar lugar = new Lugar(i, "Lugar", "Nacionalidad");
-            lugar.setVisitas(i);
-            lugares.put(lugar.getId(), lugar);
-        }
-        guardar_clientes(clientes);
-        guardar_empleados(empleados);
-        guardar_visitas_guiadas(visitasguiadas);
-        guardar_lugar(lugares);
-
-    }
-*/
 }
 
