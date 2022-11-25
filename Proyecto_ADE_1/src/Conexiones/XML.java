@@ -193,7 +193,7 @@ public class XML {
             DatabaseManager.registerDatabase(database); //Registro del driver
             Collection col = DatabaseManager.getCollection(URI, user, pass);
             System.out.println(Arrays.toString(col.listResources()));
-            System.out.println(col.);
+            System.out.println(col.getChildCollectionCount());
         } catch (XMLDBException e) {
             System.out.println("Error al inicializar la BD eXist.");
             //e.printStackTrace();
