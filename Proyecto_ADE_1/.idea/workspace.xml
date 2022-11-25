@@ -5,16 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="09f89609-7619-412f-abe0-981dfc63f17d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Conexiones/DAT.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/Proyecto_ADE_1.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Proyecto_ADE_1.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Conexiones/XML.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Conexiones/XML.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Ficheros_DAT/cliente.dat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Ficheros_DAT/empleado.dat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Ficheros_DAT/lugar.dat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Ficheros_DAT/visitaGuiada.dat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,20 +33,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW&quot;: &quot;true&quot;,
-    &quot;UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH&quot;: &quot;207&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Guillermo/IdeaProjects/Ejercicios_PSP_Socket&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW": "true",
+    "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH": "207",
+    "last_opened_file_path": "C:/Users/Guillermo/Desktop/ProyetoADE/JAR/xqjapi.jar",
+    "project.structure.last.edited": "Libraries",
+    "project.structure.proportion": "0.15",
+    "project.structure.side.proportion": "0.2"
   }
-}</component>
-  <component name="RunManager" selected="Application.Main">
+}]]></component>
+  <component name="RunManager" selected="Application.XML">
     <configuration name="DAT" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Conexiones.DAT" />
       <module name="Proyecto_ADE_1" />
@@ -115,8 +108,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Application.Main" />
         <item itemvalue="Application.XML" />
+        <item itemvalue="Application.Main" />
         <item itemvalue="Application.DAT" />
         <item itemvalue="Application.Vistas.Login" />
         <item itemvalue="Application.Login" />

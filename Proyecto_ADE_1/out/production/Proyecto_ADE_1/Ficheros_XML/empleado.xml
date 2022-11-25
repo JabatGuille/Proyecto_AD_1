@@ -8,6 +8,11 @@
     <nacionalidad>Nacionalidad</nacionalidad>
     <cargo>Cargo</cargo>
     <estado></estado>
-    <visitas__numero/>
+    <visitas__numero>
+      <entry>
+        <int>0</int>
+        <int>0</int>
+      </entry>
+    </visitas__numero>
   </Empleado>
 </Empleados>

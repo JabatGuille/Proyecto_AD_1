@@ -9,8 +9,13 @@
     <coste>200.0</coste>
     <estado></estado>
     <lugar__id>0</lugar__id>
-    <empleado__dni></empleado__dni>
+    <empleado__dni>22222222E</empleado__dni>
     <horario>12:20</horario>
-    <clientes__dni/>
+    <clientes__dni>
+      <entry>
+        <string>11111111E</string>
+        <string>11111111E</string>
+      </entry>
+    </clientes__dni>
   </VisitaGuiada>
 </VisitasGuiadas>

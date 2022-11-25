@@ -3,13 +3,23 @@ package Conexiones;
 import Objetos.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
+import org.xmldb.api.DatabaseManager;
+import org.xmldb.api.base.Collection;
+import org.xmldb.api.base.Database;
+import org.xmldb.api.base.XMLDBException;
 
 import java.io.*;
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class XML {
+
+    private static final String URI = "xmldb:exist://localhost:8080/exist/xmlrpc/Proyecto";
+    private static final String user = "admin";
+    private static final String pass = "1234";
 
     public static HashMap<String, Cliente> recuperar_clientes() {
         HashMap<String, Cliente> clientes = new HashMap<>();
@@ -170,6 +180,39 @@ public class XML {
         } catch (FileNotFoundException e) {
             System.out.println("Error en el fichero");
         }
+
+    }
+
+    public static void conexion() {
+        String driver = "org.exist.xmldb.DatabaseImpl"; //Driver para eXist
+
+
+        try {
+            Class cl = Class.forName(driver); //Cargar del driver
+            Database database = (Database) cl.getDeclaredConstructor().newInstance(); //Instancia de la BD
+            DatabaseManager.registerDatabase(database); //Registro del driver
+            Collection col = DatabaseManager.getCollection(URI, user, pass);
+            System.out.println(Arrays.toString(col.listResources()));
+            System.out.println(col.);
+        } catch (XMLDBException e) {
+            System.out.println("Error al inicializar la BD eXist.");
+            //e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            System.out.println("Error en el driver.");
+            //e.printStackTrace();
+        } catch (InstantiationException | IllegalAccessException e) {
+            System.out.println("Error al instanciar la BBDD.");
+            //e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            System.out.println("Error al instanciar ");
+        } catch (NoSuchMethodException e) {
+            System.out.println("Error en la BBDD");
+        }
+    }
+
+    public static void main(String[] args) {
+        conexion();
     }
 }
+
 

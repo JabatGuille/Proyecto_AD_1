@@ -1,0 +1,19 @@
+<component name="libraryTable">
+  <library name="exist-dependency-xmldb">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/../JAR/_xmlrpc-server-3.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../JAR/exist-xqj-1.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../JAR/exist.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../JAR/log4j-1.2.15.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../JAR/ws-commons-util-1.0.2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../JAR/xml-apis-1.3.04.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../JAR/xmldb.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../JAR/xmlrpc-client-3.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../JAR/xmlrpc-common-3.1.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../JAR/xqj2-0.0.1.jar!/" />
+      <root url="jar://$PROJECT_DIR$/../JAR/xqjapi.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
