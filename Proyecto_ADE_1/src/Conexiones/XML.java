@@ -4,22 +4,21 @@ import Objetos.*;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.xmldb.api.DatabaseManager;
-import org.xmldb.api.base.Collection;
-import org.xmldb.api.base.Database;
-import org.xmldb.api.base.XMLDBException;
+import org.xmldb.api.base.*;
+import org.xmldb.api.modules.XPathQueryService;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
 public class XML {
 
-    private static final String URI = "xmldb:exist://localhost:8080/exist/xmlrpc/Proyecto";
+    private static final String URI = "xmldb:exist://localhost:8080/exist/xmlrpc/db/Proyecto";
     private static final String user = "admin";
     private static final String pass = "1234";
+    private static Collection col = null;
 
     public static HashMap<String, Cliente> recuperar_clientes() {
         HashMap<String, Cliente> clientes = new HashMap<>();
@@ -190,10 +189,11 @@ public class XML {
         try {
             Class cl = Class.forName(driver); //Cargar del driver
             Database database = (Database) cl.getDeclaredConstructor().newInstance(); //Instancia de la BD
-            DatabaseManager.registerDatabase(database); //Registro del driver
-            Collection col = DatabaseManager.getCollection(URI, user, pass);
-            System.out.println(Arrays.toString(col.listResources()));
-            System.out.println(col.getChildCollectionCount());
+            DatabaseManager.registerDatabase(database);
+            col = DatabaseManager.getCollection(URI, user, pass);
+            System.out.println(col.getResourceCount());
+            System.out.println("count" + col.getResource("lugar.xml"));
+
         } catch (XMLDBException e) {
             System.out.println("Error al inicializar la BD eXist.");
             //e.printStackTrace();
@@ -210,9 +210,35 @@ public class XML {
         }
     }
 
+    public static void prueba() {
+        try {
+            XPathQueryService servicio;
+            servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            //Preparamos la consulta
+            ResourceSet result = servicio.query("for $dep in /EMPLEADOS/EMPLEADO return $dep");
+            // recorrer los datos del recurso.
+            ResourceIterator i;
+            i = result.getIterator();
+            if (!i.hasMoreResources()) {
+                System.out.println(" LA CONSULTA NO DEVUELVE NADA O ESTÁ MAL ESCRITA");
+            }
+            while (i.hasMoreResources()) {
+                Resource r = i.nextResource();
+                System.out.println("--------------------------------------------");
+                System.out.println((String) r.getContent());
+            }
+            col.close();
+        } catch (XMLDBException e) {
+            System.out.println(" ERROR AL CONSULTAR DOCUMENTO.");
+            e.printStackTrace();
+        }
+    }
+
     public static void main(String[] args) {
         conexion();
+        prueba();
     }
 }
+
 
 

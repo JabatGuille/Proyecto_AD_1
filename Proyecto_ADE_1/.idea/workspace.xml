@@ -5,6 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="09f89609-7619-412f-abe0-981dfc63f17d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Conexiones/XML.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Conexiones/XML.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -38,7 +39,7 @@
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.SHOW": "true",
     "UI_DESIGNER_EDITOR_MODE.UIDesignerToolWindowManager.WIDTH": "207",
-    "last_opened_file_path": "C:/Users/Guillermo/Desktop/ProyetoADE/JAR/xqjapi.jar",
+    "last_opened_file_path": "C:/Users/Guillermo/Desktop/eXistJAvav/PruebasEmpleYDepart",
     "project.structure.last.edited": "Libraries",
     "project.structure.proportion": "0.15",
     "project.structure.side.proportion": "0.2"
@@ -143,6 +144,10 @@
           <properties class="com.thoughtworks.xstream.security.ForbiddenClassException" package="com.thoughtworks.xstream.security" />
           <option name="timeStamp" value="10" />
         </breakpoint>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="java.lang.ArrayIndexOutOfBoundsException" package="java.lang" />
+          <option name="timeStamp" value="28" />
+        </breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/Main.java</url>
           <line>492</line>
@@ -150,5 +155,15 @@
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
+    <pin-to-top-manager>
+      <pinned-members>
+        <PinnedItemInfo parentTag="org.exist.xmldb.RemoteCollection" memberName="childCollections" />
+      </pinned-members>
+    </pin-to-top-manager>
+    <watches-manager>
+      <configuration name="Application">
+        <watch expression="((RemoteCollection)col).rpcClient" custom="org.exist.xmldb.RemoteCollection" />
+      </configuration>
+    </watches-manager>
   </component>
 </project>
