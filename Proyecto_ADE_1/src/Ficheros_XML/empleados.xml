@@ -7,7 +7,7 @@
     <fecha__cont>01-11-2022</fecha__cont>
     <nacionalidad>Nacionalidad</nacionalidad>
     <cargo>Cargo</cargo>
-    <estado></estado>
+    <estado/>
     <visitas__numero>
       <entry>
         <int>0</int>

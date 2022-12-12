@@ -1,11 +1,11 @@
 <Clientes>
   <Cliente>
-    <dni>11111111E</dni>
+    <dni>21111111E</dni>
     <nombre>CLienteNombre</nombre>
     <apellido>ClienteApellido</apellido>
     <edad>30</edad>
     <profesion>Profesion</profesion>
-    <estado></estado>
+    <estado/>
     <visitas__numero>
       <entry>
         <int>0</int>

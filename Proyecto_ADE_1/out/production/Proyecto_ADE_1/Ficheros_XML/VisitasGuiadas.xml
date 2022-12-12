@@ -7,7 +7,7 @@
     <curso>Curso</curso>
     <tematica>Temtaica</tematica>
     <coste>200.0</coste>
-    <estado></estado>
+    <estado/>
     <lugar__id>0</lugar__id>
     <empleado__dni>22222222E</empleado__dni>
     <horario>12:20</horario>

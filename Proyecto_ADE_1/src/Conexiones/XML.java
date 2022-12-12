@@ -5,6 +5,7 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.*;
+import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XPathQueryService;
 
 import java.io.*;
@@ -21,15 +22,35 @@ public class XML {
     private static Collection col = null;
 
     public static HashMap<String, Cliente> recuperar_clientes() {
+
         HashMap<String, Cliente> clientes = new HashMap<>();
         try {
+            FileWriter ficheroWriter = new FileWriter("src/Ficheros_XML/Clientes.xml");
+
+            XPathQueryService servicio;
+            servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            //Preparamos la consulta
+            ResourceSet result = servicio.query("/Clientes");
+            // recorrer los datos del recurso.
+            ResourceIterator i;
+            i = result.getIterator();
+            if (!i.hasMoreResources()) {
+                System.out.println(" LA CONSULTA NO DEVUELVE NADA O ESTÁ MAL ESCRITA");
+            }
+            while (i.hasMoreResources()) {
+                Resource r = i.nextResource();
+                System.out.println("--------------------------------------------");
+                ficheroWriter.write((String) r.getContent());
+            }
+            ficheroWriter.close();
+            col.close();
             XStream xstream = new XStream();
             xstream.addPermission(AnyTypePermission.ANY);
             xstream.alias("Clientes", ListaClientes.class);
             xstream.alias("Cliente", Cliente.class);
             xstream.addImplicitCollection(ListaClientes.class, "lista");
-            FileInputStream fichero = new FileInputStream("src/Ficheros_XML/cliente.xml");
-            BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/cliente.xml"));
+            FileInputStream fichero = new FileInputStream("src/Ficheros_XML/Clientes.xml");
+            BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/Clientes.xml"));
             if (br.readLine() != null) {
                 ListaClientes listadoTodas = (ListaClientes) xstream.fromXML(fichero);
                 List<Cliente> listaPersonas;
@@ -42,6 +63,8 @@ public class XML {
             System.out.println("Error en el fichero");
         } catch (IOException e) {
             System.out.println("Error en la lectura");
+        } catch (XMLDBException e) {
+            throw new RuntimeException(e);
         }
         return clientes;
     }
@@ -49,13 +72,32 @@ public class XML {
     public static HashMap<Integer, VisitaGuiada> recuperar_visitas_guiadas() {
         HashMap<Integer, VisitaGuiada> visitaguiadas = new HashMap<>();
         try {
+            FileWriter ficheroWriter = new FileWriter("src/Ficheros_XML/VisitasGuiadas.xml");
+
+            XPathQueryService servicio;
+            servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            //Preparamos la consulta
+            ResourceSet result = servicio.query("/VisitasGuiadas");
+            // recorrer los datos del recurso.
+            ResourceIterator i;
+            i = result.getIterator();
+            if (!i.hasMoreResources()) {
+                System.out.println(" LA CONSULTA NO DEVUELVE NADA O ESTÁ MAL ESCRITA");
+            }
+            while (i.hasMoreResources()) {
+                Resource r = i.nextResource();
+                System.out.println("--------------------------------------------");
+                ficheroWriter.write((String) r.getContent());
+            }
+            ficheroWriter.close();
+            col.close();
             XStream xstream = new XStream();
             xstream.addPermission(AnyTypePermission.ANY);
             xstream.alias("VisitasGuiadas", ListaVisitaGuiada.class);
             xstream.alias("VisitaGuiada", VisitaGuiada.class);
             xstream.addImplicitCollection(ListaVisitaGuiada.class, "lista");
-            FileInputStream fichero = new FileInputStream("src/Ficheros_XML/visitaGuiada.xml");
-            BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/visitaGuiada.xml"));
+            FileInputStream fichero = new FileInputStream("src/Ficheros_XML/VisitasGuiadas.xml");
+            BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/VisitasGuiadas.xml"));
             if (br.readLine() != null) {
                 ListaVisitaGuiada listadoTodas = (ListaVisitaGuiada) xstream.fromXML(fichero);
                 List<VisitaGuiada> listaPersonas;
@@ -68,6 +110,8 @@ public class XML {
             System.out.println("Error en el fichero");
         } catch (IOException e) {
             System.out.println("Error en la lectura");
+        } catch (XMLDBException e) {
+            throw new RuntimeException(e);
         }
         return visitaguiadas;
     }
@@ -75,13 +119,32 @@ public class XML {
     public static HashMap<String, Empleado> recuperar_empleados() {
         HashMap<String, Empleado> empleados = new HashMap<>();
         try {
+            FileWriter ficheroWriter = new FileWriter("src/Ficheros_XML/Empleados.xml");
+
+            XPathQueryService servicio;
+            servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            //Preparamos la consulta
+            ResourceSet result = servicio.query("/Empleados");
+            // recorrer los datos del recurso.
+            ResourceIterator i;
+            i = result.getIterator();
+            if (!i.hasMoreResources()) {
+                System.out.println(" LA CONSULTA NO DEVUELVE NADA O ESTÁ MAL ESCRITA");
+            }
+            while (i.hasMoreResources()) {
+                Resource r = i.nextResource();
+                System.out.println("--------------------------------------------");
+                ficheroWriter.write((String) r.getContent());
+            }
+            ficheroWriter.close();
+            col.close();
             XStream xstream = new XStream();
             xstream.addPermission(AnyTypePermission.ANY);
             xstream.alias("Empleados", ListaEmpleados.class);
             xstream.alias("Empleado", Empleado.class);
             xstream.addImplicitCollection(ListaEmpleados.class, "lista");
-            FileInputStream fichero = new FileInputStream("src/Ficheros_XML/empleado.xml");
-            BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/empleado.xml"));
+            FileInputStream fichero = new FileInputStream("src/Ficheros_XML/Empleados.xml");
+            BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/Empleados.xml"));
             if (br.readLine() != null) {
                 ListaEmpleados listadoTodas = (ListaEmpleados) xstream.fromXML(fichero);
                 List<Empleado> listaPersonas;
@@ -94,6 +157,8 @@ public class XML {
             System.out.println("Error en el fichero");
         } catch (IOException e) {
             System.out.println("Error en la lectura");
+        } catch (XMLDBException e) {
+            throw new RuntimeException(e);
         }
         return empleados;
     }
@@ -101,13 +166,32 @@ public class XML {
     public static HashMap<Integer, Lugar> recuperar_lugar() {
         HashMap<Integer, Lugar> lugares = new HashMap<>();
         try {
+            FileWriter ficheroWriter = new FileWriter("src/Ficheros_XML/Lugares.xml");
+
+            XPathQueryService servicio;
+            servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            //Preparamos la consulta
+            ResourceSet result = servicio.query("/Lugares");
+            // recorrer los datos del recurso.
+            ResourceIterator i;
+            i = result.getIterator();
+            if (!i.hasMoreResources()) {
+                System.out.println(" LA CONSULTA NO DEVUELVE NADA O ESTÁ MAL ESCRITA");
+            }
+            while (i.hasMoreResources()) {
+                Resource r = i.nextResource();
+                System.out.println("--------------------------------------------");
+                ficheroWriter.write((String) r.getContent());
+            }
+            ficheroWriter.close();
+            col.close();
             XStream xstream = new XStream();
             xstream.addPermission(AnyTypePermission.ANY);
             xstream.alias("Lugares", ListaLugares.class);
             xstream.alias("Lugar", Lugar.class);
             xstream.addImplicitCollection(ListaLugares.class, "lista");
-            FileInputStream fichero = new FileInputStream("src/Ficheros_XML/lugar.xml");
-            BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/lugar.xml"));
+            FileInputStream fichero = new FileInputStream("src/Ficheros_XML/Lugares.xml");
+            BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/Lugares.xml"));
             if (br.readLine() != null) {
                 ListaLugares listadoTodas = (ListaLugares) xstream.fromXML(fichero);
                 List<Lugar> listaPersonas;
@@ -120,6 +204,8 @@ public class XML {
             System.out.println("Error en el fichero");
         } catch (IOException e) {
             System.out.println("Error en la lectura");
+        } catch (XMLDBException e) {
+            throw new RuntimeException(e);
         }
         return lugares;
     }
@@ -132,7 +218,7 @@ public class XML {
             xstream.addImplicitCollection(ListaClientes.class, "lista");
             ListaClientes listaper = new ListaClientes();
             listaper.lista = new ArrayList<>(clientes.values());
-            xstream.toXML(listaper, new FileOutputStream("src/Ficheros_XML/cliente.xml"));
+            xstream.toXML(listaper, new FileOutputStream("src/Ficheros_XML/Clientes.xml"));
         } catch (FileNotFoundException e) {
             System.out.println("Error en el fichero");
         }
@@ -161,7 +247,7 @@ public class XML {
             xstream.addImplicitCollection(ListaEmpleados.class, "lista");
             ListaEmpleados listaper = new ListaEmpleados();
             listaper.lista = new ArrayList<>(empleados.values());
-            xstream.toXML(listaper, new FileOutputStream("src/Ficheros_XML/empleado.xml"));
+            xstream.toXML(listaper, new FileOutputStream("src/Ficheros_XML/empleados.xml"));
         } catch (FileNotFoundException e) {
             System.out.println("Error en el fichero");
         }
@@ -215,7 +301,7 @@ public class XML {
             XPathQueryService servicio;
             servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
             //Preparamos la consulta
-            ResourceSet result = servicio.query("for $dep in /EMPLEADOS/EMPLEADO return $dep");
+            ResourceSet result = servicio.query("/Clientes");
             // recorrer los datos del recurso.
             ResourceIterator i;
             i = result.getIterator();
@@ -234,9 +320,91 @@ public class XML {
         }
     }
 
+    public static void prueba2() {
+        try {
+            System.out.printf("Conecta");
+            // Inicializamos el recurso
+            XMLResource res = null;
+
+            // Creamos el recurso -> recibe 2 parámetros tipo String:
+            // s: nombre.xml (si lo dejamos null, pondrá un nombre aleatorio)
+            // s1: tipo recurso (en este caso, siempre será XMLResource)
+            res = (XMLResource) col.createResource("Clientes.xml", "XMLResource");
+
+            // Elegimos el fichero .xml que queremos añadir a la colección
+            File f = new File("src/Ficheros_XML/Clientes.xml");
+
+            // Fijamos como contenido ese archivo .xml elegido
+            res.setContent(f);
+            col.storeResource(res); // lo añadimos a la colección
+
+            // Listamos la colección para ver que en efecto se ha añadido
+            for (String colRe : col.listResources())
+                System.out.println(colRe);
+
+            col.close();
+        } catch (Exception e) {
+            System.out.println("Error al consultar.");
+            // e.printStackTrace();
+        }
+    }
+
+    public static void prueba3() {
+        HashMap<String, Cliente> clientes = new HashMap<>();
+        try {
+            FileWriter fichero = new FileWriter("src/Ficheros_XML/Clientes.xml");
+
+            XPathQueryService servicio;
+            servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            //Preparamos la consulta
+            ResourceSet result = servicio.query("/Clientes");
+            // recorrer los datos del recurso.
+            ResourceIterator i;
+            i = result.getIterator();
+            if (!i.hasMoreResources()) {
+                System.out.println(" LA CONSULTA NO DEVUELVE NADA O ESTÁ MAL ESCRITA");
+            }
+            while (i.hasMoreResources()) {
+                Resource r = i.nextResource();
+                System.out.println("--------------------------------------------");
+                fichero.write((String) r.getContent());
+            }
+            fichero.close();
+            col.close();
+/*
+            XStream xstream = new XStream();
+            xstream.addPermission(AnyTypePermission.ANY);
+            xstream.alias("Clientes", ListaClientes.class);
+            xstream.alias("Cliente", Cliente.class);
+            xstream.addImplicitCollection(ListaClientes.class, "lista");
+            BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/Clientes.xml"));
+            if (br.readLine() != null) {
+                ListaClientes listadoTodas = (ListaClientes) xstream.fromXML(fichero);
+                List<Cliente> listaPersonas;
+                listaPersonas = listadoTodas.getClientes();
+                for (Cliente p : listaPersonas) {
+                    clientes.put(p.getDni(), p);
+                }
+            }
+*/
+        } catch (FileNotFoundException e) {
+            System.out.println("Error en el fichero");
+        } catch (IOException e) {
+            System.out.println("Error en la lectura");
+        } catch (XMLDBException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static void main(String[] args) {
         conexion();
         prueba();
+        //   prueba2();
+        HashMap<String, Cliente> a =   recuperar_clientes();
+        HashMap<Integer, VisitaGuiada> b =   recuperar_visitas_guiadas();
+        HashMap<String, Empleado> c =    recuperar_empleados();
+        HashMap<Integer, Lugar> d = recuperar_lugar();
+        System.out.println();
     }
 }
 
