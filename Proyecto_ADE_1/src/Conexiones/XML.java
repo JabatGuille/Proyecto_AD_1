@@ -39,7 +39,6 @@ public class XML {
             }
             while (i.hasMoreResources()) {
                 Resource r = i.nextResource();
-                System.out.println("--------------------------------------------");
                 ficheroWriter.write((String) r.getContent());
             }
             ficheroWriter.close();
@@ -69,6 +68,71 @@ public class XML {
         return clientes;
     }
 
+    public static void insertarCLiente(Cliente cliente) {
+        String nuevocli = "<Cliente><dni>" + cliente.getDni() + "</dni>"
+                + "<nombre>" + cliente.getNombre() + "</nombre>" +
+                "<apellido>" + cliente.getApellido() + "</apellido>"
+                + "<edad>" + cliente.getEdad() + "</edad>" +
+                "<profesion>" + cliente.getProfesion() + "</profesion>" +
+                "<estado>" + cliente.getEstado() + "</estado>" +
+                "<visitas__numero>" + "<entry>";
+        for (Integer cli : cliente.getVisitas().values()) {
+            nuevocli = nuevocli + "<int>" + cli + "</int>" +
+                    "<int>" + cli + "</int>";
+        }
+        nuevocli = nuevocli + "</entry>" +
+                "</visitas__numero>" +
+                "</Cliente>";
+
+        try {
+            XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            System.out.printf("Inserto: %s \n", nuevocli);
+            //Consulta para insertar --> update insert ... into
+            ResourceSet result = servicio.query("update insert " + nuevocli + " into /Clientes");
+            col.close(); //borramos
+            System.out.println("Cliente insertado.");
+        } catch (Exception e) {
+            System.out.println("Error al insertar cliente.");
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void insertarVisitaGuiada(VisitaGuiada visitaGuiada) {
+        String nuevavis = "<VisitaGuiada><n__visita>" + visitaGuiada.getN_visita() + "</n__visita>"
+                + "<nombre>" + visitaGuiada.getNombre() + "</nombre>" +
+                "<n__max__cli>" + visitaGuiada.getN_max_cli() + "</n__max__cli>"
+                + "<punto__partida>" + visitaGuiada.getPunto_partida() + "</punto__partida>" +
+                "<curso>" + visitaGuiada.getCurso() + "</curso>" +
+                "<tematica>" + visitaGuiada.getTematica() + "</tematica>" +
+                "<coste>" + visitaGuiada.getCoste() + "</coste>" +
+                "<estado>" + visitaGuiada.getEstado() + "</estado>" +
+                "<lugar__id>" + visitaGuiada.getLugar() + "</lugar__id>" +
+                "<empleado__dni>" + visitaGuiada.getEmpleado() + "</empleado__dni>" +
+                "<horario>" + visitaGuiada.getHorario() + "</horario>" +
+                "<clientes__dni>" + "<entry>";
+        for (String vis : visitaGuiada.getClientes().values()) {
+            nuevavis = nuevavis + "<string>" + vis + "</string>" +
+                    "<string>" + vis + "</string>";
+        }
+        nuevavis = nuevavis + "</entry>" +
+                "</clientes__dni>" +
+                "</VisitaGuiada>";
+
+        try {
+            XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            System.out.printf("Inserto: %s \n", nuevavis);
+            //Consulta para insertar --> update insert ... into
+            ResourceSet result = servicio.query("update insert " + nuevavis + " into /VisitasGuiadas");
+            col.close(); //borramos
+            System.out.println("VisitaGuiada insertado.");
+        } catch (Exception e) {
+            System.out.println("Error al insertar la visita.");
+            e.printStackTrace();
+        }
+
+    }
+
     public static HashMap<Integer, VisitaGuiada> recuperar_visitas_guiadas() {
         HashMap<Integer, VisitaGuiada> visitaguiadas = new HashMap<>();
         try {
@@ -86,7 +150,6 @@ public class XML {
             }
             while (i.hasMoreResources()) {
                 Resource r = i.nextResource();
-                System.out.println("--------------------------------------------");
                 ficheroWriter.write((String) r.getContent());
             }
             ficheroWriter.close();
@@ -133,7 +196,6 @@ public class XML {
             }
             while (i.hasMoreResources()) {
                 Resource r = i.nextResource();
-                System.out.println("--------------------------------------------");
                 ficheroWriter.write((String) r.getContent());
             }
             ficheroWriter.close();
@@ -163,6 +225,38 @@ public class XML {
         return empleados;
     }
 
+    public static void insertarEmpleado(Empleado empleado) {
+        String nuevoempl = "<Empleado><dni>" + empleado.getDni() + "</dni>"
+                + "<nombre>" + empleado.getNombre() + "</nombre>" +
+                "<apellido>" + empleado.getApellido() + "</apellido>"
+                + "<fecha__Nac>" + empleado.getFecha_Nac() + "</fecha__Nac>" +
+                "<fecha__cont>" + empleado.getFecha_cont() + "</fecha__cont>" +
+                "<nacionalidad>" + empleado.getNacionalidad() + "</nacionalidad>" +
+                "<cargo>" + empleado.getCargo() + "</cargo>" +
+                "<estado>" + empleado.getNacionalidad() + "</estado>" +
+                "<visitas__numero>" + "<entry>";
+        for (Integer cli : empleado.getVisitas().values()) {
+            nuevoempl = nuevoempl + "<int>" + cli + "</int>" +
+                    "<int>" + cli + "</int>";
+        }
+        nuevoempl = nuevoempl + "</entry>" +
+                "</visitas__numero>" +
+                "</Empleado>";
+
+        try {
+            XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            System.out.printf("Inserto: %s \n", nuevoempl);
+            //Consulta para insertar --> update insert ... into
+            ResourceSet result = servicio.query("update insert " + nuevoempl + " into /Empleados");
+            col.close(); //borramos
+            System.out.println("Empleado insertado.");
+        } catch (Exception e) {
+            System.out.println("Error al insertar empleado.");
+            e.printStackTrace();
+        }
+
+    }
+
     public static HashMap<Integer, Lugar> recuperar_lugar() {
         HashMap<Integer, Lugar> lugares = new HashMap<>();
         try {
@@ -180,7 +274,6 @@ public class XML {
             }
             while (i.hasMoreResources()) {
                 Resource r = i.nextResource();
-                System.out.println("--------------------------------------------");
                 ficheroWriter.write((String) r.getContent());
             }
             ficheroWriter.close();
@@ -264,6 +357,32 @@ public class XML {
             xstream.toXML(listaper, new FileOutputStream("src/Ficheros_XML/lugar.xml"));
         } catch (FileNotFoundException e) {
             System.out.println("Error en el fichero");
+        }
+
+    }
+
+    public static void insertarLugar(Lugar lugar) {
+        String nuevolugar = "<Lugar><id>" + lugar.getId() + "</id>"
+                + "<lugar>" + lugar.getLugar() + "</lugar>" +
+                "<visitas__numero>" + "<entry>";
+        for (Integer cli : lugar.getVisitas().values()) {
+            nuevolugar = nuevolugar + "<int>" + cli + "</int>" +
+                    "<int>" + cli + "</int>";
+        }
+        nuevolugar = nuevolugar + "</entry>" +
+                "</visitas__numero>" +
+                "</Lugar>";
+
+        try {
+            XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+            System.out.printf("Inserto: %s \n", nuevolugar);
+            //Consulta para insertar --> update insert ... into
+            ResourceSet result = servicio.query("update insert " + nuevolugar + " into /Lugares");
+            col.close(); //borramos
+            System.out.println("Empleado insertado.");
+        } catch (Exception e) {
+            System.out.println("Error al insertar lugar.");
+            e.printStackTrace();
         }
 
     }
@@ -400,9 +519,13 @@ public class XML {
         conexion();
         prueba();
         //   prueba2();
-        HashMap<String, Cliente> a =   recuperar_clientes();
-        HashMap<Integer, VisitaGuiada> b =   recuperar_visitas_guiadas();
-        HashMap<String, Empleado> c =    recuperar_empleados();
+        Cliente cliente = new Cliente("33333333A", "Nombre", "Apellido", 30, "Profesion", "");
+        cliente.setVisitas(0);
+        cliente.setVisitas(0);
+        insertarCLiente(cliente);
+        HashMap<String, Cliente> a = recuperar_clientes();
+        HashMap<Integer, VisitaGuiada> b = recuperar_visitas_guiadas();
+        HashMap<String, Empleado> c = recuperar_empleados();
         HashMap<Integer, Lugar> d = recuperar_lugar();
         System.out.println();
     }
