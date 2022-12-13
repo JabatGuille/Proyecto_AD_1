@@ -52,10 +52,6 @@ public class Main {
                 }
                 case "4": {
                     System.out.println("Saliendo de la aplicación");
-                    XML.guardar_visitas_guiadas(visitasguiadas);
-                    XML.guardar_clientes(clientes);
-                    XML.guardar_empleados(empleados);
-                    XML.guardar_lugar(lugares);
                     bucle = false;
                     break;
                 }

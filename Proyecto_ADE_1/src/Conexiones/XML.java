@@ -303,64 +303,6 @@ public class XML {
         return lugares;
     }
 
-    public static void guardar_clientes(HashMap<String, Cliente> clientes) {
-        try {
-            XStream xstream = new XStream();
-            xstream.alias("Clientes", ListaClientes.class);
-            xstream.alias("Cliente", Cliente.class);
-            xstream.addImplicitCollection(ListaClientes.class, "lista");
-            ListaClientes listaper = new ListaClientes();
-            listaper.lista = new ArrayList<>(clientes.values());
-            xstream.toXML(listaper, new FileOutputStream("src/Ficheros_XML/Clientes.xml"));
-        } catch (FileNotFoundException e) {
-            System.out.println("Error en el fichero");
-        }
-    }
-
-    public static void guardar_visitas_guiadas(HashMap<Integer, VisitaGuiada> visitaguiadas) {
-        try {
-            XStream xstream = new XStream();
-            xstream.alias("VisitasGuiadas", ListaVisitaGuiada.class);
-            xstream.alias("VisitaGuiada", VisitaGuiada.class);
-            xstream.addImplicitCollection(ListaVisitaGuiada.class, "lista");
-            ListaVisitaGuiada listaper = new ListaVisitaGuiada();
-            listaper.lista = new ArrayList<>(visitaguiadas.values());
-            xstream.toXML(listaper, new FileOutputStream("src/Ficheros_XML/visitaGuiada.xml"));
-        } catch (FileNotFoundException e) {
-            System.out.println("Error en el fichero");
-        }
-
-    }
-
-    public static void guardar_empleados(HashMap<String, Empleado> empleados) {
-        try {
-            XStream xstream = new XStream();
-            xstream.alias("Empleados", ListaEmpleados.class);
-            xstream.alias("Empleado", Empleado.class);
-            xstream.addImplicitCollection(ListaEmpleados.class, "lista");
-            ListaEmpleados listaper = new ListaEmpleados();
-            listaper.lista = new ArrayList<>(empleados.values());
-            xstream.toXML(listaper, new FileOutputStream("src/Ficheros_XML/empleados.xml"));
-        } catch (FileNotFoundException e) {
-            System.out.println("Error en el fichero");
-        }
-    }
-
-    public static void guardar_lugar(HashMap<Integer, Lugar> lugares) {
-        try {
-            XStream xstream = new XStream();
-            xstream.alias("Lugares", ListaLugares.class);
-            xstream.alias("Lugar", Lugar.class);
-            xstream.addImplicitCollection(ListaLugares.class, "lista");
-            ListaLugares listaper = new ListaLugares();
-            listaper.lista = new ArrayList<>(lugares.values());
-            xstream.toXML(listaper, new FileOutputStream("src/Ficheros_XML/lugar.xml"));
-        } catch (FileNotFoundException e) {
-            System.out.println("Error en el fichero");
-        }
-
-    }
-
     public static void insertarLugar(Lugar lugar) {
         String nuevolugar = "<Lugar><id>" + lugar.getId() + "</id>"
                 + "<lugar>" + lugar.getLugar() + "</lugar>" +
