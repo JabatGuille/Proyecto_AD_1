@@ -5,7 +5,6 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.*;
-import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XPathQueryService;
 
 import java.io.*;
@@ -105,6 +104,66 @@ public class XML {
         }
     }
 
+    public static boolean comprobarCliente(String DNI) {
+        //Devuelve true si el dep existe
+        conexion();
+        if (col != null) {
+            try {
+                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                //Consulta para consultar la información de un departamento
+                ResourceSet result = servicio.query("/Clientes/Cliente[dni='" + DNI + "']");
+                ResourceIterator i;
+                i = result.getIterator();
+                col.close();
+                if (!i.hasMoreResources()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                System.out.println("Error al consultar.");
+                // e.printStackTrace();
+            }
+        } else {
+            System.out.println("Error en la conexión. Comprueba datos.");
+        }
+
+        return false;
+
+    }
+
+    public static void modificarCLiente(Cliente cliente) {
+        if (comprobarCliente(cliente.getDni())) {
+            conexion();
+            if (col != null) {
+                try {
+                    System.out.printf("Actualizo el cliente: %s\n", cliente.getDni());
+                    XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                    //Consulta para modificar/actualizar un valor --> update value
+                    ResourceSet result = servicio.query(
+                            "update value /Clientes/Cliente[dni='" + cliente.getDni() + "']/nombre with data('" + cliente.getNombre() + "') ");
+                    result = servicio.query(
+                            "update value /Clientes/Cliente[dni='" + cliente.getDni() + "']/apellido with data('" + cliente.getApellido() + "') ");
+                    result = servicio.query(
+                            "update value /Clientes/Cliente[dni='" + cliente.getDni() + "']/edad with data('" + cliente.getEdad() + "') ");
+                    result = servicio.query(
+                            "update value /Clientes/Cliente[dni='" + cliente.getDni() + "']/profesion with data('" + cliente.getProfesion() + "') ");
+
+                    col.close();
+                    System.out.println("Cliente actualizado.");
+                } catch (Exception e) {
+                    System.out.println("Error al actualizar.");
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Error en la conexión. Comprueba datos.");
+            }
+        } else {
+            System.out.println("El cliente NO EXISTE.");
+        }
+    }
+
+
     public static void insertarVisitaGuiada(VisitaGuiada visitaGuiada) {
         conexion();
         if (col != null) {
@@ -196,6 +255,75 @@ public class XML {
         return visitaguiadas;
     }
 
+
+    public static boolean comprobarVisita(int id) {
+        //Devuelve true si el dep existe
+        conexion();
+        if (col != null) {
+            try {
+                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                //Consulta para consultar la información de un departamento
+                ResourceSet result = servicio.query("/VisitasGuiadas/VisitasGuiada[n__visita='" + id + "']");
+                ResourceIterator i;
+                i = result.getIterator();
+                col.close();
+                if (!i.hasMoreResources()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                System.out.println("Error al consultar.");
+                // e.printStackTrace();
+            }
+        } else {
+            System.out.println("Error en la conexión. Comprueba datos.");
+        }
+
+        return false;
+
+    }
+
+    public static void modificarVisita(VisitaGuiada visita) {
+        if (comprobarVisita(visita.getN_visita())) {
+            conexion();
+            if (col != null) {
+                try {
+                    System.out.printf("Actualizo la visita: %s\n", visita.getN_visita());
+                    XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                    //Consulta para modificar/actualizar un valor --> update value
+                    ResourceSet result = servicio.query(
+                            "update value /VisitasGuiadas/VisitaGuiada[n__visita='" + visita.getN_visita() + "']/nombre with data('" + visita.getNombre() + "') ");
+                    result = servicio.query(
+                            "update value /VisitasGuiadas/VisitaGuiada[n__visita='" + visita.getN_visita() + "']/n__max__cli with data('" + visita.getN_max_cli() + "') ");
+                    result = servicio.query(
+                            "update value /VisitasGuiadas/VisitaGuiada[n__visita='" + visita.getN_visita() + "']/punto__partida with data('" + visita.getPunto_partida() + "') ");
+                    result = servicio.query(
+                            "update value /VisitasGuiadas/VisitaGuiada[n__visita='" + visita.getN_visita() + "']/curso with data('" + visita.getCurso() + "') ");
+                    result = servicio.query(
+                            "update value /VisitasGuiadas/VisitaGuiada[n__visita='" + visita.getN_visita() + "']/tematica with data('" + visita.getTematica() + "') ");
+                    result = servicio.query(
+                            "update value /VisitasGuiadas/VisitaGuiada[n__visita='" + visita.getN_visita() + "']/coste with data('" + visita.getCoste() + "') ");
+                    result = servicio.query(
+                            "update value /VisitasGuiadas/VisitaGuiada[n__visita='" + visita.getN_visita() + "']/lugar__id with data('" + visita.getLugar() + "') ");
+                    result = servicio.query(
+                            "update value /VisitasGuiadas/VisitaGuiada[n__visita='" + visita.getN_visita() + "']/horario with data('" + visita.getHorario() + "') ");
+
+                    col.close();
+                    System.out.println("Visita actualizada.");
+                } catch (Exception e) {
+                    System.out.println("Error al actualizar.");
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Error en la conexión. Comprueba datos.");
+            }
+        } else {
+            System.out.println("La visita NO EXISTE.");
+        }
+    }
+
+
     public static HashMap<String, Empleado> recuperar_empleados() {
         HashMap<String, Empleado> empleados = new HashMap<>();
         try {
@@ -275,6 +403,69 @@ public class XML {
             }
         } else {
             System.out.println("Error en la BBDD");
+        }
+    }
+
+    public static boolean comprobarEmpleado(String DNI) {
+        //Devuelve true si el dep existe
+        conexion();
+        if (col != null) {
+            try {
+                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                //Consulta para consultar la información de un departamento
+                ResourceSet result = servicio.query("/Empleados/Empleado[dni='" + DNI + "']");
+                ResourceIterator i;
+                i = result.getIterator();
+                col.close();
+                if (!i.hasMoreResources()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                System.out.println("Error al consultar.");
+                // e.printStackTrace();
+            }
+        } else {
+            System.out.println("Error en la conexión. Comprueba datos.");
+        }
+
+        return false;
+
+    }
+
+    public static void modificarEmpleado(Empleado empleado) {
+        if (comprobarEmpleado(empleado.getDni())) {
+            conexion();
+            if (col != null) {
+                try {
+                    System.out.printf("Actualizo el empleado: %s\n", empleado.getDni());
+                    XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                    //Consulta para modificar/actualizar un valor --> update value
+                    ResourceSet result = servicio.query(
+                            "update value /Empleados/Empleado[dni='" + empleado.getDni() + "']/nombre with data('" + empleado.getNombre() + "') ");
+                    result = servicio.query(
+                            "update value /Empleados/Empleado[dni='" + empleado.getDni() + "']/apellido with data('" + empleado.getNombre() + "') ");
+                    result = servicio.query(
+                            "update value /Empleados/Empleado[dni='" + empleado.getDni() + "']/fecha__Nac with data('" + empleado.getFecha_Nac() + "') ");
+                    result = servicio.query(
+                            "update value /Empleados/Empleado[dni='" + empleado.getDni() + "']/fecha__cont with data('" + empleado.getFecha_cont() + "') ");
+                    result = servicio.query(
+                            "update value /Empleados/Empleado[dni='" + empleado.getDni() + "']/nacionalidad with data('" + empleado.getNacionalidad() + "') ");
+                    result = servicio.query(
+                            "update value /Empleados/Empleado[dni='" + empleado.getDni() + "']/cargo with data('" + empleado.getCargo() + "') ");
+
+                    col.close();
+                    System.out.println("Cliente actualizado.");
+                } catch (Exception e) {
+                    System.out.println("Error al actualizar.");
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Error en la conexión. Comprueba datos.");
+            }
+        } else {
+            System.out.println("El cliente NO EXISTE.");
         }
     }
 
@@ -359,6 +550,56 @@ public class XML {
         }
     }
 
+    public static boolean comprobarLugar(int id) {
+        //Devuelve true si el dep existe
+        conexion();
+        if (col != null) {
+            try {
+                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                //Consulta para consultar la información de un departamento
+                ResourceSet result = servicio.query("/Lugares/Lugar[id='" + id + "']");
+                ResourceIterator i;
+                i = result.getIterator();
+                col.close();
+                if (!i.hasMoreResources()) {
+                    return false;
+                } else {
+                    return true;
+                }
+            } catch (Exception e) {
+                System.out.println("Error al consultar.");
+                // e.printStackTrace();
+            }
+        } else {
+            System.out.println("Error en la conexión. Comprueba datos.");
+        }
+
+        return false;
+
+    }
+
+    public static void modificarLugar(Lugar lugar) {
+        if (comprobarLugar(lugar.getId())) {
+            conexion();
+            if (col != null) {
+                try {
+                    System.out.printf("Actualizo el empleado: %s\n", lugar.getId());
+                    XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                    //Consulta para modificar/actualizar un valor --> update value
+                    col.close();
+                    System.out.println("Cliente actualizado.");
+                } catch (Exception e) {
+                    System.out.println("Error al actualizar.");
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Error en la conexión. Comprueba datos.");
+            }
+        } else {
+            System.out.println("El cliente NO EXISTE.");
+        }
+    }
+
     public static void conexion() {
         String driver = "org.exist.xmldb.DatabaseImpl"; //Driver para eXist
 
@@ -368,7 +609,6 @@ public class XML {
             Database database = (Database) cl.getDeclaredConstructor().newInstance(); //Instancia de la BD
             DatabaseManager.registerDatabase(database);
             col = DatabaseManager.getCollection(URI, user, pass);
-            System.out.println(col.getResourceCount());
         } catch (XMLDBException e) {
             System.out.println("Error al inicializar la BD eXist.");
             //e.printStackTrace();
@@ -385,97 +625,99 @@ public class XML {
         }
     }
 
-    public static void prueba() {
-        try {
-            XPathQueryService servicio;
-            servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
-            //Preparamos la consulta
-            ResourceSet result = servicio.query("/Clientes");
-            // recorrer los datos del recurso.
-            ResourceIterator i;
-            i = result.getIterator();
-            if (!i.hasMoreResources()) {
-                System.out.println(" LA CONSULTA NO DEVUELVE NADA O ESTÁ MAL ESCRITA");
-            }
-            while (i.hasMoreResources()) {
-                Resource r = i.nextResource();
-                System.out.println("--------------------------------------------");
-                System.out.println((String) r.getContent());
-            }
-            col.close();
-        } catch (XMLDBException e) {
-            System.out.println(" ERROR AL CONSULTAR DOCUMENTO.");
-            e.printStackTrace();
-        }
-    }
-
-    public static void prueba2() {
-        try {
-            System.out.printf("Conecta");
-            // Inicializamos el recurso
-            XMLResource res = null;
-
-            // Creamos el recurso -> recibe 2 parámetros tipo String:
-            // s: nombre.xml (si lo dejamos null, pondrá un nombre aleatorio)
-            // s1: tipo recurso (en este caso, siempre será XMLResource)
-            res = (XMLResource) col.createResource("Clientes.xml", "XMLResource");
-
-            // Elegimos el fichero .xml que queremos añadir a la colección
-            File f = new File("src/Ficheros_XML/Clientes.xml");
-
-            // Fijamos como contenido ese archivo .xml elegido
-            res.setContent(f);
-            col.storeResource(res); // lo añadimos a la colección
-
-            // Listamos la colección para ver que en efecto se ha añadido
-            for (String colRe : col.listResources())
-                System.out.println(colRe);
-
-            col.close();
-        } catch (Exception e) {
-            System.out.println("Error al consultar.");
-            // e.printStackTrace();
-        }
-    }
-
-    public static void prueba3() {
-        HashMap<String, Cliente> clientes = new HashMap<>();
-        try {
-            FileWriter fichero = new FileWriter("src/Ficheros_XML/Clientes.xml");
-
-            XPathQueryService servicio;
-            servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
-            //Preparamos la consulta
-            ResourceSet result = servicio.query("/Clientes");
-            // recorrer los datos del recurso.
-            ResourceIterator i;
-            i = result.getIterator();
-            if (!i.hasMoreResources()) {
-                System.out.println(" LA CONSULTA NO DEVUELVE NADA O ESTÁ MAL ESCRITA");
-            }
-            while (i.hasMoreResources()) {
-                Resource r = i.nextResource();
-                System.out.println("--------------------------------------------");
-                fichero.write((String) r.getContent());
-            }
-            fichero.close();
-            col.close();
-/*
-            XStream xstream = new XStream();
-            xstream.addPermission(AnyTypePermission.ANY);
-            xstream.alias("Clientes", ListaClientes.class);
-            xstream.alias("Cliente", Cliente.class);
-            xstream.addImplicitCollection(ListaClientes.class, "lista");
-            BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/Clientes.xml"));
-            if (br.readLine() != null) {
-                ListaClientes listadoTodas = (ListaClientes) xstream.fromXML(fichero);
-                List<Cliente> listaPersonas;
-                listaPersonas = listadoTodas.getClientes();
-                for (Cliente p : listaPersonas) {
-                    clientes.put(p.getDni(), p);
+    /*
+        public static void prueba() {
+            try {
+                XPathQueryService servicio;
+                servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                //Preparamos la consulta
+                ResourceSet result = servicio.query("/Clientes");
+                // recorrer los datos del recurso.
+                ResourceIterator i;
+                i = result.getIterator();
+                if (!i.hasMoreResources()) {
+                    System.out.println(" LA CONSULTA NO DEVUELVE NADA O ESTÁ MAL ESCRITA");
                 }
+                while (i.hasMoreResources()) {
+                    Resource r = i.nextResource();
+                    System.out.println("--------------------------------------------");
+                    System.out.println((String) r.getContent());
+                }
+                col.close();
+            } catch (XMLDBException e) {
+                System.out.println(" ERROR AL CONSULTAR DOCUMENTO.");
+                e.printStackTrace();
             }
-*/
+        }
+
+        public static void prueba2() {
+            try {
+                System.out.printf("Conecta");
+                // Inicializamos el recurso
+                XMLResource res = null;
+
+                // Creamos el recurso -> recibe 2 parámetros tipo String:
+                // s: nombre.xml (si lo dejamos null, pondrá un nombre aleatorio)
+                // s1: tipo recurso (en este caso, siempre será XMLResource)
+                res = (XMLResource) col.createResource("Clientes.xml", "XMLResource");
+
+                // Elegimos el fichero .xml que queremos añadir a la colección
+                File f = new File("src/Ficheros_XML/Clientes.xml");
+
+                // Fijamos como contenido ese archivo .xml elegido
+                res.setContent(f);
+                col.storeResource(res); // lo añadimos a la colección
+
+                // Listamos la colección para ver que en efecto se ha añadido
+                for (String colRe : col.listResources())
+                    System.out.println(colRe);
+
+                col.close();
+            } catch (Exception e) {
+                System.out.println("Error al consultar.");
+                // e.printStackTrace();
+            }
+        }
+
+        public static void prueba3() {
+            HashMap<String, Cliente> clientes = new HashMap<>();
+            try {
+                FileWriter fichero = new FileWriter("src/Ficheros_XML/Clientes.xml");
+
+                XPathQueryService servicio;
+                servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                //Preparamos la consulta
+                ResourceSet result = servicio.query("/Clientes");
+                // recorrer los datos del recurso.
+                ResourceIterator i;
+                i = result.getIterator();
+                if (!i.hasMoreResources()) {
+                    System.out.println(" LA CONSULTA NO DEVUELVE NADA O ESTÁ MAL ESCRITA");
+                }
+                while (i.hasMoreResources()) {
+                    Resource r = i.nextResource();
+                    System.out.println("--------------------------------------------");
+                    fichero.write((String) r.getContent());
+                }
+                fichero.close();
+                col.close();
+    /*
+                XStream xstream = new XStream();
+                xstream.addPermission(AnyTypePermission.ANY);
+                xstream.alias("Clientes", ListaClientes.class);
+                xstream.alias("Cliente", Cliente.class);
+                xstream.addImplicitCollection(ListaClientes.class, "lista");
+                BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/Clientes.xml"));
+                if (br.readLine() != null) {
+                    ListaClientes listadoTodas = (ListaClientes) xstream.fromXML(fichero);
+                    List<Cliente> listaPersonas;
+                    listaPersonas = listadoTodas.getClientes();
+                    for (Cliente p : listaPersonas) {
+                        clientes.put(p.getDni(), p);
+                    }
+                }
+    */
+    /*
         } catch (FileNotFoundException e) {
             System.out.println("Error en el fichero");
         } catch (IOException e) {
@@ -484,11 +726,13 @@ public class XML {
             throw new RuntimeException(e);
         }
     }
-
+/*/
     public static void main(String[] args) {
         //   conexion();
-        prueba();
+        modificarCLiente(new Cliente("21111111E", "NOmbre", "Apellido", 20, "profesiones", ""));
     }
+
+
 }
 
 

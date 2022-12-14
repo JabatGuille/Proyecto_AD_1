@@ -161,9 +161,9 @@ public class Main {
                             System.out.println("Añadiendo empleado a la visita");
                             visitasguiadas.get(N_visita).setEmpleado(DNI);
                             empleados.get(DNI).setVisitas(N_visita);
-                            //TODO modificar visitaGuiada
+                            //TODO añadir empleado visitaGuiada
                             XML.guardar_visitas_guiadas(visitasguiadas);
-                            //TODO modificar empleados
+                            //TODO añadir visita empleados
                             XML.guardar_empleados(empleados);
                         } else {
                             System.out.println("El DNI no existe " + DNI);
@@ -194,9 +194,9 @@ public class Main {
                             System.out.println("Añadiendo cliente");
                             clientes.get(DNI).setVisitas(N_visita);
                             visitasguiadas.get(N_visita).setClientes(DNI);
-                            //TODO modifcar VisitaGuiada
+                            //TODO añadir cliente VisitaGuiada
                             XML.guardar_visitas_guiadas(visitasguiadas);
-                            //TODO modificar cliente
+                            //TODO añadir cliente visita
                             XML.guardar_clientes(clientes);
                         }
                     } else {
@@ -533,7 +533,7 @@ public class Main {
             lugares.get(lugarid).setVisitas(visitaid);
             XML.insertarVisitaGuiada(visitaGuiada);
             //TODO modificar lugar
-            XML.guardar_lugar(lugares);
+            XML.modificarLugar(lugares.get(lugarid));
         } else {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
@@ -897,24 +897,10 @@ public class Main {
                     System.out.println("DNI: " + cliente_dni + " incorrecto");
                 }
             }
-            bucle = true;
-            String DNI = "";
             String nombre = "";
             String apellido = "";
             int edad = 0;
             String profesion = "";
-            while (bucle) {
-                System.out.println("Escriba el nuevo DNI del cliente, si no quiere cambiarlo escriba el mismo");
-                scanner = new Scanner(System.in);
-                DNI = scanner.nextLine();
-                Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
-                Matcher mat = pat.matcher(DNI);
-                if (mat.matches()) {
-                    bucle = false;
-                } else {
-                    System.out.println("DNI: " + DNI + " incorrecto");
-                }
-            }
             bucle = true;
             while (bucle) {
                 System.out.println("Escriba el nuevo Nombre del cliente, si no quiere cambiarlo escriba el mismo");
@@ -964,7 +950,7 @@ public class Main {
                 }
             }
             System.out.println("Datos del cliente nuevo: \n" +
-                    "DNI: " + DNI + "\n" +
+                    "DNI: " + cliente_dni + "\n" +
                     "Nombre: " + nombre + "\n" +
                     "Apellido: " + apellido + "\n" +
                     "Edad: " + edad + "\n" +
@@ -975,20 +961,11 @@ public class Main {
             String comprobacion = scanner.nextLine();
             if (comprobacion.equalsIgnoreCase("y")) {
                 System.out.println("Modificando usuario");
-                clientes.get(cliente_dni).setDni(DNI);
                 clientes.get(cliente_dni).setNombre(nombre);
                 clientes.get(cliente_dni).setApellido(apellido);
                 clientes.get(cliente_dni).setEdad(edad);
                 clientes.get(cliente_dni).setProfesion(profesion);
-                Cliente cliente = clientes.get(cliente_dni);
-                for (VisitaGuiada visi : visitasguiadas.values()) {
-                    visi.getClientes().remove(cliente_dni);
-                    visi.setClientes(cliente.getDni());
-                }
-                clientes.remove(cliente_dni);
-                clientes.put(cliente.getDni(), cliente);
-                XML.guardar_visitas_guiadas(visitasguiadas);
-                XML.guardar_clientes(clientes);
+                XML.modificarCLiente(clientes.get(cliente_dni));
             } else {
                 System.out.println("Cancelando operación, redirigiendo al menu");
             }
@@ -1143,18 +1120,16 @@ public class Main {
             if (comprobacion.equalsIgnoreCase("y")) {
                 System.out.println("Modificando visita guiada");
                 lugares.get(visitasguiadas.get(N_visita).getLugar()).borrar_visita(N_visita);
-                VisitaGuiada visita = visitasguiadas.get(N_visita);
-                visita.setNombre(nombre);
-                visita.setN_max_cli(n_max_cli);
-                visita.setPunto_partida(punto_partida);
-                visita.setCurso(curso);
-                visita.setTematica(tematica);
-                visita.setCoste(coste);
-                visita.setHorario(horario);
-                visita.setLugar(lugarid);
-                visitasguiadas.put(N_visita, visita);
+                visitasguiadas.get(N_visita).setNombre(nombre);
+                visitasguiadas.get(N_visita).setN_max_cli(n_max_cli);
+                visitasguiadas.get(N_visita).setPunto_partida(punto_partida);
+                visitasguiadas.get(N_visita).setCurso(curso);
+                visitasguiadas.get(N_visita).setTematica(tematica);
+                visitasguiadas.get(N_visita).setCoste(coste);
+                visitasguiadas.get(N_visita).setHorario(horario);
+                visitasguiadas.get(N_visita).setLugar(lugarid);
                 lugares.get(lugarid).setVisitas(N_visita);
-                XML.guardar_visitas_guiadas(visitasguiadas);
+                XML.modificarVisita(visitasguiadas.get(N_visita));
                 XML.guardar_lugar(lugares);
             } else {
                 System.out.println("Cancelando operación, redirigiendo al menu");
@@ -1181,26 +1156,12 @@ public class Main {
                     System.out.println("DNI: " + empleado_DNI + " incorrecto");
                 }
             }
-            String DNI = "";
             String nombre = "";
             String apellido = "";
             String fecha_nac = "";
             String fecha_cont;
             String nacionalidad = "";
             String cargo = "";
-            bucle = true;
-            while (bucle) {
-                System.out.println("Escriba el nuevo DNI del empleado, si no quiere cambiarlo escriba el mismo");
-                scanner = new Scanner(System.in);
-                DNI = scanner.nextLine();
-                Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
-                Matcher mat = pat.matcher(DNI);
-                if (mat.matches()) {
-                    bucle = false;
-                } else {
-                    System.out.println("DNI: " + DNI + " incorrecto");
-                }
-            }
             bucle = true;
             while (bucle) {
                 System.out.println("Escriba el nuevo Nombre del empleado, si no quiere cambiarlo escriba el mismo");
@@ -1260,7 +1221,6 @@ public class Main {
                 }
             }
             System.out.println("Datos del empeleado modificado: \n" +
-                    "DNI: " + DNI + "\n" +
                     "Nombre: " + nombre + "\n" +
                     "Apellido: " + apellido + "\n" +
                     "Fecha nacimiento: " + fecha_nac + "\n" +
@@ -1274,23 +1234,13 @@ public class Main {
             String comprobacion = scanner.nextLine();
             if (comprobacion.equalsIgnoreCase("y")) {
                 System.out.println("Modificando empleado");
-                Empleado empleado = empleados.get(empleado_DNI);
-                empleado.setDni(DNI);
-                empleado.setNombre(nombre);
-                empleado.setApellido(apellido);
-                empleado.setFecha_Nac(fecha_nac);
-                empleado.setFecha_cont(fecha_cont);
-                empleado.setNacionalidad(nacionalidad);
-                empleado.setCargo(cargo);
-                for (VisitaGuiada visita : visitasguiadas.values()) {
-                    if (visita.getEmpleado().equals(empleado_DNI)) {
-                        visita.setEmpleado(DNI);
-                    }
-                }
-                empleados.remove(empleado_DNI);
-                empleados.put(empleado.getDni(), empleado);
-                XML.guardar_visitas_guiadas(visitasguiadas);
-                XML.guardar_empleados(empleados);
+                empleados.get(empleado_DNI).setNombre(nombre);
+                empleados.get(empleado_DNI).setApellido(apellido);
+                empleados.get(empleado_DNI).setFecha_Nac(fecha_nac);
+                empleados.get(empleado_DNI).setFecha_cont(fecha_cont);
+                empleados.get(empleado_DNI).setNacionalidad(nacionalidad);
+                empleados.get(empleado_DNI).setCargo(cargo);
+                XML.modificarEmpleado(empleados.get(empleado_DNI));
             } else {
                 System.out.println("Cancelando operación, redirigiendo al menu");
             }

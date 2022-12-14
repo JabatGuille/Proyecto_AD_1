@@ -1,19 +1,19 @@
 <Clientes>
-  <Cliente>
-    <dni>21111111E</dni>
-    <nombre>CLienteNombre</nombre>
-    <apellido>ClienteApellido</apellido>
-    <edad>30</edad>
-    <profesion>Profesion</profesion>
-    <estado/>
-    <visitas__numero>
-      <entry>
-        <int>0</int>
-        <int>0</int>
-      </entry>
-    </visitas__numero>
-  </Cliente>
-<Cliente>
+    <Cliente>
+        <dni>21111111E</dni>
+        <nombre>CLienteNombre</nombre>
+        <apellido>ClienteApellido</apellido>
+        <edad>30</edad>
+        <profesion>Profesion</profesion>
+        <estado/>
+        <visitas__numero>
+            <entry>
+                <int>0</int>
+                <int>0</int>
+            </entry>
+        </visitas__numero>
+    </Cliente>
+    <Cliente>
         <dni>33333333A</dni>
         <nombre>Nombre</nombre>
         <apellido>Apellido</apellido>
@@ -22,7 +22,7 @@
         <estado/>
         <visitas__numero>
             <entry>
-            	<int>0</int>
+                <int>0</int>
                 <int>0</int>
             </entry>
         </visitas__numero>
