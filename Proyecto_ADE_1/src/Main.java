@@ -65,6 +65,11 @@ public class Main {
         scanner.close();
     }
 
+    /**
+     * menu_visita_guiada es el menu para poder ir a las opciones de las visitas guiadas
+     *
+     * @param scanner
+     */
     public static void menu_visita_guiada(Scanner scanner) {
         boolean bucle = true;
         while (bucle) {
@@ -117,6 +122,11 @@ public class Main {
 
     }
 
+    /**
+     * añadir_cliente_emple_visitaguiada se encarga de añadir un empleado y distintos clientes a una visita
+     *
+     * @param scanner
+     */
     public static void añadir_cliente_emple_visitaguiada(Scanner scanner) {
         listar_visitas_guiadas();
         if (visitasguiadas.size() != 0) {
@@ -177,6 +187,12 @@ public class Main {
         }
     }
 
+    /**
+     * añadir_clientes se encarga de añadir los clientes a la visita guiada
+     *
+     * @param N_visita
+     * @param scanner
+     */
     public static void añadir_clientes(Integer N_visita, Scanner scanner) {
         listar_clientes();
         if (clientes.size() != 0) {
@@ -210,6 +226,11 @@ public class Main {
         }
     }
 
+    /**
+     * menu_cliente es el menu para las distintas opciones del apartado cliente
+     *
+     * @param scanner
+     */
     public static void menu_cliente(Scanner scanner) {
         boolean bucle = true;
         while (bucle) {
@@ -255,6 +276,9 @@ public class Main {
         }
     }
 
+    /**
+     * listar_clientes lista todos los clientes activos
+     */
     private static void listar_clientes() {
         if (clientes.size() != 0) {
             for (Cliente cliente : clientes.values()) {
@@ -279,6 +303,11 @@ public class Main {
         }
     }
 
+    /**
+     * menu_empleado es el menu donde estan las distintas opciones para la gestion de los empleados
+     *
+     * @param scanner
+     */
     public static void menu_empleado(Scanner scanner) {
         boolean bucle = true;
         while (bucle) {
@@ -324,6 +353,9 @@ public class Main {
         }
     }
 
+    /**
+     * listar_empleados se encarga de mostrar todos los empleados activos
+     */
     private static void listar_empleados() {
         if (empleados.size() != 0) {
             for (Empleado empleado : empleados.values()) {
@@ -350,7 +382,9 @@ public class Main {
         }
     }
 
-
+    /**
+     * listar_visitas_guiadas se encarga de mostrar todas las visitas guiadas activas
+     */
     public static void listar_visitas_guiadas() {
         if (visitasguiadas.size() != 0) {
             for (VisitaGuiada visita : visitasguiadas.values()) {
@@ -398,6 +432,11 @@ public class Main {
         }
     }
 
+    /**
+     * nueva_visita_guiada se encarga de crear nuevas visitas guiadas
+     *
+     * @param scanner
+     */
     public static void nueva_visita_guiada(Scanner scanner) {
         boolean bucle = true;
         String nombre = "";
@@ -534,6 +573,12 @@ public class Main {
         }
     }
 
+    /**
+     * seleccionar lugar te permite seleccionar un lugar retorna el lugar seleccionado
+     *
+     * @param scanner
+     * @return
+     */
     public static int seleccionar_lugar(Scanner scanner) {
         scanner = new Scanner(System.in);
         boolean bucle = true;
@@ -560,6 +605,12 @@ public class Main {
         return lugarid;
     }
 
+    /**
+     * crear_lugar se encarga de crear un nuevo lugar
+     *
+     * @param scanner
+     * @return
+     */
     public static int crear_lugar(Scanner scanner) {
         boolean bucle = true;
         int id = 0;
@@ -597,6 +648,11 @@ public class Main {
         return id;
     }
 
+    /**
+     * borrar_visita_guiada se encarga de dar el estado Borrado a una visita y quitar todas las relaciones con dicha visita
+     *
+     * @param scanner
+     */
     public static void borrar_visita_guiada(Scanner scanner) {
         listar_visitas_guiadas();
         if (visitasguiadas.size() != 0) {
@@ -629,6 +685,11 @@ public class Main {
         }
     }
 
+    /**
+     * nuevo_empleado se encarga de añadir un nuevo empleado
+     *
+     * @param scanner
+     */
     public static void nuevo_empleado(Scanner scanner) {
         boolean bucle = true;
         String DNI = "";
@@ -731,6 +792,11 @@ public class Main {
         }
     }
 
+    /**
+     * borrar_empleado se encarga de poner el estado Borrado a un empleado y quitar todas sus relaciones
+     *
+     * @param scanner
+     */
     public static void borrar_empleado(Scanner scanner) {
         listar_empleados();
         if (empleados.size() != 0) {
@@ -755,6 +821,11 @@ public class Main {
         }
     }
 
+    /**
+     * nuevo_cliente se encarga de crear un nuevo cliente
+     *
+     * @param scanner
+     */
     public static void nuevo_cliente(Scanner scanner) {
         boolean bucle = true;
         String DNI = "";
@@ -842,6 +913,11 @@ public class Main {
         }
     }
 
+    /**
+     * borrar_cliente se encarga de poner el estado Borrado a un cliente y quitar todas sus relaciones
+     *
+     * @param scanner
+     */
     public static void borrar_cliente(Scanner scanner) {
         listar_clientes();
         if (clientes.size() != 0) {
@@ -865,6 +941,11 @@ public class Main {
 
     }
 
+    /**
+     * modificar_cliente se encarga de modificar un cliente
+     *
+     * @param scanner
+     */
     public static void modificar_cliente(Scanner scanner) {
         listar_clientes();
         if (clientes.size() != 0) {
@@ -967,6 +1048,11 @@ public class Main {
         }
     }
 
+    /**
+     * modificar_visita_guiada se encarga de modificar una visita pero no sus relaciones con empleados o clientes
+     *
+     * @param scanner
+     */
     public static void modificar_visita_guiada(Scanner scanner) {
         listar_visitas_guiadas();
         if (visitasguiadas.size() != 0) {
@@ -1132,6 +1218,11 @@ public class Main {
         }
     }
 
+    /**
+     * modificar empleado se encarga de poder modificar un empleado
+     *
+     * @param scanner
+     */
     public static void modificar_empleado(Scanner scanner) {
         listar_empleados();
         if (empleados.size() != 0) {
@@ -1241,6 +1332,4 @@ public class Main {
             System.out.println("No existen empleados que modificar");
         }
     }
-
-
 }

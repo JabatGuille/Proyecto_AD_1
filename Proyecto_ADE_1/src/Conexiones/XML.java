@@ -21,6 +21,11 @@ public class XML {
     private static final String pass = "1234";
     private static Collection col = null;
 
+    /**
+     * recuperar_clientes se encarga de recuperar los clientes y gestionarlos en la BBDD
+     *
+     * @return
+     */
     public static HashMap<String, Cliente> recuperar_clientes() {
         HashMap<String, Cliente> clientes = new HashMap<>();
         conexion();
@@ -66,7 +71,7 @@ public class XML {
             } catch (IOException e) {
                 System.out.println("Error en la lectura");
             } catch (XMLDBException e) {
-                throw new RuntimeException(e);
+                System.out.println("Error con el XML");
             }
         } else {
             System.out.println("Error en la BBDD");
@@ -74,40 +79,55 @@ public class XML {
         return clientes;
     }
 
+    /**
+     * insertarCLiente se encarga de insertar un cliente en la BBDD
+     *
+     * @param cliente
+     */
     public static void insertarCLiente(Cliente cliente) {
-        conexion();
-        if (col != null) {
-            String nuevocli = "<Cliente><dni>" + cliente.getDni() + "</dni>"
-                    + "<nombre>" + cliente.getNombre() + "</nombre>" +
-                    "<apellido>" + cliente.getApellido() + "</apellido>"
-                    + "<edad>" + cliente.getEdad() + "</edad>" +
-                    "<profesion>" + cliente.getProfesion() + "</profesion>" +
-                    "<estado>" + cliente.getEstado() + "</estado>" +
-                    "<visitas__numero>" + "<entry>";
-            for (Integer cli : cliente.getVisitas().values()) {
-                nuevocli = nuevocli + "<int>" + cli + "</int>" +
-                        "<int>" + cli + "</int>";
-            }
-            nuevocli = nuevocli + "</entry>" +
-                    "</visitas__numero>" +
-                    "</Cliente>";
+        if (comprobarCliente(cliente.getDni())) {
+            conexion();
+            if (col != null) {
+                String nuevocli = "<Cliente><dni>" + cliente.getDni() + "</dni>"
+                        + "<nombre>" + cliente.getNombre() + "</nombre>" +
+                        "<apellido>" + cliente.getApellido() + "</apellido>"
+                        + "<edad>" + cliente.getEdad() + "</edad>" +
+                        "<profesion>" + cliente.getProfesion() + "</profesion>" +
+                        "<estado>" + cliente.getEstado() + "</estado>" +
+                        "<visitas__numero>" + "<entry>";
+                for (Integer cli : cliente.getVisitas().values()) {
+                    nuevocli = nuevocli + "<int>" + cli + "</int>" +
+                            "<int>" + cli + "</int>";
+                }
+                nuevocli = nuevocli + "</entry>" +
+                        "</visitas__numero>" +
+                        "</Cliente>";
 
-            try {
-                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
-                System.out.printf("Inserto: %s \n", nuevocli);
-                //Consulta para insertar --> update insert ... into
-                ResourceSet result = servicio.query("update insert " + nuevocli + " into /Clientes");
-                col.close(); //borramos
-                System.out.println("Cliente insertado.");
-            } catch (Exception e) {
-                System.out.println("Error al insertar cliente.");
-                e.printStackTrace();
+                try {
+                    XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                    System.out.printf("Inserto: %s \n", nuevocli);
+                    //Consulta para insertar --> update insert ... into
+                    ResourceSet result = servicio.query("update insert " + nuevocli + " into /Clientes");
+                    col.close(); //borramos
+                    System.out.println("Cliente insertado.");
+                } catch (Exception e) {
+                    System.out.println("Error al insertar cliente.");
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Error en la BBDD");
             }
         } else {
-            System.out.println("Error en la BBDD");
+            System.out.println("No existe el cliente");
         }
     }
 
+    /**
+     * comprobarCliente se encarga de comprobar si existe un cliente en la BBDD y retorna un bool dependiendo el resultado
+     *
+     * @param DNI
+     * @return
+     */
     public static boolean comprobarCliente(String DNI) {
         //Devuelve true si el dep existe
         conexion();
@@ -136,6 +156,11 @@ public class XML {
 
     }
 
+    /**
+     * modificarCliente se encarga de modificar un cliente de la BBDD
+     *
+     * @param cliente
+     */
     public static void modificarCLiente(Cliente cliente) {
         if (comprobarCliente(cliente.getDni())) {
             conexion();
@@ -167,47 +192,59 @@ public class XML {
         }
     }
 
-
+    /**
+     * insertarVisitaGuiada se encarga de insertar una visitaGuiada
+     *
+     * @param visitaGuiada
+     */
     public static void insertarVisitaGuiada(VisitaGuiada visitaGuiada) {
-        conexion();
-        if (col != null) {
-            String nuevavis = "<VisitaGuiada><n__visita>" + visitaGuiada.getN_visita() + "</n__visita>"
-                    + "<nombre>" + visitaGuiada.getNombre() + "</nombre>" +
-                    "<n__max__cli>" + visitaGuiada.getN_max_cli() + "</n__max__cli>"
-                    + "<punto__partida>" + visitaGuiada.getPunto_partida() + "</punto__partida>" +
-                    "<curso>" + visitaGuiada.getCurso() + "</curso>" +
-                    "<tematica>" + visitaGuiada.getTematica() + "</tematica>" +
-                    "<coste>" + visitaGuiada.getCoste() + "</coste>" +
-                    "<estado>" + visitaGuiada.getEstado() + "</estado>" +
-                    "<lugar__id>" + visitaGuiada.getLugar() + "</lugar__id>" +
-                    "<empleado__dni>" + visitaGuiada.getEmpleado() + "</empleado__dni>" +
-                    "<horario>" + visitaGuiada.getHorario() + "</horario>" +
-                    "<clientes__dni>" + "<entry>";
-            for (String vis : visitaGuiada.getClientes().values()) {
-                nuevavis = nuevavis + "<string>" + vis + "</string>" +
-                        "<string>" + vis + "</string>";
-            }
-            nuevavis = nuevavis + "</entry>" +
-                    "</clientes__dni>" +
-                    "</VisitaGuiada>";
+        if (comprobarVisita(visitaGuiada.getN_visita())) {
+            conexion();
+            if (col != null) {
+                String nuevavis = "<VisitaGuiada><n__visita>" + visitaGuiada.getN_visita() + "</n__visita>"
+                        + "<nombre>" + visitaGuiada.getNombre() + "</nombre>" +
+                        "<n__max__cli>" + visitaGuiada.getN_max_cli() + "</n__max__cli>"
+                        + "<punto__partida>" + visitaGuiada.getPunto_partida() + "</punto__partida>" +
+                        "<curso>" + visitaGuiada.getCurso() + "</curso>" +
+                        "<tematica>" + visitaGuiada.getTematica() + "</tematica>" +
+                        "<coste>" + visitaGuiada.getCoste() + "</coste>" +
+                        "<estado>" + visitaGuiada.getEstado() + "</estado>" +
+                        "<lugar__id>" + visitaGuiada.getLugar() + "</lugar__id>" +
+                        "<empleado__dni>" + visitaGuiada.getEmpleado() + "</empleado__dni>" +
+                        "<horario>" + visitaGuiada.getHorario() + "</horario>" +
+                        "<clientes__dni>" + "<entry>";
+                for (String vis : visitaGuiada.getClientes().values()) {
+                    nuevavis = nuevavis + "<string>" + vis + "</string>" +
+                            "<string>" + vis + "</string>";
+                }
+                nuevavis = nuevavis + "</entry>" +
+                        "</clientes__dni>" +
+                        "</VisitaGuiada>";
 
-            try {
-                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
-                System.out.printf("Inserto: %s \n", nuevavis);
-                //Consulta para insertar --> update insert ... into
-                ResourceSet result = servicio.query("update insert " + nuevavis + " into /VisitasGuiadas");
-                col.close(); //borramos
-                System.out.println("VisitaGuiada insertado.");
-            } catch (Exception e) {
-                System.out.println("Error al insertar la visita.");
-                e.printStackTrace();
+                try {
+                    XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                    System.out.printf("Inserto: %s \n", nuevavis);
+                    //Consulta para insertar --> update insert ... into
+                    ResourceSet result = servicio.query("update insert " + nuevavis + " into /VisitasGuiadas");
+                    col.close(); //borramos
+                    System.out.println("VisitaGuiada insertado.");
+                } catch (Exception e) {
+                    System.out.println("Error al insertar la visita.");
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Error en la BBDD");
             }
         } else {
-            System.out.println("Error en la BBDD");
+            System.out.println("No existe la visitaGuiada");
         }
-
     }
 
+    /**
+     * recuperar_visitas_guiadas se encarga de recuperar las visitas de la BBDD y gestionarlas en los objetos
+     *
+     * @return
+     */
     public static HashMap<Integer, VisitaGuiada> recuperar_visitas_guiadas() {
         HashMap<Integer, VisitaGuiada> visitaguiadas = new HashMap<>();
         conexion();
@@ -253,7 +290,7 @@ public class XML {
             } catch (IOException e) {
                 System.out.println("Error en la lectura");
             } catch (XMLDBException e) {
-                throw new RuntimeException(e);
+                System.out.println("Error con el XML");
             }
         } else {
             System.out.println("Error en la BBDD");
@@ -261,7 +298,12 @@ public class XML {
         return visitaguiadas;
     }
 
-
+    /**
+     * comprobarVisita se encarga de buscar una visita en la BBDD y retorna un bool dependendiendo el resultado
+     *
+     * @param id
+     * @return
+     */
     public static boolean comprobarVisita(int id) {
         //Devuelve true si el dep existe
         conexion();
@@ -290,6 +332,11 @@ public class XML {
 
     }
 
+    /**
+     * modificarVista se encarga de modificar una vista
+     *
+     * @param visita
+     */
     public static void modificarVisita(VisitaGuiada visita) {
         if (comprobarVisita(visita.getN_visita())) {
             conexion();
@@ -329,7 +376,11 @@ public class XML {
         }
     }
 
-
+    /**
+     * recuperar_empleados se encarga de recuperar los datos de los empleados y gestionarlos enn los objetos
+     *
+     * @return
+     */
     public static HashMap<String, Empleado> recuperar_empleados() {
         HashMap<String, Empleado> empleados = new HashMap<>();
         try {
@@ -373,47 +424,62 @@ public class XML {
         } catch (IOException e) {
             System.out.println("Error en la lectura");
         } catch (XMLDBException e) {
-            throw new RuntimeException(e);
+            System.out.println("Error con el XML");
         }
         return empleados;
     }
 
+    /**
+     * insertarEmpleado se encarga de insertar un empleado en la BBDD
+     *
+     * @param empleado
+     */
     public static void insertarEmpleado(Empleado empleado) {
-        conexion();
-        if (col != null) {
-            String nuevoempl = "<Empleado><dni>" + empleado.getDni() + "</dni>"
-                    + "<nombre>" + empleado.getNombre() + "</nombre>" +
-                    "<apellido>" + empleado.getApellido() + "</apellido>"
-                    + "<fecha__Nac>" + empleado.getFecha_Nac() + "</fecha__Nac>" +
-                    "<fecha__cont>" + empleado.getFecha_cont() + "</fecha__cont>" +
-                    "<nacionalidad>" + empleado.getNacionalidad() + "</nacionalidad>" +
-                    "<cargo>" + empleado.getCargo() + "</cargo>" +
-                    "<estado>" + empleado.getNacionalidad() + "</estado>" +
-                    "<visitas__numero>" + "<entry>";
-            for (Integer cli : empleado.getVisitas().values()) {
-                nuevoempl = nuevoempl + "<int>" + cli + "</int>" +
-                        "<int>" + cli + "</int>";
-            }
-            nuevoempl = nuevoempl + "</entry>" +
-                    "</visitas__numero>" +
-                    "</Empleado>";
+        if (comprobarEmpleado(empleado.getDni())) {
+            conexion();
+            if (col != null) {
+                String nuevoempl = "<Empleado><dni>" + empleado.getDni() + "</dni>"
+                        + "<nombre>" + empleado.getNombre() + "</nombre>" +
+                        "<apellido>" + empleado.getApellido() + "</apellido>"
+                        + "<fecha__Nac>" + empleado.getFecha_Nac() + "</fecha__Nac>" +
+                        "<fecha__cont>" + empleado.getFecha_cont() + "</fecha__cont>" +
+                        "<nacionalidad>" + empleado.getNacionalidad() + "</nacionalidad>" +
+                        "<cargo>" + empleado.getCargo() + "</cargo>" +
+                        "<estado>" + empleado.getNacionalidad() + "</estado>" +
+                        "<visitas__numero>" + "<entry>";
+                for (Integer cli : empleado.getVisitas().values()) {
+                    nuevoempl = nuevoempl + "<int>" + cli + "</int>" +
+                            "<int>" + cli + "</int>";
+                }
+                nuevoempl = nuevoempl + "</entry>" +
+                        "</visitas__numero>" +
+                        "</Empleado>";
 
-            try {
-                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
-                System.out.printf("Inserto: %s \n", nuevoempl);
-                //Consulta para insertar --> update insert ... into
-                ResourceSet result = servicio.query("update insert " + nuevoempl + " into /Empleados");
-                col.close(); //borramos
-                System.out.println("Empleado insertado.");
-            } catch (Exception e) {
-                System.out.println("Error al insertar empleado.");
-                e.printStackTrace();
+                try {
+                    XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                    System.out.printf("Inserto: %s \n", nuevoempl);
+                    //Consulta para insertar --> update insert ... into
+                    ResourceSet result = servicio.query("update insert " + nuevoempl + " into /Empleados");
+                    col.close(); //borramos
+                    System.out.println("Empleado insertado.");
+                } catch (Exception e) {
+                    System.out.println("Error al insertar empleado.");
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Error en la BBDD");
             }
         } else {
-            System.out.println("Error en la BBDD");
+            System.out.println("El empleado ya existe");
         }
     }
 
+    /**
+     * comprobarEmpleado recibiendo un DNI comprueba si el empleado existe, retorna un bool dependiendo el resultado
+     *
+     * @param DNI
+     * @return
+     */
     public static boolean comprobarEmpleado(String DNI) {
         //Devuelve true si el dep existe
         conexion();
@@ -442,6 +508,11 @@ public class XML {
 
     }
 
+    /**
+     * modificarEmpleado se encarga de modificar un empleado
+     *
+     * @param empleado
+     */
     public static void modificarEmpleado(Empleado empleado) {
         if (comprobarEmpleado(empleado.getDni())) {
             conexion();
@@ -477,6 +548,11 @@ public class XML {
         }
     }
 
+    /**
+     * recuperar_lugar se encarga de recibir toda la coleccion para poder gestionarla en los objetos
+     *
+     * @return
+     */
     public static HashMap<Integer, Lugar> recuperar_lugar() {
         conexion();
         HashMap<Integer, Lugar> lugares = new HashMap<>();
@@ -522,7 +598,7 @@ public class XML {
             } catch (IOException e) {
                 System.out.println("Error en la lectura");
             } catch (XMLDBException e) {
-                throw new RuntimeException(e);
+                System.out.println("Error con el XML");
             }
         } else {
             System.out.println("Error en la BBDD");
@@ -530,36 +606,51 @@ public class XML {
         return lugares;
     }
 
+    /**
+     * insertarLugar recibiendo un lugar lo inserta en la BBDD
+     *
+     * @param lugar
+     */
     public static void insertarLugar(Lugar lugar) {
         conexion();
         if (col != null) {
-            String nuevolugar = "<Lugar><id>" + lugar.getId() + "</id>"
-                    + "<lugar>" + lugar.getLugar() + "</lugar>" +
-                    "<visitas__numero>" + "<entry>";
-            for (Integer cli : lugar.getVisitas().values()) {
-                nuevolugar = nuevolugar + "<int>" + cli + "</int>" +
-                        "<int>" + cli + "</int>";
-            }
-            nuevolugar = nuevolugar + "</entry>" +
-                    "</visitas__numero>" +
-                    "</Lugar>";
+            if (comprobarLugar(lugar.getId())) {
+                String nuevolugar = "<Lugar><id>" + lugar.getId() + "</id>"
+                        + "<lugar>" + lugar.getLugar() + "</lugar>" +
+                        "<visitas__numero>" + "<entry>";
+                for (Integer cli : lugar.getVisitas().values()) {
+                    nuevolugar = nuevolugar + "<int>" + cli + "</int>" +
+                            "<int>" + cli + "</int>";
+                }
+                nuevolugar = nuevolugar + "</entry>" +
+                        "</visitas__numero>" +
+                        "</Lugar>";
 
-            try {
-                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
-                System.out.printf("Inserto: %s \n", nuevolugar);
-                //Consulta para insertar --> update insert ... into
-                ResourceSet result = servicio.query("update insert " + nuevolugar + " into /Lugares");
-                col.close(); //borramos
-                System.out.println("Empleado insertado.");
-            } catch (Exception e) {
-                System.out.println("Error al insertar lugar.");
-                e.printStackTrace();
+                try {
+                    XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                    System.out.printf("Inserto: %s \n", nuevolugar);
+                    //Consulta para insertar --> update insert ... into
+                    ResourceSet result = servicio.query("update insert " + nuevolugar + " into /Lugares");
+                    col.close(); //borramos
+                    System.out.println("Empleado insertado.");
+                } catch (Exception e) {
+                    System.out.println("Error al insertar lugar.");
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Error en la BBDD");
             }
         } else {
-            System.out.println("Error en la BBDD");
+            System.out.println("El lugar ya existe");
         }
     }
 
+    /**
+     * comprobarLugar recibiendo un id comprueba que el lugar el existe retorna un bool dependiendo la respuesta
+     *
+     * @param id
+     * @return
+     */
     public static boolean comprobarLugar(int id) {
         //Devuelve true si el dep existe
         conexion();
@@ -588,6 +679,9 @@ public class XML {
 
     }
 
+    /**
+     * comprobarFicheroExist se encarga de verificar que la BBDD tiene los ficheros necesarios y si no los tiene los crea y sube
+     */
     public static void comprobarFicherosExist() {
         conexion();
         if (col != null) {
@@ -662,15 +756,21 @@ public class XML {
                 }
 
             } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
+                System.out.println("Archivo no encontrado");
             } catch (XMLDBException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
+                System.out.println("Error con el XML");
             }
         }
     }
 
+    /**
+     * crearRelaciones se encarga de poder gestionar el tema de las relaciones en los XML subiendo los archivos a exist
+     *
+     * @param lugares
+     * @param visitasguiadas
+     * @param empleados
+     * @param clientes
+     */
     public static void crearRelaciones(HashMap<Integer, Lugar> lugares, HashMap<Integer, VisitaGuiada> visitasguiadas, HashMap<String, Empleado> empleados, HashMap<String, Cliente> clientes) {
         conexion();
         if (col != null) {
@@ -702,7 +802,11 @@ public class XML {
         }
     }
 
-
+    /**
+     * borrarCliente recibiendo el DNI del cliente se encarga aplicar el estado borrado al cliente
+     *
+     * @param DNI
+     */
     public static void borrarCliente(String DNI) {
         if (comprobarCliente(DNI)) {
             conexion();
@@ -728,6 +832,11 @@ public class XML {
         }
     }
 
+    /**
+     * borrarEmpleado recibiendo el DNI del empleado se encarga aplicar el estado borrado al empleado
+     *
+     * @param DNI
+     */
     public static void borrarEmpleado(String DNI) {
         if (comprobarEmpleado(DNI)) {
             conexion();
@@ -753,7 +862,11 @@ public class XML {
         }
     }
 
-
+    /**
+     * borrarVista recibiendo el numero de la vista se encarga aplicar el estado borrado a la vista
+     *
+     * @param numero
+     */
     public static void borrarVisita(int numero) {
         if (comprobarVisita(numero)) {
             conexion();
@@ -779,9 +892,11 @@ public class XML {
         }
     }
 
+    /**
+     * conexion se encarga de realizar la conexión con exist y bajar la colección
+     */
     public static void conexion() {
         String driver = "org.exist.xmldb.DatabaseImpl"; //Driver para eXist
-
 
         try {
             Class cl = Class.forName(driver); //Cargar del driver
@@ -803,109 +918,6 @@ public class XML {
             System.out.println("Error en la BBDD");
         }
     }
-
-    /*
-        public static void prueba() {
-            try {
-                XPathQueryService servicio;
-                servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
-                //Preparamos la consulta
-                ResourceSet result = servicio.query("/Clientes");
-                // recorrer los datos del recurso.
-                ResourceIterator i;
-                i = result.getIterator();
-                if (!i.hasMoreResources()) {
-                    System.out.println(" LA CONSULTA NO DEVUELVE NADA O ESTÁ MAL ESCRITA");
-                }
-                while (i.hasMoreResources()) {
-                    Resource r = i.nextResource();
-                    System.out.println("--------------------------------------------");
-                    System.out.println((String) r.getContent());
-                }
-                col.close();
-            } catch (XMLDBException e) {
-                System.out.println(" ERROR AL CONSULTAR DOCUMENTO.");
-                e.printStackTrace();
-            }
-        }
-
-        public static void prueba2() {
-            try {
-                System.out.printf("Conecta");
-                // Inicializamos el recurso
-                XMLResource res = null;
-
-                // Creamos el recurso -> recibe 2 parámetros tipo String:
-                // s: nombre.xml (si lo dejamos null, pondrá un nombre aleatorio)
-                // s1: tipo recurso (en este caso, siempre será XMLResource)
-                res = (XMLResource) col.createResource("Clientes.xml", "XMLResource");
-
-                // Elegimos el fichero .xml que queremos añadir a la colección
-                File f = new File("src/Ficheros_XML/Clientes.xml");
-
-                // Fijamos como contenido ese archivo .xml elegido
-                res.setContent(f);
-                col.storeResource(res); // lo añadimos a la colección
-
-                // Listamos la colección para ver que en efecto se ha añadido
-                for (String colRe : col.listResources())
-                    System.out.println(colRe);
-
-                col.close();
-            } catch (Exception e) {
-                System.out.println("Error al consultar.");
-                // e.printStackTrace();
-            }
-        }
-
-        public static void prueba3() {
-            HashMap<String, Cliente> clientes = new HashMap<>();
-            try {
-                FileWriter fichero = new FileWriter("src/Ficheros_XML/Clientes.xml");
-
-                XPathQueryService servicio;
-                servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
-                //Preparamos la consulta
-                ResourceSet result = servicio.query("/Clientes");
-                // recorrer los datos del recurso.
-                ResourceIterator i;
-                i = result.getIterator();
-                if (!i.hasMoreResources()) {
-                    System.out.println(" LA CONSULTA NO DEVUELVE NADA O ESTÁ MAL ESCRITA");
-                }
-                while (i.hasMoreResources()) {
-                    Resource r = i.nextResource();
-                    System.out.println("--------------------------------------------");
-                    fichero.write((String) r.getContent());
-                }
-                fichero.close();
-                col.close();
-    /*
-                XStream xstream = new XStream();
-                xstream.addPermission(AnyTypePermission.ANY);
-                xstream.alias("Clientes", ListaClientes.class);
-                xstream.alias("Cliente", Cliente.class);
-                xstream.addImplicitCollection(ListaClientes.class, "lista");
-                BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/Clientes.xml"));
-                if (br.readLine() != null) {
-                    ListaClientes listadoTodas = (ListaClientes) xstream.fromXML(fichero);
-                    List<Cliente> listaPersonas;
-                    listaPersonas = listadoTodas.getClientes();
-                    for (Cliente p : listaPersonas) {
-                        clientes.put(p.getDni(), p);
-                    }
-                }
-    */
-    /*
-        } catch (FileNotFoundException e) {
-            System.out.println("Error en el fichero");
-        } catch (IOException e) {
-            System.out.println("Error en la lectura");
-        } catch (XMLDBException e) {
-            throw new RuntimeException(e);
-        }
-    }
-/*/
 }
 
 
