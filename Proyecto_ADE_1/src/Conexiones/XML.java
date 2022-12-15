@@ -5,10 +5,12 @@ import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.security.AnyTypePermission;
 import org.xmldb.api.DatabaseManager;
 import org.xmldb.api.base.*;
+import org.xmldb.api.modules.XMLResource;
 import org.xmldb.api.modules.XPathQueryService;
 
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -238,8 +240,10 @@ public class XML {
                     ListaVisitaGuiada listadoTodas = (ListaVisitaGuiada) xstream.fromXML(fichero);
                     List<VisitaGuiada> listaPersonas;
                     listaPersonas = listadoTodas.getVisitaGuiadas();
-                    for (VisitaGuiada p : listaPersonas) {
-                        visitaguiadas.put(p.getN_visita(), p);
+                    if (listaPersonas != null) {
+                        for (VisitaGuiada p : listaPersonas) {
+                            visitaguiadas.put(p.getN_visita(), p);
+                        }
                     }
                 }
             } catch (FileNotFoundException e) {
@@ -578,16 +582,134 @@ public class XML {
 
     }
 
-    public static void modificarLugar(Lugar lugar) {
-        if (comprobarLugar(lugar.getId())) {
+    public static void comprobarFicherosExist() {
+        conexion();
+        if (col != null) {
+            try {
+                if (col.getResourceCount() == 0) {
+                    HashMap<String, Cliente> clientes = new HashMap<>();
+                    HashMap<String, Empleado> empleados = new HashMap<>();
+                    HashMap<Integer, VisitaGuiada> visitasguiadas = new HashMap<>();
+                    HashMap<Integer, Lugar> lugares = new HashMap<>();
+
+                    XMLResource res = null;
+                    File f = null;
+
+                    XStream xstream = new XStream();
+                    xstream.alias("VisitasGuiadas", ListaVisitaGuiada.class);
+                    xstream.alias("VisitaGuiada", VisitaGuiada.class);
+                    xstream.addImplicitCollection(ListaVisitaGuiada.class, "lista");
+                    ListaVisitaGuiada listaVisitaGuiada = new ListaVisitaGuiada();
+                    listaVisitaGuiada.lista = new ArrayList<>(visitasguiadas.values());
+                    xstream.toXML(listaVisitaGuiada, new FileOutputStream("src/Ficheros_XML/VisitasGuiadas.xml"));
+
+                    res = (XMLResource) col.createResource("VisitaGuiadas.xml", "XMLResource");
+                    f = new File("src/Ficheros_XML/VisitasGuiadas.xml");
+                    res.setContent(f);
+                    col.storeResource(res);
+
+                    xstream = new XStream();
+                    xstream.alias("Clientes", ListaClientes.class);
+                    xstream.alias("Cliente", Cliente.class);
+                    xstream.addImplicitCollection(ListaClientes.class, "lista");
+                    ListaClientes listaClientes = new ListaClientes();
+                    listaClientes.lista = new ArrayList<>(clientes.values());
+                    xstream.toXML(listaClientes, new FileOutputStream("src/Ficheros_XML/Clientes.xml"));
+
+                    res = (XMLResource) col.createResource("Clientes.xml", "XMLResource");
+                    f = new File("src/Ficheros_XML/Clientes.xml");
+                    res.setContent(f);
+                    col.storeResource(res);
+
+                    xstream = new XStream();
+                    xstream.alias("Empleados", ListaEmpleados.class);
+                    xstream.alias("Empleado", Empleado.class);
+                    xstream.addImplicitCollection(ListaEmpleados.class, "lista");
+                    ListaEmpleados listaEmpleados = new ListaEmpleados();
+                    listaEmpleados.lista = new ArrayList<>(empleados.values());
+                    xstream.toXML(listaEmpleados, new FileOutputStream("src/Ficheros_XML/Empleados.xml"));
+
+                    res = (XMLResource) col.createResource("Empleados.xml", "XMLResource");
+                    f = new File("src/Ficheros_XML/Empleados.xml");
+                    res.setContent(f);
+                    col.storeResource(res);
+
+                    xstream = new XStream();
+                    xstream.alias("Lugares", ListaLugares.class);
+                    xstream.alias("Lugar", Lugar.class);
+                    xstream.addImplicitCollection(ListaLugares.class, "lista");
+                    ListaLugares listaLugares = new ListaLugares();
+                    listaLugares.lista = new ArrayList<>(lugares.values());
+                    xstream.toXML(listaLugares, new FileOutputStream("src/Ficheros_XML/Lugares.xml"));
+
+                    res = (XMLResource) col.createResource("Lugares.xml", "XMLResource");
+                    f = new File("src/Ficheros_XML/Lugares.xml");
+                    res.setContent(f);
+                    col.storeResource(res);
+
+
+                    // Listamos la colección para ver que en efecto se ha añadido
+                    for (String colRe : col.listResources())
+                        System.out.println(colRe);
+
+                    col.close();
+                }
+
+            } catch (FileNotFoundException e) {
+                throw new RuntimeException(e);
+            } catch (XMLDBException e) {
+                throw new RuntimeException(e);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
+    public static void crearRelaciones(HashMap<Integer, Lugar> lugares, HashMap<Integer, VisitaGuiada> visitasguiadas, HashMap<String, Empleado> empleados, HashMap<String, Cliente> clientes) {
+        conexion();
+        if (col != null) {
+            try {
+                XMLResource res = null;
+                res = (XMLResource) col.createResource("Empleados.xml", "XMLResource");
+                File f = new File("src/Ficheros_XML/Empleados.xml");
+                res.setContent(f);
+                col.storeResource(res);
+                res = (XMLResource) col.createResource("Clientes.xml", "XMLResource");
+                f = new File("src/Ficheros_XML/Clientes.xml");
+                res.setContent(f);
+                col.storeResource(res);
+                res = (XMLResource) col.createResource("VisitasGuiadas.xml", "XMLResource");
+                f = new File("src/Ficheros_XML/VisitasGuiadas.xml");
+                res.setContent(f);
+                col.storeResource(res);
+                res = (XMLResource) col.createResource("Lugares.xml", "XMLResource");
+                f = new File("src/Ficheros_XML/Lugares.xml");
+                res.setContent(f);
+                col.storeResource(res);
+                col.close();
+            } catch (Exception e) {
+                System.out.println("Error al consultar.");
+                // e.printStackTrace();
+            }
+        } else {
+            System.out.println("Error en la conexión. Comprueba datos.");
+        }
+    }
+
+
+    public static void borrarCliente(String DNI) {
+        if (comprobarCliente(DNI)) {
             conexion();
             if (col != null) {
                 try {
-                    System.out.printf("Actualizo el empleado: %s\n", lugar.getId());
+                    System.out.printf("Borrando el cliente: %s\n", DNI);
                     XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
                     //Consulta para modificar/actualizar un valor --> update value
+                    ResourceSet result = servicio.query(
+                            "update value /Clientes/Cliente[dni='" + DNI + "']/estado with data('Borrado') ");
+
                     col.close();
-                    System.out.println("Cliente actualizado.");
+                    System.out.println("Cliente borrado.");
                 } catch (Exception e) {
                     System.out.println("Error al actualizar.");
                     e.printStackTrace();
@@ -596,7 +718,58 @@ public class XML {
                 System.out.println("Error en la conexión. Comprueba datos.");
             }
         } else {
-            System.out.println("El cliente NO EXISTE.");
+            System.out.println("El Cliente NO EXISTE.");
+        }
+    }
+
+    public static void borrarEmpleado(String DNI) {
+        if (comprobarEmpleado(DNI)) {
+            conexion();
+            if (col != null) {
+                try {
+                    System.out.printf("Borrando el empleado: %s\n", DNI);
+                    XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                    //Consulta para modificar/actualizar un valor --> update value
+                    ResourceSet result = servicio.query(
+                            "update value /Empleados/Empleado[dni='" + DNI + "']/estado with data('Borrado') ");
+
+                    col.close();
+                    System.out.println("Empleado borrado.");
+                } catch (Exception e) {
+                    System.out.println("Error al actualizar.");
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Error en la conexión. Comprueba datos.");
+            }
+        } else {
+            System.out.println("El Empleado NO EXISTE.");
+        }
+    }
+
+
+    public static void borrarVisita(int numero) {
+        if (comprobarVisita(numero)) {
+            conexion();
+            if (col != null) {
+                try {
+                    System.out.printf("Borrando la visita: %s\n", numero);
+                    XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                    //Consulta para modificar/actualizar un valor --> update value
+                    ResourceSet result = servicio.query(
+                            "update value /VisitasGuiadas/VisitaGuiada[n__visita='" + numero + "']/estado with data('Borrado') ");
+
+                    col.close();
+                    System.out.println("Visita borrada.");
+                } catch (Exception e) {
+                    System.out.println("Error al actualizar.");
+                    e.printStackTrace();
+                }
+            } else {
+                System.out.println("Error en la conexión. Comprueba datos.");
+            }
+        } else {
+            System.out.println("La visita NO EXISTE.");
         }
     }
 
@@ -729,7 +902,7 @@ public class XML {
 /*/
     public static void main(String[] args) {
         //   conexion();
-        modificarCLiente(new Cliente("21111111E", "NOmbre", "Apellido", 20, "profesiones", ""));
+        comprobarFicherosExist();
     }
 
 

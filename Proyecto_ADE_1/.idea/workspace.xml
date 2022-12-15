@@ -5,7 +5,16 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="09f89609-7619-412f-abe0-981dfc63f17d" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Proyecto_ADE_1/Ficheros_XML/Clientes.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Proyecto_ADE_1/Ficheros_XML/Empleados.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Proyecto_ADE_1/Ficheros_XML/Lugares.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/Proyecto_ADE_1/Ficheros_XML/VisitasGuiadas.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Conexiones/XML.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Conexiones/XML.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ficheros_XML/Clientes.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ficheros_XML/Lugares.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ficheros_XML/VisitasGuiadas.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Ficheros_XML/empleados.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

@@ -25,6 +25,7 @@ public class Main {
         String menu;
         Scanner scanner = new Scanner(System.in);
         scanner = new Scanner(System.in);
+        XML.comprobarFicherosExist();
         clientes = XML.recuperar_clientes();
         empleados = XML.recuperar_empleados();
         visitasguiadas = XML.recuperar_visitas_guiadas();
@@ -161,10 +162,7 @@ public class Main {
                             System.out.println("Añadiendo empleado a la visita");
                             visitasguiadas.get(N_visita).setEmpleado(DNI);
                             empleados.get(DNI).setVisitas(N_visita);
-                            //TODO añadir empleado visitaGuiada
-                            XML.guardar_visitas_guiadas(visitasguiadas);
-                            //TODO añadir visita empleados
-                            XML.guardar_empleados(empleados);
+                            XML.crearRelaciones(lugares, visitasguiadas, empleados, clientes);
                         } else {
                             System.out.println("El DNI no existe " + DNI);
                         }
@@ -194,10 +192,7 @@ public class Main {
                             System.out.println("Añadiendo cliente");
                             clientes.get(DNI).setVisitas(N_visita);
                             visitasguiadas.get(N_visita).setClientes(DNI);
-                            //TODO añadir cliente VisitaGuiada
-                            XML.guardar_visitas_guiadas(visitasguiadas);
-                            //TODO añadir cliente visita
-                            XML.guardar_clientes(clientes);
+                            XML.crearRelaciones(lugares, visitasguiadas, empleados, clientes);
                         }
                     } else {
                         System.out.println("DNI: " + DNI + " incorrecto");
@@ -533,7 +528,7 @@ public class Main {
             lugares.get(lugarid).setVisitas(visitaid);
             XML.insertarVisitaGuiada(visitaGuiada);
             //TODO modificar lugar
-            XML.modificarLugar(lugares.get(lugarid));
+            XML.crearRelaciones(lugares, visitasguiadas, empleados, clientes);
         } else {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
@@ -620,10 +615,8 @@ public class Main {
                     for (Lugar lugar : lugares.values()) {
                         lugar.getVisitas().remove(numero);
                     }
-                    XML.guardar_visitas_guiadas(visitasguiadas);
-                    XML.guardar_lugar(lugares);
-                    XML.guardar_clientes(clientes);
-                    XML.guardar_empleados(empleados);
+                    XML.borrarVisita(numero);
+                    XML.crearRelaciones(lugares, visitasguiadas, empleados, clientes);
                     System.out.println("Borrando visita");
                 } else {
                     System.out.println("Ese numero no esta en la lista de visitas guiadas");
@@ -751,8 +744,8 @@ public class Main {
                         v.setEmpleado(null);
                     }
                 }
-                XML.guardar_visitas_guiadas(visitasguiadas);
-                XML.guardar_empleados(empleados);
+                XML.borrarEmpleado(dni);
+                XML.crearRelaciones(lugares, visitasguiadas, empleados, clientes);
                 System.out.println("Borrando empleado");
             } else {
                 System.out.println("El DNI escrito no esta en la lista");
@@ -860,8 +853,8 @@ public class Main {
                 for (VisitaGuiada v : visitasguiadas.values()) {
                     v.getClientes().remove(dni);
                 }
-                XML.guardar_visitas_guiadas(visitasguiadas);
-                XML.guardar_clientes(clientes);
+                XML.borrarCliente(dni);
+                XML.crearRelaciones(lugares, visitasguiadas, empleados, clientes);
                 System.out.println("Borrando usuario");
             } else {
                 System.out.println("El DNI escrito no esta en la lista");
@@ -1130,7 +1123,7 @@ public class Main {
                 visitasguiadas.get(N_visita).setLugar(lugarid);
                 lugares.get(lugarid).setVisitas(N_visita);
                 XML.modificarVisita(visitasguiadas.get(N_visita));
-                XML.guardar_lugar(lugares);
+                XML.crearRelaciones(lugares, visitasguiadas, empleados, clientes);
             } else {
                 System.out.println("Cancelando operación, redirigiendo al menu");
             }
