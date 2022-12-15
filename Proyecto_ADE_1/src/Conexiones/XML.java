@@ -55,8 +55,10 @@ public class XML {
                     ListaClientes listadoTodas = (ListaClientes) xstream.fromXML(fichero);
                     List<Cliente> listaPersonas;
                     listaPersonas = listadoTodas.getClientes();
-                    for (Cliente p : listaPersonas) {
-                        clientes.put(p.getDni(), p);
+                    if (listaPersonas != null) {
+                        for (Cliente p : listaPersonas) {
+                            clientes.put(p.getDni(), p);
+                        }
                     }
                 }
             } catch (FileNotFoundException e) {
@@ -360,8 +362,10 @@ public class XML {
                 ListaEmpleados listadoTodas = (ListaEmpleados) xstream.fromXML(fichero);
                 List<Empleado> listaPersonas;
                 listaPersonas = listadoTodas.getEmpleados();
-                for (Empleado p : listaPersonas) {
-                    empleados.put(p.getDni(), p);
+                if (listaPersonas != null) {
+                    for (Empleado p : listaPersonas) {
+                        empleados.put(p.getDni(), p);
+                    }
                 }
             }
         } catch (FileNotFoundException e) {
@@ -507,8 +511,10 @@ public class XML {
                     ListaLugares listadoTodas = (ListaLugares) xstream.fromXML(fichero);
                     List<Lugar> listaPersonas;
                     listaPersonas = listadoTodas.getLugares();
-                    for (Lugar p : listaPersonas) {
-                        lugares.put(p.getId(), p);
+                    if (listaPersonas != null) {
+                        for (Lugar p : listaPersonas) {
+                            lugares.put(p.getId(), p);
+                        }
                     }
                 }
             } catch (FileNotFoundException e) {
@@ -900,12 +906,6 @@ public class XML {
         }
     }
 /*/
-    public static void main(String[] args) {
-        //   conexion();
-        comprobarFicherosExist();
-    }
-
-
 }
 
 
