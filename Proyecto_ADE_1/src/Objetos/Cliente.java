@@ -26,6 +26,10 @@ public class Cliente implements Serializable {
     public Cliente() {
     }
 
+    public void borrar_visita(int id) {
+        visitas_numero.remove(id);
+    }
+
     public String getDni() {
         return dni;
     }

@@ -157,31 +157,36 @@ public class Main {
             }
             if (comprobacion.equalsIgnoreCase("Y")) {
                 listar_empleados();
-                System.out.println("Escriba el DNI del empleado que quiere añadir");
-                String DNI;
-                bucle = true;
-                while (bucle) {
-                    System.out.println("Escriba el DNI del empleado");
-                    scanner = new Scanner(System.in);
-                    DNI = scanner.nextLine();
-                    Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
-                    Matcher mat = pat.matcher(DNI);
-                    if (mat.matches()) {
-                        if (empleados.containsKey(DNI)) {
-                            bucle = false;
-                            System.out.println("Añadiendo empleado a la visita");
-                            visitasguiadas.get(N_visita).setEmpleado(DNI);
-                            empleados.get(DNI).setVisitas(N_visita);
-                            XML.crearRelaciones(lugares, visitasguiadas, empleados, clientes);
+                if (empleados.size() > 0) {
+                    System.out.println("Escriba el DNI del empleado que quiere añadir");
+                    String DNI;
+                    bucle = true;
+                    while (bucle) {
+                        System.out.println("Escriba el DNI del empleado");
+                        scanner = new Scanner(System.in);
+                        DNI = scanner.nextLine();
+                        Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
+                        Matcher mat = pat.matcher(DNI);
+                        if (mat.matches()) {
+                            if (empleados.containsKey(DNI)) {
+                                bucle = false;
+                                System.out.println("Añadiendo empleado a la visita");
+                                visitasguiadas.get(N_visita).setEmpleado(DNI);
+                                empleados.get(DNI).setVisitas(N_visita);
+                                XML.modificarRelacionEmpleado(DNI);
+                                XML.insertarEmpleado(empleados.get(DNI));
+                                XML.modificarRelacionVisitas(N_visita);
+                                XML.insertarVisitaGuiada(visitasguiadas.get(N_visita));
+                            } else {
+                                System.out.println("El DNI no existe " + DNI);
+                            }
                         } else {
-                            System.out.println("El DNI no existe " + DNI);
+                            System.out.println("DNI: " + DNI + " incorrecto");
                         }
-                    } else {
-                        System.out.println("DNI: " + DNI + " incorrecto");
                     }
+                    añadir_clientes(N_visita, scanner);
                 }
             }
-            añadir_clientes(N_visita, scanner);
         } else {
             System.out.println("No existen visitas donde añadir empledo y clientes");
         }
@@ -195,7 +200,7 @@ public class Main {
      */
     public static void añadir_clientes(Integer N_visita, Scanner scanner) {
         listar_clientes();
-        if (clientes.size() != 0) {
+        if (clientes.size() > 0) {
             while (visitasguiadas.get(N_visita).getClientes().size() != visitasguiadas.get(N_visita).getN_max_cli()) {
                 System.out.println("Escriba el DNI del cliente, escribe salir si quieres salir");
                 scanner = new Scanner(System.in);
@@ -208,7 +213,11 @@ public class Main {
                             System.out.println("Añadiendo cliente");
                             clientes.get(DNI).setVisitas(N_visita);
                             visitasguiadas.get(N_visita).setClientes(DNI);
-                            XML.crearRelaciones(lugares, visitasguiadas, empleados, clientes);
+                            XML.modificarRelacionVisitas(N_visita);
+                            XML.insertarVisitaGuiada(visitasguiadas.get(N_visita));
+                            XML.modificarRelacionClientes(DNI);
+                            XML.insertarCLiente(clientes.get(DNI));
+
                         }
                     } else {
                         System.out.println("DNI: " + DNI + " incorrecto");
@@ -566,8 +575,9 @@ public class Main {
             visitasguiadas.put(visitaid, visitaGuiada);
             lugares.get(lugarid).setVisitas(visitaid);
             XML.insertarVisitaGuiada(visitaGuiada);
-            //TODO modificar lugar
-            XML.crearRelaciones(lugares, visitasguiadas, empleados, clientes);
+            //TODO modificar relacion lugar
+            XML.modificarRelacionLugar(lugarid);
+            XML.insertarLugar(lugares.get(lugarid));
         } else {
             System.out.println("Cancelando operación, redirigiendo al menu");
         }
@@ -663,16 +673,28 @@ public class Main {
                 if (visitasguiadas.containsKey(numero)) {
                     visitasguiadas.get(numero).setEstado("Borrada");
                     for (Cliente cliente : clientes.values()) {
-                        cliente.getVisitas().remove(numero);
+                        if (cliente.getVisitas().containsKey(numero)) {
+                            cliente.getVisitas().remove(numero);
+                            XML.modificarRelacionClientes(cliente.getDni());
+                            XML.insertarCLiente(cliente);
+                        }
                     }
                     for (Empleado empleado : empleados.values()) {
-                        empleado.getVisitas().remove(numero);
+                        if (empleado.getVisitas().containsKey(numero)) {
+                            empleado.getVisitas().remove(numero);
+                            XML.modificarRelacionEmpleado(empleado.getDni());
+                            XML.insertarEmpleado(empleado);
+                        }
                     }
                     for (Lugar lugar : lugares.values()) {
-                        lugar.getVisitas().remove(numero);
+                        if (lugar.getVisitas().containsKey(numero)) {
+                            lugar.getVisitas().remove(numero);
+                            XML.modificarRelacionLugar(lugar.getId());
+                            XML.insertarLugar(lugar);
+                        }
                     }
                     XML.borrarVisita(numero);
-                    XML.crearRelaciones(lugares, visitasguiadas, empleados, clientes);
+
                     System.out.println("Borrando visita");
                 } else {
                     System.out.println("Ese numero no esta en la lista de visitas guiadas");
@@ -808,10 +830,11 @@ public class Main {
                 for (VisitaGuiada v : visitasguiadas.values()) {
                     if (v.getEmpleado().equals(dni)) {
                         v.setEmpleado(null);
+                        XML.modificarRelacionVisitas(v.getN_visita());
+                        XML.insertarVisitaGuiada(v);
                     }
                 }
                 XML.borrarEmpleado(dni);
-                XML.crearRelaciones(lugares, visitasguiadas, empleados, clientes);
                 System.out.println("Borrando empleado");
             } else {
                 System.out.println("El DNI escrito no esta en la lista");
@@ -928,9 +951,10 @@ public class Main {
                 clientes.get(dni).setEstado(borrado);
                 for (VisitaGuiada v : visitasguiadas.values()) {
                     v.getClientes().remove(dni);
+                    XML.modificarRelacionVisitas(v.getN_visita());
+                    XML.insertarVisitaGuiada(v);
                 }
                 XML.borrarCliente(dni);
-                XML.crearRelaciones(lugares, visitasguiadas, empleados, clientes);
                 System.out.println("Borrando usuario");
             } else {
                 System.out.println("El DNI escrito no esta en la lista");
@@ -1209,7 +1233,8 @@ public class Main {
                 visitasguiadas.get(N_visita).setLugar(lugarid);
                 lugares.get(lugarid).setVisitas(N_visita);
                 XML.modificarVisita(visitasguiadas.get(N_visita));
-                XML.crearRelaciones(lugares, visitasguiadas, empleados, clientes);
+                XML.modificarRelacionLugar(lugarid);
+                XML.insertarLugar(lugares.get(lugarid));
             } else {
                 System.out.println("Cancelando operación, redirigiendo al menu");
             }

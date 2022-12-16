@@ -100,6 +100,9 @@ public class Empleado implements Serializable {
     public void setVisitas(Integer N_visita) {
         this.visitas_numero.put(N_visita, N_visita);
     }
+    public void borrar_visita(int id) {
+        visitas_numero.remove(id);
+    }
 
     @Override
     public String toString() {

@@ -20,6 +20,12 @@ public class XML {
     private static final String user = "admin";
     private static final String pass = "1234";
     private static Collection col = null;
+    private static int mockId = 999999999;
+    private static String pathClientes = "src/Ficheros_XML/Clientes.xml";
+    private static String pathLugares = "src/Ficheros_XML/Lugares.xml";
+    private static String pathEmpleados = "src/Ficheros_XML/Empleados.xml";
+    private static String pathVisitas = "src/Ficheros_XML/VisitasGuiadas.xml";
+
 
     /**
      * recuperar_clientes se encarga de recuperar los clientes y gestionarlos en la BBDD
@@ -31,7 +37,7 @@ public class XML {
         conexion();
         if (col != null) {
             try {
-                FileWriter ficheroWriter = new FileWriter("src/Ficheros_XML/Clientes.xml");
+                FileWriter ficheroWriter = new FileWriter(pathClientes);
 
                 XPathQueryService servicio;
                 servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
@@ -54,14 +60,17 @@ public class XML {
                 xstream.alias("Clientes", ListaClientes.class);
                 xstream.alias("Cliente", Cliente.class);
                 xstream.addImplicitCollection(ListaClientes.class, "lista");
-                FileInputStream fichero = new FileInputStream("src/Ficheros_XML/Clientes.xml");
-                BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/Clientes.xml"));
+                FileInputStream fichero = new FileInputStream(pathClientes);
+                BufferedReader br = new BufferedReader(new FileReader(pathClientes));
                 if (br.readLine() != null) {
                     ListaClientes listadoTodas = (ListaClientes) xstream.fromXML(fichero);
                     List<Cliente> listaPersonas;
                     listaPersonas = listadoTodas.getClientes();
                     if (listaPersonas != null) {
                         for (Cliente p : listaPersonas) {
+                            if (p.getVisitas().containsKey(mockId)) {
+                                p.borrar_visita(mockId);
+                            }
                             clientes.put(p.getDni(), p);
                         }
                     }
@@ -85,7 +94,7 @@ public class XML {
      * @param cliente
      */
     public static void insertarCLiente(Cliente cliente) {
-        if (comprobarCliente(cliente.getDni())) {
+        if (!comprobarCliente(cliente.getDni())) {
             conexion();
             if (col != null) {
                 String nuevocli = "<Cliente><dni>" + cliente.getDni() + "</dni>"
@@ -95,6 +104,11 @@ public class XML {
                         "<profesion>" + cliente.getProfesion() + "</profesion>" +
                         "<estado>" + cliente.getEstado() + "</estado>" +
                         "<visitas__numero>" + "<entry>";
+                if (cliente.getVisitas().size() == 0) {
+                    cliente.setVisitas(mockId);
+                } else if (cliente.getVisitas().size() >= 2) {
+                    cliente.borrar_visita(mockId);
+                }
                 for (Integer cli : cliente.getVisitas().values()) {
                     nuevocli = nuevocli + "<int>" + cli + "</int>" +
                             "<int>" + cli + "</int>";
@@ -118,7 +132,7 @@ public class XML {
                 System.out.println("Error en la BBDD");
             }
         } else {
-            System.out.println("No existe el cliente");
+            System.out.println("Existe el cliente");
         }
     }
 
@@ -162,7 +176,7 @@ public class XML {
      * @param cliente
      */
     public static void modificarCLiente(Cliente cliente) {
-        if (comprobarCliente(cliente.getDni())) {
+        if (!comprobarCliente(cliente.getDni())) {
             conexion();
             if (col != null) {
                 try {
@@ -198,7 +212,7 @@ public class XML {
      * @param visitaGuiada
      */
     public static void insertarVisitaGuiada(VisitaGuiada visitaGuiada) {
-        if (comprobarVisita(visitaGuiada.getN_visita())) {
+        if (!comprobarVisita(visitaGuiada.getN_visita())) {
             conexion();
             if (col != null) {
                 String nuevavis = "<VisitaGuiada><n__visita>" + visitaGuiada.getN_visita() + "</n__visita>"
@@ -213,6 +227,30 @@ public class XML {
                         "<empleado__dni>" + visitaGuiada.getEmpleado() + "</empleado__dni>" +
                         "<horario>" + visitaGuiada.getHorario() + "</horario>" +
                         "<clientes__dni>" + "<entry>";
+                System.out.println("  <VisitaGuiada>\n" +
+                        "    <n__visita>" + visitaGuiada.getN_visita() + "</n__visita>\n" +
+                        "    <nombre>" + visitaGuiada.getNombre() + "</nombre>\n" +
+                        "    <n__max__cli>" + visitaGuiada.getN_max_cli() + "</n__max__cli>\n" +
+                        "    <punto__partida>" + visitaGuiada.getPunto_partida() + "</punto__partida>\n" +
+                        "    <curso>" + visitaGuiada.getCurso() + "</curso>\n" +
+                        "    <tematica>" + visitaGuiada.getTematica() + "</tematica>\n" +
+                        "    <coste>" + visitaGuiada.getCoste() + "</coste>\n" +
+                        "    <estado/>" + visitaGuiada.getEstado() + "</estado>\n" +
+                        "    <lugar__id>" + visitaGuiada.getLugar() + "</lugar__id>\n" +
+                        "    <empleado__dni>" + visitaGuiada.getEmpleado() + "</empleado__dni>\n" +
+                        "    <horario>12</horario>\n" +
+                        "    <clientes__dni>\n" +
+                        "      <entry>\n" +
+                        "        <string>DNI0</string>\n" +
+                        "        <string>DNI0</string>\n" +
+                        "      </entry>\n" +
+                        "    </clientes__dni>\n" +
+                        "  </VisitaGuiada>");
+                if (visitaGuiada.getClientes().size() == 0) {
+                    visitaGuiada.setClientes("vacio");
+                } else if (visitaGuiada.getClientes().size() >= 2) {
+                    visitaGuiada.borrar_cliente("vacio");
+                }
                 for (String vis : visitaGuiada.getClientes().values()) {
                     nuevavis = nuevavis + "<string>" + vis + "</string>" +
                             "<string>" + vis + "</string>";
@@ -236,7 +274,7 @@ public class XML {
                 System.out.println("Error en la BBDD");
             }
         } else {
-            System.out.println("No existe la visitaGuiada");
+            System.out.println("Existe la visitaGuiada");
         }
     }
 
@@ -250,7 +288,7 @@ public class XML {
         conexion();
         if (col != null) {
             try {
-                FileWriter ficheroWriter = new FileWriter("src/Ficheros_XML/VisitasGuiadas.xml");
+                FileWriter ficheroWriter = new FileWriter(pathVisitas);
 
                 XPathQueryService servicio;
                 servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
@@ -273,14 +311,17 @@ public class XML {
                 xstream.alias("VisitasGuiadas", ListaVisitaGuiada.class);
                 xstream.alias("VisitaGuiada", VisitaGuiada.class);
                 xstream.addImplicitCollection(ListaVisitaGuiada.class, "lista");
-                FileInputStream fichero = new FileInputStream("src/Ficheros_XML/VisitasGuiadas.xml");
-                BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/VisitasGuiadas.xml"));
+                FileInputStream fichero = new FileInputStream(pathVisitas);
+                BufferedReader br = new BufferedReader(new FileReader(pathVisitas));
                 if (br.readLine() != null) {
                     ListaVisitaGuiada listadoTodas = (ListaVisitaGuiada) xstream.fromXML(fichero);
                     List<VisitaGuiada> listaPersonas;
                     listaPersonas = listadoTodas.getVisitaGuiadas();
                     if (listaPersonas != null) {
                         for (VisitaGuiada p : listaPersonas) {
+                            if (p.getClientes().containsKey("vacio")) {
+                                p.borrar_cliente("vacio");
+                            }
                             visitaguiadas.put(p.getN_visita(), p);
                         }
                     }
@@ -338,7 +379,7 @@ public class XML {
      * @param visita
      */
     public static void modificarVisita(VisitaGuiada visita) {
-        if (comprobarVisita(visita.getN_visita())) {
+        if (!comprobarVisita(visita.getN_visita())) {
             conexion();
             if (col != null) {
                 try {
@@ -384,7 +425,7 @@ public class XML {
     public static HashMap<String, Empleado> recuperar_empleados() {
         HashMap<String, Empleado> empleados = new HashMap<>();
         try {
-            FileWriter ficheroWriter = new FileWriter("src/Ficheros_XML/Empleados.xml");
+            FileWriter ficheroWriter = new FileWriter(pathEmpleados);
 
             XPathQueryService servicio;
             servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
@@ -407,14 +448,17 @@ public class XML {
             xstream.alias("Empleados", ListaEmpleados.class);
             xstream.alias("Empleado", Empleado.class);
             xstream.addImplicitCollection(ListaEmpleados.class, "lista");
-            FileInputStream fichero = new FileInputStream("src/Ficheros_XML/Empleados.xml");
-            BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/Empleados.xml"));
+            FileInputStream fichero = new FileInputStream(pathEmpleados);
+            BufferedReader br = new BufferedReader(new FileReader(pathEmpleados));
             if (br.readLine() != null) {
                 ListaEmpleados listadoTodas = (ListaEmpleados) xstream.fromXML(fichero);
                 List<Empleado> listaPersonas;
                 listaPersonas = listadoTodas.getEmpleados();
                 if (listaPersonas != null) {
                     for (Empleado p : listaPersonas) {
+                        if (p.getVisitas().containsKey(mockId)) {
+                            p.borrar_visita(mockId);
+                        }
                         empleados.put(p.getDni(), p);
                     }
                 }
@@ -435,7 +479,7 @@ public class XML {
      * @param empleado
      */
     public static void insertarEmpleado(Empleado empleado) {
-        if (comprobarEmpleado(empleado.getDni())) {
+        if (!comprobarEmpleado(empleado.getDni())) {
             conexion();
             if (col != null) {
                 String nuevoempl = "<Empleado><dni>" + empleado.getDni() + "</dni>"
@@ -447,6 +491,11 @@ public class XML {
                         "<cargo>" + empleado.getCargo() + "</cargo>" +
                         "<estado>" + empleado.getNacionalidad() + "</estado>" +
                         "<visitas__numero>" + "<entry>";
+                if (empleado.getVisitas().size() == 0) {
+                    empleado.setVisitas(mockId);
+                } else if (empleado.getVisitas().size() >= 2) {
+                    empleado.borrar_visita(mockId);
+                }
                 for (Integer cli : empleado.getVisitas().values()) {
                     nuevoempl = nuevoempl + "<int>" + cli + "</int>" +
                             "<int>" + cli + "</int>";
@@ -514,7 +563,7 @@ public class XML {
      * @param empleado
      */
     public static void modificarEmpleado(Empleado empleado) {
-        if (comprobarEmpleado(empleado.getDni())) {
+        if (!comprobarEmpleado(empleado.getDni())) {
             conexion();
             if (col != null) {
                 try {
@@ -524,7 +573,7 @@ public class XML {
                     ResourceSet result = servicio.query(
                             "update value /Empleados/Empleado[dni='" + empleado.getDni() + "']/nombre with data('" + empleado.getNombre() + "') ");
                     result = servicio.query(
-                            "update value /Empleados/Empleado[dni='" + empleado.getDni() + "']/apellido with data('" + empleado.getNombre() + "') ");
+                            "update value /Empleados/Empleado[dni='" + empleado.getDni() + "']/apellido with data('" + empleado.getApellido() + "') ");
                     result = servicio.query(
                             "update value /Empleados/Empleado[dni='" + empleado.getDni() + "']/fecha__Nac with data('" + empleado.getFecha_Nac() + "') ");
                     result = servicio.query(
@@ -558,7 +607,7 @@ public class XML {
         HashMap<Integer, Lugar> lugares = new HashMap<>();
         if (col != null) {
             try {
-                FileWriter ficheroWriter = new FileWriter("src/Ficheros_XML/Lugares.xml");
+                FileWriter ficheroWriter = new FileWriter(pathLugares);
 
                 XPathQueryService servicio;
                 servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
@@ -581,14 +630,17 @@ public class XML {
                 xstream.alias("Lugares", ListaLugares.class);
                 xstream.alias("Lugar", Lugar.class);
                 xstream.addImplicitCollection(ListaLugares.class, "lista");
-                FileInputStream fichero = new FileInputStream("src/Ficheros_XML/Lugares.xml");
-                BufferedReader br = new BufferedReader(new FileReader("src/Ficheros_XML/Lugares.xml"));
+                FileInputStream fichero = new FileInputStream(pathLugares);
+                BufferedReader br = new BufferedReader(new FileReader(pathLugares));
                 if (br.readLine() != null) {
                     ListaLugares listadoTodas = (ListaLugares) xstream.fromXML(fichero);
                     List<Lugar> listaPersonas;
                     listaPersonas = listadoTodas.getLugares();
                     if (listaPersonas != null) {
                         for (Lugar p : listaPersonas) {
+                            if (p.getVisitas().containsKey(mockId)) {
+                                p.borrar_visita(mockId);
+                            }
                             lugares.put(p.getId(), p);
                         }
                     }
@@ -614,10 +666,18 @@ public class XML {
     public static void insertarLugar(Lugar lugar) {
         conexion();
         if (col != null) {
-            if (comprobarLugar(lugar.getId())) {
+            if (!comprobarLugar(lugar.getId())) {
                 String nuevolugar = "<Lugar><id>" + lugar.getId() + "</id>"
                         + "<lugar>" + lugar.getLugar() + "</lugar>" +
+                        "<nacionalidad>" + lugar.getNacionalidad() + "</nacionalidad>" +
                         "<visitas__numero>" + "<entry>";
+                if (lugar.getVisitas().size() == 0) {
+                    lugar.setVisitas(mockId);
+                } else if (lugar.getVisitas().size() >= 2) {
+                    if (lugar.getVisitas().containsKey(mockId)) {
+                        lugar.borrar_visita(mockId);
+                    }
+                }
                 for (Integer cli : lugar.getVisitas().values()) {
                     nuevolugar = nuevolugar + "<int>" + cli + "</int>" +
                             "<int>" + cli + "</int>";
@@ -632,7 +692,7 @@ public class XML {
                     //Consulta para insertar --> update insert ... into
                     ResourceSet result = servicio.query("update insert " + nuevolugar + " into /Lugares");
                     col.close(); //borramos
-                    System.out.println("Empleado insertado.");
+                    System.out.println("Lugar insertado.");
                 } catch (Exception e) {
                     System.out.println("Error al insertar lugar.");
                     e.printStackTrace();
@@ -701,10 +761,10 @@ public class XML {
                     xstream.addImplicitCollection(ListaVisitaGuiada.class, "lista");
                     ListaVisitaGuiada listaVisitaGuiada = new ListaVisitaGuiada();
                     listaVisitaGuiada.lista = new ArrayList<>(visitasguiadas.values());
-                    xstream.toXML(listaVisitaGuiada, new FileOutputStream("src/Ficheros_XML/VisitasGuiadas.xml"));
+                    xstream.toXML(listaVisitaGuiada, new FileOutputStream(pathVisitas));
 
-                    res = (XMLResource) col.createResource("VisitaGuiadas.xml", "XMLResource");
-                    f = new File("src/Ficheros_XML/VisitasGuiadas.xml");
+                    res = (XMLResource) col.createResource("VisitasGuiadas.xml", "XMLResource");
+                    f = new File(pathVisitas);
                     res.setContent(f);
                     col.storeResource(res);
 
@@ -714,10 +774,10 @@ public class XML {
                     xstream.addImplicitCollection(ListaClientes.class, "lista");
                     ListaClientes listaClientes = new ListaClientes();
                     listaClientes.lista = new ArrayList<>(clientes.values());
-                    xstream.toXML(listaClientes, new FileOutputStream("src/Ficheros_XML/Clientes.xml"));
+                    xstream.toXML(listaClientes, new FileOutputStream(pathClientes));
 
                     res = (XMLResource) col.createResource("Clientes.xml", "XMLResource");
-                    f = new File("src/Ficheros_XML/Clientes.xml");
+                    f = new File(pathClientes);
                     res.setContent(f);
                     col.storeResource(res);
 
@@ -727,10 +787,10 @@ public class XML {
                     xstream.addImplicitCollection(ListaEmpleados.class, "lista");
                     ListaEmpleados listaEmpleados = new ListaEmpleados();
                     listaEmpleados.lista = new ArrayList<>(empleados.values());
-                    xstream.toXML(listaEmpleados, new FileOutputStream("src/Ficheros_XML/Empleados.xml"));
+                    xstream.toXML(listaEmpleados, new FileOutputStream(pathEmpleados));
 
                     res = (XMLResource) col.createResource("Empleados.xml", "XMLResource");
-                    f = new File("src/Ficheros_XML/Empleados.xml");
+                    f = new File(pathEmpleados);
                     res.setContent(f);
                     col.storeResource(res);
 
@@ -740,10 +800,10 @@ public class XML {
                     xstream.addImplicitCollection(ListaLugares.class, "lista");
                     ListaLugares listaLugares = new ListaLugares();
                     listaLugares.lista = new ArrayList<>(lugares.values());
-                    xstream.toXML(listaLugares, new FileOutputStream("src/Ficheros_XML/Lugares.xml"));
+                    xstream.toXML(listaLugares, new FileOutputStream(pathLugares));
 
                     res = (XMLResource) col.createResource("Lugares.xml", "XMLResource");
-                    f = new File("src/Ficheros_XML/Lugares.xml");
+                    f = new File(pathLugares);
                     res.setContent(f);
                     col.storeResource(res);
 
@@ -760,45 +820,6 @@ public class XML {
             } catch (XMLDBException e) {
                 System.out.println("Error con el XML");
             }
-        }
-    }
-
-    /**
-     * crearRelaciones se encarga de poder gestionar el tema de las relaciones en los XML subiendo los archivos a exist
-     *
-     * @param lugares
-     * @param visitasguiadas
-     * @param empleados
-     * @param clientes
-     */
-    public static void crearRelaciones(HashMap<Integer, Lugar> lugares, HashMap<Integer, VisitaGuiada> visitasguiadas, HashMap<String, Empleado> empleados, HashMap<String, Cliente> clientes) {
-        conexion();
-        if (col != null) {
-            try {
-                XMLResource res = null;
-                res = (XMLResource) col.createResource("Empleados.xml", "XMLResource");
-                File f = new File("src/Ficheros_XML/Empleados.xml");
-                res.setContent(f);
-                col.storeResource(res);
-                res = (XMLResource) col.createResource("Clientes.xml", "XMLResource");
-                f = new File("src/Ficheros_XML/Clientes.xml");
-                res.setContent(f);
-                col.storeResource(res);
-                res = (XMLResource) col.createResource("VisitasGuiadas.xml", "XMLResource");
-                f = new File("src/Ficheros_XML/VisitasGuiadas.xml");
-                res.setContent(f);
-                col.storeResource(res);
-                res = (XMLResource) col.createResource("Lugares.xml", "XMLResource");
-                f = new File("src/Ficheros_XML/Lugares.xml");
-                res.setContent(f);
-                col.storeResource(res);
-                col.close();
-            } catch (Exception e) {
-                System.out.println("Error al consultar.");
-                // e.printStackTrace();
-            }
-        } else {
-            System.out.println("Error en la conexión. Comprueba datos.");
         }
     }
 
@@ -892,6 +913,78 @@ public class XML {
         }
     }
 
+    public static void modificarRelacionLugar(int lugarId) {
+        conexion();
+        if (col != null) {
+            try {
+                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                //Consulta para borrar un departamento --> update delete
+                ResourceSet result = servicio.query(
+                        "update delete /Lugares/Lugar[id=" + lugarId + "]");
+                col.close();
+            } catch (Exception e) {
+                System.out.println("Error al mmodificar.");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Error en la conexión. Comprueba datos.");
+        }
+    }
+
+    public static void modificarRelacionVisitas(int visitas) {
+        conexion();
+        if (col != null) {
+            try {
+                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                //Consulta para borrar un departamento --> update delete
+                ResourceSet result = servicio.query(
+                        "update delete /VisitasGuiadas/VisitaGuiada[n__visita=" + visitas + "]");
+                col.close();
+            } catch (Exception e) {
+                System.out.println("Error al mmodificar.");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Error en la conexión. Comprueba datos.");
+        }
+    }
+
+    public static void modificarRelacionEmpleado(String dni) {
+        conexion();
+        if (col != null) {
+            try {
+                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                //Consulta para borrar un departamento --> update delete
+                ResourceSet result = servicio.query(
+                        "update delete /Empleados/Empleado[dni='" + dni + "']");
+                col.close();
+            } catch (Exception e) {
+                System.out.println("Error al mmodificar.");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Error en la conexión. Comprueba datos.");
+        }
+    }
+
+    public static void modificarRelacionClientes(String dni) {
+        conexion();
+        if (col != null) {
+            try {
+                XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
+                //Consulta para borrar un departamento --> update delete
+                ResourceSet result = servicio.query(
+                        "update delete /Clientes/Cliente[dni='" + dni + "']");
+                col.close();
+            } catch (Exception e) {
+                System.out.println("Error al mmodificar.");
+                e.printStackTrace();
+            }
+        } else {
+            System.out.println("Error en la conexión. Comprueba datos.");
+        }
+    }
+
     /**
      * conexion se encarga de realizar la conexión con exist y bajar la colección
      */
@@ -917,6 +1010,10 @@ public class XML {
         } catch (NoSuchMethodException e) {
             System.out.println("Error en la BBDD");
         }
+    }
+
+    public static void main(String[] args) {
+
     }
 }
 
