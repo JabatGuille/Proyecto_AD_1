@@ -913,6 +913,11 @@ public class XML {
         }
     }
 
+    /**
+     * modificarRelacionLugar se encarga de borrar un lugar usando su id, al borrarlo luego se puede insertar con las relaciones
+     *
+     * @param lugarId
+     */
     public static void modificarRelacionLugar(int lugarId) {
         conexion();
         if (col != null) {
@@ -931,6 +936,11 @@ public class XML {
         }
     }
 
+    /**
+     * modificarRelacionVisita se encarga de borrar una visita usando su id, al borrarlo luego se puede insertar con las relaciones
+     *
+     * @param visitas
+     */
     public static void modificarRelacionVisitas(int visitas) {
         conexion();
         if (col != null) {
@@ -949,6 +959,11 @@ public class XML {
         }
     }
 
+    /**
+     * modificarRelacionEmpleado se encarga de borrar un empleado usando su dni, al borrarlo luego se puede insertar con las relaciones
+     *
+     * @param dni
+     */
     public static void modificarRelacionEmpleado(String dni) {
         conexion();
         if (col != null) {
@@ -967,6 +982,11 @@ public class XML {
         }
     }
 
+    /**
+     * modificarRelacionCliente se encarga de borrar un cliente usando su dni, al borrarlo luego se puede insertar con las relaciones
+     *
+     * @param dni
+     */
     public static void modificarRelacionClientes(String dni) {
         conexion();
         if (col != null) {
@@ -1010,10 +1030,6 @@ public class XML {
         } catch (NoSuchMethodException e) {
             System.out.println("Error en la BBDD");
         }
-    }
-
-    public static void main(String[] args) {
-
     }
 }
 
