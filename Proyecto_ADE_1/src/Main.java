@@ -245,9 +245,10 @@ public class Main {
                         } else {
                             bucle = false;
                             System.out.println("Saliendo");
+                            break;
                         }
                     }
-                    if (visitasguiadas.get(N_visita).getClientes().size() != visitasguiadas.get(N_visita).getN_max_cli()) {
+                    if (visitasguiadas.get(N_visita).getClientes().size() == visitasguiadas.get(N_visita).getN_max_cli()) {
                         System.out.println("No se pueden añadir mas empleados");
                         bucle = false;
                     }
@@ -437,16 +438,20 @@ public class Main {
                     System.out.println("Nº Visita: " + lugares.get(visita.getLugar()).getLugar());
                     System.out.println("Nº Visita: " + lugares.get(visita.getLugar()).getNacionalidad());
                     System.out.println("EMPLEADO:");
-                    if (!visita.getEmpleado().equals("")) {
-                        System.out.println("DNI " + empleados.get(visita.getEmpleado()).getDni());
-                        System.out.println("Nombre " + empleados.get(visita.getEmpleado()).getNombre());
-                        System.out.println("Apellido " + empleados.get(visita.getEmpleado()).getApellido());
-                        System.out.println("Fecha Nacimiento " + empleados.get(visita.getEmpleado()).getFecha_Nac());
-                        System.out.println("Fecha Contratación " + empleados.get(visita.getEmpleado()).getFecha_cont());
-                        System.out.println("Nacionalidad " + empleados.get(visita.getEmpleado()).getNacionalidad());
-                        System.out.println("Cargo " + empleados.get(visita.getEmpleado()).getCargo());
-                    } else {
-                        System.out.println("Esta visita no tiene empleado");
+                    try {
+                        if (!visita.getEmpleado().equals("")) {
+                            System.out.println("DNI " + empleados.get(visita.getEmpleado()).getDni());
+                            System.out.println("Nombre " + empleados.get(visita.getEmpleado()).getNombre());
+                            System.out.println("Apellido " + empleados.get(visita.getEmpleado()).getApellido());
+                            System.out.println("Fecha Nacimiento " + empleados.get(visita.getEmpleado()).getFecha_Nac());
+                            System.out.println("Fecha Contratación " + empleados.get(visita.getEmpleado()).getFecha_cont());
+                            System.out.println("Nacionalidad " + empleados.get(visita.getEmpleado()).getNacionalidad());
+                            System.out.println("Cargo " + empleados.get(visita.getEmpleado()).getCargo());
+                        } else {
+                            System.out.println("Esta visita no tiene empleado");
+                        }
+                    } catch (NullPointerException a) {
+
                     }
                     for (Cliente cliente : clientes.values()) {
                         if (cliente.getVisitas().containsKey(visita.getN_visita())) {
@@ -697,24 +702,24 @@ public class Main {
                 scanner = new Scanner(System.in);
                 int numero = scanner.nextInt();
                 if (visitasguiadas.containsKey(numero)) {
-                    visitasguiadas.get(numero).setEstado("Borrada");
+                    visitasguiadas.get(numero).setEstado(borrado);
                     for (Cliente cliente : clientes.values()) {
                         if (cliente.getVisitas().containsKey(numero)) {
-                            cliente.getVisitas().remove(numero);
+                            cliente.borrar_visita(numero);
                             XML.modificarRelacionClientes(cliente.getDni());
                             XML.insertarCLiente(cliente);
                         }
                     }
                     for (Empleado empleado : empleados.values()) {
                         if (empleado.getVisitas().containsKey(numero)) {
-                            empleado.getVisitas().remove(numero);
+                            empleado.borrar_visita(numero);
                             XML.modificarRelacionEmpleado(empleado.getDni());
                             XML.insertarEmpleado(empleado);
                         }
                     }
                     for (Lugar lugar : lugares.values()) {
                         if (lugar.getVisitas().containsKey(numero)) {
-                            lugar.getVisitas().remove(numero);
+                            lugar.borrar_visita(numero);
                             XML.modificarRelacionLugar(lugar.getId());
                             XML.insertarLugar(lugar);
                         }

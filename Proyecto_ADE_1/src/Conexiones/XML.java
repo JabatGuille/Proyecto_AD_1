@@ -176,7 +176,7 @@ public class XML {
      * @param cliente
      */
     public static void modificarCLiente(Cliente cliente) {
-        if (!comprobarCliente(cliente.getDni())) {
+        if (comprobarCliente(cliente.getDni())) {
             conexion();
             if (col != null) {
                 try {
@@ -352,7 +352,7 @@ public class XML {
             try {
                 XPathQueryService servicio = (XPathQueryService) col.getService("XPathQueryService", "1.0");
                 //Consulta para consultar la información de un departamento
-                ResourceSet result = servicio.query("/VisitasGuiadas/VisitasGuiada[n__visita='" + id + "']");
+                ResourceSet result = servicio.query("/VisitasGuiadas/VisitaGuiada[n__visita='" + id + "']");
                 ResourceIterator i;
                 i = result.getIterator();
                 col.close();
@@ -379,7 +379,7 @@ public class XML {
      * @param visita
      */
     public static void modificarVisita(VisitaGuiada visita) {
-        if (!comprobarVisita(visita.getN_visita())) {
+        if (comprobarVisita(visita.getN_visita())) {
             conexion();
             if (col != null) {
                 try {
@@ -563,7 +563,7 @@ public class XML {
      * @param empleado
      */
     public static void modificarEmpleado(Empleado empleado) {
-        if (!comprobarEmpleado(empleado.getDni())) {
+        if (comprobarEmpleado(empleado.getDni())) {
             conexion();
             if (col != null) {
                 try {
@@ -829,7 +829,7 @@ public class XML {
      * @param DNI
      */
     public static void borrarCliente(String DNI) {
-        if (!comprobarCliente(DNI)) {
+        if (comprobarCliente(DNI)) {
             conexion();
             if (col != null) {
                 try {
@@ -859,7 +859,7 @@ public class XML {
      * @param DNI
      */
     public static void borrarEmpleado(String DNI) {
-        if (!comprobarEmpleado(DNI)) {
+        if (comprobarEmpleado(DNI)) {
             conexion();
             if (col != null) {
                 try {
@@ -889,7 +889,7 @@ public class XML {
      * @param numero
      */
     public static void borrarVisita(int numero) {
-        if (!comprobarVisita(numero)) {
+        if (comprobarVisita(numero)) {
             conexion();
             if (col != null) {
                 try {
