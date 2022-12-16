@@ -79,8 +79,9 @@ public class Main {
                     "2: Nueva visita guiada.\n" +
                     "3: Modificar visita guiada.\n" +
                     "4: Borrar visita guiada.\n" +
-                    "5: Añadir clientes y empleado a la visita guiada\n" +
-                    "6: Salir");
+                    "5: Añadir empleado a la visita guiada\n" +
+                    "6: Añadir clientes a visita\n" +
+                    "7: Salir");
             String menu = scanner.nextLine();
             switch (menu) {
                 case "1": {
@@ -109,6 +110,11 @@ public class Main {
                     break;
                 }
                 case "6": {
+                    añadir_clientes(scanner);
+                    bucle = false;
+                    break;
+                }
+                case "7": {
                     System.out.println("Saliendo del menu visitas guiadas");
                     bucle = false;
                     break;
@@ -184,54 +190,74 @@ public class Main {
                             System.out.println("DNI: " + DNI + " incorrecto");
                         }
                     }
-                    añadir_clientes(N_visita, scanner);
                 }
             }
         } else {
-            System.out.println("No existen visitas donde añadir empledo y clientes");
+            System.out.println("No existen visitas donde añadir empledo");
         }
     }
 
     /**
      * añadir_clientes se encarga de añadir los clientes a la visita guiada
      *
-     * @param N_visita
      * @param scanner
      */
-    public static void añadir_clientes(Integer N_visita, Scanner scanner) {
-        listar_clientes();
-        if (clientes.size() > 0) {
-            while (visitasguiadas.get(N_visita).getClientes().size() != visitasguiadas.get(N_visita).getN_max_cli()) {
-                System.out.println("Escriba el DNI del cliente, escribe salir si quieres salir");
-                scanner = new Scanner(System.in);
-                String DNI = scanner.nextLine();
-                Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
-                Matcher mat = pat.matcher(DNI);
-                if (!DNI.equalsIgnoreCase("salir")) {
-                    if (mat.matches()) {
-                        if (clientes.containsKey(DNI)) {
-                            System.out.println("Añadiendo cliente");
-                            clientes.get(DNI).setVisitas(N_visita);
-                            visitasguiadas.get(N_visita).setClientes(DNI);
-                            XML.modificarRelacionVisitas(N_visita);
-                            XML.insertarVisitaGuiada(visitasguiadas.get(N_visita));
-                            XML.modificarRelacionClientes(DNI);
-                            XML.insertarCLiente(clientes.get(DNI));
+    public static void añadir_clientes(Scanner scanner) {
+        listar_visitas_guiadas();
+        if (visitasguiadas.size() != 0) {
+            boolean bucle = true;
+            String comprobacion = "";
+            int N_visita = 0;
+            while (bucle) {
+                try {
+                    System.out.println("Escriba el Numero de visita que desea añadir cliente");
+                    scanner = new Scanner(System.in);
+                    N_visita = scanner.nextInt();
+                    listar_clientes();
+                } catch (NumberFormatException | InputMismatchException e) {
+                    System.out.println("Debe escribir un numero");
+                }
+                if (clientes.size() > 0) {
+                    while (visitasguiadas.get(N_visita).getClientes().size() != visitasguiadas.get(N_visita).getN_max_cli()) {
+                        System.out.println("Escriba el DNI del cliente, escribe salir si quieres salir");
+                        scanner = new Scanner(System.in);
+                        String DNI = scanner.nextLine();
+                        Pattern pat = Pattern.compile("[0-9]{7,8}[A-Z a-z]");
+                        Matcher mat = pat.matcher(DNI);
+                        if (!DNI.equalsIgnoreCase("salir")) {
+                            if (mat.matches()) {
+                                if (clientes.containsKey(DNI)) {
+                                    System.out.println("Añadiendo cliente");
+                                    clientes.get(DNI).setVisitas(N_visita);
+                                    visitasguiadas.get(N_visita).setClientes(DNI);
+                                    XML.modificarRelacionVisitas(N_visita);
+                                    XML.insertarVisitaGuiada(visitasguiadas.get(N_visita));
+                                    XML.modificarRelacionClientes(DNI);
+                                    XML.insertarCLiente(clientes.get(DNI));
 
+                                }
+                            } else {
+                                System.out.println("DNI: " + DNI + " incorrecto");
+                            }
+                            System.out.println("Terminando de añadir clientes, numero maximo de clientes en la visita\n" +
+                                    "Clientes en visita: " + visitasguiadas.get(N_visita).getClientes().size() + "\n" +
+                                    "Clientes maximos: " + visitasguiadas.get(N_visita).getN_max_cli());
+                        } else {
+                            bucle = false;
+                            System.out.println("Saliendo");
                         }
-                    } else {
-                        System.out.println("DNI: " + DNI + " incorrecto");
                     }
-                    System.out.println("Terminando de añadir clientes, numero maximo de clientes en la visita\n" +
-                            "Clientes en visita: " + visitasguiadas.get(N_visita).getClientes().size() + "\n" +
-                            "Clientes maximos: " + visitasguiadas.get(N_visita).getN_max_cli());
+                    if (visitasguiadas.get(N_visita).getClientes().size() != visitasguiadas.get(N_visita).getN_max_cli()) {
+                        System.out.println("No se pueden añadir mas empleados");
+                        bucle = false;
+                    }
                 } else {
-                    System.out.println("Saliendo");
-                    break;
+                    System.out.println("No existen clientes para poder añadir");
+                    bucle = false;
                 }
             }
         } else {
-            System.out.println("No existen clientes para poder añadir");
+            System.out.println("No existen visitas");
         }
     }
 

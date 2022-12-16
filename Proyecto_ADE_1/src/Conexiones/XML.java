@@ -829,7 +829,7 @@ public class XML {
      * @param DNI
      */
     public static void borrarCliente(String DNI) {
-        if (comprobarCliente(DNI)) {
+        if (!comprobarCliente(DNI)) {
             conexion();
             if (col != null) {
                 try {
@@ -859,7 +859,7 @@ public class XML {
      * @param DNI
      */
     public static void borrarEmpleado(String DNI) {
-        if (comprobarEmpleado(DNI)) {
+        if (!comprobarEmpleado(DNI)) {
             conexion();
             if (col != null) {
                 try {
@@ -889,7 +889,7 @@ public class XML {
      * @param numero
      */
     public static void borrarVisita(int numero) {
-        if (comprobarVisita(numero)) {
+        if (!comprobarVisita(numero)) {
             conexion();
             if (col != null) {
                 try {
